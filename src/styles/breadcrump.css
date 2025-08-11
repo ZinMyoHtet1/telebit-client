@@ -1,0 +1,6 @@
+#breadcrump {
+  padding: 10px 0;
+  font-size: 20px;
+  color: var(--secondary-text-color);
+  font-weight: 500;
+}

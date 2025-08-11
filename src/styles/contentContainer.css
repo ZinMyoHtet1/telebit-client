@@ -1,0 +1,11 @@
+#content_container {
+  position: relative;
+  display: flex;
+  height: 80%;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 10px;
+  overflow-y: auto;
+}

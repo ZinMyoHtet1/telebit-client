@@ -1,0 +1,9 @@
+#navbar {
+  /* padding: 20px 0; */
+  margin-bottom: 10px;
+}
+
+#navbar .app_name {
+  font-size: 28px;
+  font-weight: 600;
+}

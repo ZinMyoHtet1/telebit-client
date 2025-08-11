@@ -1,0 +1,15 @@
+#home_page .wrapper {
+  background-color: white;
+  padding: 40px;
+  border-radius: 20px;
+}
+
+#home_page svg.loading_spinner {
+  padding: 4px;
+  justify-self: center;
+  opacity: 0;
+}
+
+#home_page svg.loading_spinner.active {
+  opacity: 1;
+}
