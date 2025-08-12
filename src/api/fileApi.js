@@ -25,5 +25,7 @@ const uploadFile = (parentId, form) =>
 
 const renameFile = (uploadId, updatedName) =>
   instance.get(`/rename/${uploadId}?name=${updatedName}`);
+const deleteFile = (uploadId, parentId) =>
+  instance.get(`/delete/${uploadId}?directory=${parentId}`);
 
-export { getAll, getFile, getFiles, uploadFile, renameFile };
+export { getAll, getFile, getFiles, uploadFile, renameFile, deleteFile };

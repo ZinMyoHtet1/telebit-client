@@ -17,20 +17,22 @@ import "./../styles/home.css";
 import ActionBar from "../components/ActionBar";
 import { uiContext } from "../contexts/UIContext";
 import { startWebSocket } from "../utils/socket";
+import ViewMode from "../components/ViewMode";
+import SideDrawer from "../components/SideDrawer";
+import MediaViewer from "./MediaViewer";
 // import { socketOpen, socketMessage } from "../utils/socket";
 
 function Home() {
   const navigate = useNavigate();
   // const [openUploadPage, setOpenUploadPage] = useState(false);
   const params = useParams();
-  const [progress, setProgress] = useState(0);
   const [contents, setContents] = useState([]);
   const currentDirId = params?.dirId || "root";
 
   const { state: directoryState, dispatch: directoryDispatch } =
     useContext(directoryContext);
   const { state: fileState, dispatch: fileDispatch } = useContext(fileContext);
-  const { state: uiState } = useContext(uiContext);
+  const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
 
   const isOpenUploadPage = uiState?.uploadPage;
 
@@ -40,9 +42,15 @@ function Home() {
   const files = fileState.files;
 
   useEffect(() => {
-    startWebSocket((data) => setProgress(data.percent));
+    startWebSocket((data) =>
+      fileDispatch({ type: "SET_PERCENT", payload: data.percent })
+    );
     // socketOnMessage((data) => setProgress(data.percent));
-  }, []);
+  }, [fileDispatch]);
+
+  useEffect(() => {
+    uiDispatch({ type: isLoading ? "START_LOADING" : "STOP_LOADING" });
+  }, [isLoading, uiDispatch]);
 
   useEffect(() => {
     setContents([...childDirectories, ...files]);
@@ -81,16 +89,29 @@ function Home() {
 
   return (
     <div id="home_page" className="page">
-      {isOpenUploadPage ? <UploadPage progress={progress} /> : null}
+      {isOpenUploadPage ? <UploadPage /> : null}
+      <MediaViewer />
 
       <div className="wrapper">
         <Navbar />
         <ContentNavbar />
-        <LoadingSpinner
-          className={`loading_spinner ${isLoading ? "active" : ""}`}
-          width={24}
-          height={24}
-        />
+        <SideDrawer />
+        <div
+          className="view_mode_container"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "5px 0",
+          }}
+        >
+          <LoadingSpinner
+            className={`loading_spinner ${isLoading ? "active" : ""}`}
+            width={24}
+            height={24}
+          />
+          <ViewMode />
+        </div>
+
         <ActionBar />
 
         {contents?.length ? (

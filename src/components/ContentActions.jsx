@@ -16,7 +16,6 @@ function ContentActions() {
   };
 
   const handleUploadFile = () => {
-    // if (directory?.id) navigate(`/upload/${directory.id}`, { replace: true });
     uiDispatch({ type: "OPEN_UPLOADPAGE" });
   };
 

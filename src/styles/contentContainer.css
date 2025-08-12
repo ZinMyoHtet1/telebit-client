@@ -1,11 +1,19 @@
 #content_container {
   position: relative;
   display: flex;
-  height: 80%;
+  flex: 1; /* let it expand to fill remaining height */
+  min-height: 0; /* important in flex to allow scroll */
   flex-wrap: wrap;
   justify-content: flex-start;
   align-items: flex-start;
   align-content: flex-start;
   gap: 10px;
   overflow-y: auto;
+  /* background-color: red; */
+}
+
+#content_container.list {
+  flex-direction: column;
+  gap: 0px;
+  flex-wrap: nowrap;
 }

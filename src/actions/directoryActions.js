@@ -44,12 +44,13 @@ const createDirectory = (form) => async (dispatch) => {
   }
 };
 
-const renameDirectory = (dirId, updatedName) => async (dispatch) => {
+const renameDirectory = (dirId, updatedName) => async (dispatch, callback) => {
   try {
     dispatch({ type: "START_LOADING" });
     const response = await DIRECTORY.renameDirectory(dirId, updatedName);
     dispatch({ type: "RENAME_DIRECTORY", payload: response.data.data });
     // dispatch({ type: "REMOVE_ACTIVE_RENAMING" });
+    callback();
   } catch (error) {
     console.log(error);
     dispatch({ type: "ERROR", payload: error.message });
@@ -58,12 +59,13 @@ const renameDirectory = (dirId, updatedName) => async (dispatch) => {
   }
 };
 
-const deleteDirectory = (dirId) => async (dispatch) => {
+const deleteDirectory = (dirId) => async (dispatch, callback) => {
   try {
     dispatch({ type: "START_LOADING" });
     await DIRECTORY.deleteDirectory(dirId);
     dispatch({ type: "DELETE_DIRECTORY", payload: dirId });
     // dispatch({ type: "REMOVE_ACTIVE_RENAMING" });
+    callback();
   } catch (error) {
     console.log(error);
     dispatch({ type: "ERROR", payload: error.message });

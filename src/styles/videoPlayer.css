@@ -1,0 +1,9 @@
+#video_player {
+  min-width: 300px;
+  height: 400px;
+}
+
+#video_player video {
+  width: fit-content;
+  height: 100%;
+}

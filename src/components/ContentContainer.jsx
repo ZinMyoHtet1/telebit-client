@@ -1,24 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import ContentCard from "./ContentCard";
 import "./../styles/contentContainer.css";
+import { uiContext } from "../contexts/UIContext";
 
 function ContentContainer({ contents }) {
   // const { directories, files } = contents;
+  const { state: uiState } = useContext(uiContext);
   return (
-    <div id="content_container">
+    <div
+      id="content_container"
+      className={`${uiState?.viewMode === "list" ? "list" : ""}`}
+    >
       {contents.map((content) => (
         <ContentCard key={content.id || content.uploadId} content={content} />
       ))}
-      {/* {directories?.length
-        ? directories.map((directory) => (
-            <ContentCard key={directory.id} content={directory} />
-          ))
-        : null}
-      {files?.length
-        ? files.map((file) => (
-            <ContentCard key={file.uploadId} content={file} />
-          ))
-        : null} */}
     </div>
   );
 }

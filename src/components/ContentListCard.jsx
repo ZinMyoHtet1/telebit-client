@@ -14,7 +14,7 @@ import { uiContext } from "../contexts/UIContext";
 
 // dispatch({ type: "REMOVE_ACTIVE_RENAMING" });
 
-function ContentCard({ content, ...rest }) {
+function ContentListCard({ content, ...rest }) {
   const { state, dispatch } = useContext(directoryContext);
   const { state: fileState, dispatch: fileDispatch } = useContext(fileContext);
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
@@ -42,26 +42,6 @@ function ContentCard({ content, ...rest }) {
       type: "SET_ACTIVE_CONTENT",
       payload: content,
     });
-  };
-
-  const handleDoubleClickOnMedia = (e) => {
-    e.stopPropagation();
-    dispatch({
-      type: "SET_ACTIVE_CONTENT",
-      payload: null,
-    });
-    uiDispatch({ type: "OPEN_MEDIAVIEWER" });
-    fileDispatch({ type: "SET_MEDIA_CONTENT", payload: content });
-    // if (content?.watch) window.open(content.watch, "_blank");
-  };
-
-  const handleDoubleClickOnFolder = (e) => {
-    e.stopPropagation();
-    dispatch({
-      type: "SET_ACTIVE_CONTENT",
-      payload: null,
-    });
-    navigate(`/${content.id}`);
   };
 
   const handleKeyDown = (e) => {
@@ -123,12 +103,10 @@ function ContentCard({ content, ...rest }) {
   if (content.mimeType)
     return (
       <div
-        className={`content_card ${isActive ? "active" : ""} ${
-          uiState?.viewMode === "list" ? "list" : ""
-        }`}
+        className={`content_card ${isActive ? "active" : ""}`}
         ref={cardRef}
         onClick={handleClick}
-        onDoubleClick={handleDoubleClickOnMedia}
+        onDoubleClick={() => window.open(content.watch, "_blank")}
         onBlur={() => dispatch({ type: "SET_ACTIVE_CONTENT", payload: null })}
         {...rest}
       >
@@ -172,19 +150,16 @@ function ContentCard({ content, ...rest }) {
   if (!content.id.startsWith("temp-")) {
     return (
       <div
-        className={`content_card ${isActive ? "active" : ""} ${
-          uiState?.viewMode === "list" ? "list" : ""
-        }`}
+        className={`content_card ${isActive ? "active" : ""}`}
         ref={cardRef}
         onClick={handleClick}
-        onDoubleClick={handleDoubleClickOnFolder}
+        onDoubleClick={(e) => {
+          e.stopPropagation();
+          navigate(`/${content.id}`);
+        }}
         {...rest}
       >
-        <FolderSolid
-          className="content_icon"
-          width={uiState?.viewMode === "list" ? 28 : 60}
-          height={uiState?.viewMode === "list" ? 28 : 60}
-        />
+        <FolderSolid className="content_icon" width={60} height={60} />
         {isRenaming && isActive ? (
           <input
             type="text"
@@ -203,15 +178,8 @@ function ContentCard({ content, ...rest }) {
     );
   } else {
     return (
-      <div
-        className={`content_card ${uiState?.viewMode === "list" ? "list" : ""}`}
-        {...rest}
-      >
-        <FolderSolid
-          className="content_icon folder"
-          width={uiState?.viewMode === "list" ? 28 : 60}
-          height={uiState?.viewMode === "list" ? 28 : 60}
-        />
+      <div className="content_card" {...rest}>
+        <FolderSolid className="content_icon folder" width={60} height={60} />
         <input
           type="text"
           name="folderName"
@@ -227,4 +195,4 @@ function ContentCard({ content, ...rest }) {
   }
 }
 
-export default ContentCard;
+export default ContentListCard;

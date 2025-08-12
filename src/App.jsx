@@ -8,12 +8,13 @@ import {
   Route,
 } from "react-router-dom";
 import directoryReducer from "./reducers/directoryReducer";
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import fileReducer from "./reducers/fileReducer";
 import { FileProvider } from "./contexts/FileContext";
 import UploadPage from "./pages/UploadPage";
 import uiReducer from "./reducers/uiReducer";
 import { UIProvider } from "./contexts/UIContext";
+import ViewMode from "./components/ViewMode";
 
 const router = createBrowserRouter(
   createRoutesFromElements([
@@ -53,15 +54,21 @@ const directoryInitialValues = {
 const fileInitialValues = {
   isLoading: false,
   isUploading: false,
+  uploadPercent: 0,
   isError: false,
   errorMessage: null,
+  mediaContent: null,
   files: [],
 };
 
 const uiInitialValues = {
+  isLoading: false,
   actionBar: false,
   uploadPage: false,
   isRenaming: false,
+  sideDrawer: false,
+  mediaViewer: false,
+  viewMode: "thumbnail",
 };
 
 function App() {
@@ -71,6 +78,16 @@ function App() {
   );
   const [fileState, fileDispatch] = useReducer(fileReducer, fileInitialValues);
   const [uiState, uiDispatch] = useReducer(uiReducer, uiInitialValues);
+
+  useEffect(() => {
+    function setRealHeight() {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    }
+
+    setRealHeight();
+    window.addEventListener("resize", setRealHeight);
+  }, []);
 
   return (
     <DirectoryProvider

@@ -1,0 +1,9 @@
+#image_viewer {
+  height: 400px;
+  width: fit-content;
+}
+
+#image_viewer img {
+  width: 100%;
+  height: 100%;
+}

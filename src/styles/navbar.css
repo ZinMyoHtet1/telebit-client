@@ -1,9 +1,20 @@
 #navbar {
   /* padding: 20px 0; */
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
 }
 
 #navbar .app_name {
   font-size: 28px;
   font-weight: 600;
+  /* color: var(--primary-color); */
+}
+
+#side_drawer_btn {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }

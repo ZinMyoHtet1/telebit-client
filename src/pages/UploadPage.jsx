@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./../styles/uploadPage.css";
 import { uiContext } from "../contexts/UIContext";
 import { fileContext } from "../contexts/FileContext";
@@ -6,8 +6,10 @@ import getVideoThumbnail from "../utils/getVideoThumbnail";
 import generateUploadId from "../utils/generateUploadId";
 import { uploadFile } from "../actions/fileActions";
 import { directoryContext } from "../contexts/DirectoryContext";
+import formatName from "../utils/formatName";
+import CloseIcon from "../svgs/CloseIcon";
 
-export default function UploadPage({ progress }) {
+export default function UploadPage() {
   const [file, setFile] = useState(null);
   const [thumbnail, setThumbnail] = useState(null);
   // const [progress, setProgress] = useState(null); // null = no upload yet
@@ -20,6 +22,7 @@ export default function UploadPage({ progress }) {
 
   const parentId = directoryState?.currentDirectory?.id || null;
   const isUploading = fileState?.isUploading;
+  const progress = fileState?.uploadPercent;
 
   // Handle file selection
   const handleFileChange = async (e) => {
@@ -72,20 +75,6 @@ export default function UploadPage({ progress }) {
     if (thumbnail) formData.append("thumbnail", thumbnail);
 
     uploadFile(parentId, formData)(fileDispatch);
-    // const controller = new AbortController();
-    // setAbortController(controller);
-    // setProgress(0);
-
-    // // Example: Simulated upload process
-    // let uploaded = 0;
-    // const interval = setInterval(() => {
-    //   uploaded += 5;
-    //   setProgress(uploaded);
-    //   if (uploaded >= 100) {
-    //     clearInterval(interval);
-    //     setAbortController(null);
-    //   }
-    // }, 200);
   };
 
   // Cancel ongoing upload
@@ -94,27 +83,33 @@ export default function UploadPage({ progress }) {
       abortController.abort();
       setAbortController(null);
     }
-    // setProgress(null);
   };
 
-  // // Allow parent to control progress
-  // useEffect(() => {
-  //   if (typeof getPercent === "function") {
-  //     getPercent(setProgress);
-  //   }
-  // }, [getPercent]);
+  useEffect(() => {
+    if (progress === 100) {
+      setFile(null);
+      setThumbnail(null);
+
+      setTimeout(() => {
+        fileDispatch({ type: "SET_PERCENT", payload: 0 });
+      }, 3000);
+    }
+  }, [fileDispatch, progress]);
 
   return (
     <div className="upload_page overlay_page">
       <div className="upload-container">
         <button className="close_button btn" onClick={handleClose}>
-          Close
+          <CloseIcon />
         </button>
 
-        <h1 className="title">Telebit</h1>
-        <h2 className="subtitle">Upload Your Files</h2>
+        {/* <h1 className="title">Telebit</h1> */}
+        <h1 className="subtitle">Upload Your Files</h1>
 
-        <div className="dropzone" onClick={handleUploadAreaClick}>
+        <div
+          className={`dropzone ${file ? "selected" : ""}`}
+          onClick={handleUploadAreaClick}
+        >
           <input
             type="file"
             onChange={handleFileChange}
@@ -129,33 +124,10 @@ export default function UploadPage({ progress }) {
           </div>
         </div>
 
-        {/* Progress bar */}
-        {isUploading && (
-          <div className="upload-progress">
-            <div className="progress-info">
-              <span>{progress}%</span>
-              <span className="progress-text">
-                {progress < 100 ? "Upload in progress" : "Upload complete"}
-              </span>
-            </div>
-            <div className="progress-bar">
-              <div
-                className="progress-fill"
-                style={{ width: `${progress}%` }}
-              ></div>
-            </div>
-            {progress < 100 && (
-              <button className="cancel-btn" onClick={handleCancelUpload}>
-                Cancel
-              </button>
-            )}
-          </div>
-        )}
-
         {/* File info */}
         {file && (
           <div className="file-item">
-            <span>{file.name}</span>
+            <div>{formatName(file.name, 40)}</div>
             <button className="remove-file" onClick={handleRemoveFile}>
               ✕
             </button>
@@ -169,7 +141,36 @@ export default function UploadPage({ progress }) {
           </div>
         )}
 
-        {!isUploading && (
+        {/* Progress bar */}
+        {(progress || isUploading) && (
+          <>
+            <div className="upload-progress">
+              <span>{progress}%</span>
+
+              <div className="progress-bar">
+                <div
+                  className="progress-fill"
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
+
+              {progress < 100 && (
+                <button className="cancel-btn" onClick={handleCancelUpload}>
+                  Cancel
+                </button>
+              )}
+            </div>
+            <div className="progress-info">
+              <span className="progress-text">
+                {progress < 100
+                  ? "Upload in progress"
+                  : "Successfully Upload Complete!"}
+              </span>
+            </div>
+          </>
+        )}
+
+        {!isUploading && file && (
           <button
             className="upload-btn"
             onClick={handleUpload}
