@@ -19,6 +19,7 @@ function ContentCard({ content, ...rest }) {
   const { state: fileState, dispatch: fileDispatch } = useContext(fileContext);
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
   const [contentName, setcontentName] = useState("");
+  const [clickCount, setClickCount] = useState(0);
   const navigate = useNavigate();
   const cardRef = useRef(null);
 
@@ -26,8 +27,29 @@ function ContentCard({ content, ...rest }) {
   const isActive = content?.id
     ? state?.activeContent?.id === content?.id
     : state?.activeContent?.uploadId === content.uploadId;
-  const isRenaming = uiState?.isRenaming;
+  const activeRenaming = uiState?.activeRenaming;
   const isLoading = state?.isLoading || fileState?.isLoading;
+
+  const handleOpenActive = () => {
+    dispatch({
+      type: "SET_ACTIVE_CONTENT",
+      payload: content,
+    });
+  };
+
+  const closeOverlayPage = () => {
+    uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
+  };
+  const openOverlayPage = () => {
+    uiDispatch({ type: "OPEN_OVERLAYPAGE" });
+  };
+
+  const handleCloseActive = () => {
+    dispatch({
+      type: "SET_ACTIVE_CONTENT",
+      payload: null,
+    });
+  };
 
   const handleChangeInput = (e) => {
     if (isLoading) return;
@@ -38,18 +60,13 @@ function ContentCard({ content, ...rest }) {
 
   const handleClick = () => {
     if (isLoading) return;
-    dispatch({
-      type: "SET_ACTIVE_CONTENT",
-      payload: content,
-    });
+    setClickCount((previous) => previous + 1);
+    setTimeout(() => setClickCount(0), 1000);
   };
 
   const handleDoubleClickOnMedia = (e) => {
     e.stopPropagation();
-    dispatch({
-      type: "SET_ACTIVE_CONTENT",
-      payload: null,
-    });
+    handleCloseActive();
     uiDispatch({ type: "OPEN_MEDIAVIEWER" });
     fileDispatch({ type: "SET_MEDIA_CONTENT", payload: content });
     // if (content?.watch) window.open(content.watch, "_blank");
@@ -57,17 +74,20 @@ function ContentCard({ content, ...rest }) {
 
   const handleDoubleClickOnFolder = (e) => {
     e.stopPropagation();
+    navigate(`/${content.id}`);
+
     dispatch({
       type: "SET_ACTIVE_CONTENT",
       payload: null,
     });
-    navigate(`/${content.id}`);
   };
 
   const handleKeyDown = (e) => {
     if (isLoading) return;
     if (e.key === "Enter") {
-      if (isRenaming) {
+      openOverlayPage();
+      if (activeRenaming) {
+        // console.log("rename clicke");
         handleRenameContent(e);
       } else {
         handleCreateFolder(e);
@@ -87,7 +107,17 @@ function ContentCard({ content, ...rest }) {
       dispatch({ type: "REMOVE_TEMP_DIRECTORY" });
       return;
     }
-    createDirectory({ name: contentName, parentId: currentDirId })(dispatch);
+    function callback() {
+      uiDispatch({ type: "STOP_CREATING_FOLDER" });
+      closeOverlayPage();
+    }
+
+    openOverlayPage();
+    uiDispatch({ type: "START_CREATING_FOLDER" });
+    createDirectory({ name: contentName, parentId: currentDirId })(
+      dispatch,
+      callback
+    );
     // uiDispatch({ type: "REMOVE_TEMP_DIRECTORY" });
   };
 
@@ -97,6 +127,8 @@ function ContentCard({ content, ...rest }) {
     function callback() {
       uiDispatch({ type: "REMOVE_ACTIVE_RENAMING" });
       setcontentName("");
+      uiDispatch({ type: "STOP_RENAMING" });
+      closeOverlayPage();
     }
 
     if (!contentName.trim()) {
@@ -104,10 +136,20 @@ function ContentCard({ content, ...rest }) {
       uiDispatch({ type: "REMOVE_ACTIVE_RENAMING" });
       return;
     }
+    uiDispatch({ type: "START_RENAMING" });
+    openOverlayPage();
     content?.id
       ? renameDirectory(content.id, contentName)(dispatch, callback)
       : renameFile(content.uploadId, contentName)(fileDispatch, callback);
   };
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (clickCount === 1) handleOpenActive();
+      if (clickCount === 2) handleCloseActive();
+    }, 200);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clickCount]);
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -152,7 +194,7 @@ function ContentCard({ content, ...rest }) {
                 )
           }
         />
-        {isActive && isRenaming ? (
+        {isActive && activeRenaming ? (
           <input
             type="text"
             name="folderName"
@@ -169,7 +211,7 @@ function ContentCard({ content, ...rest }) {
       </div>
     );
 
-  if (!content.id.startsWith("temp-")) {
+  if (!content?.id.startsWith("temp-")) {
     return (
       <div
         className={`content_card ${isActive ? "active" : ""} ${
@@ -185,7 +227,7 @@ function ContentCard({ content, ...rest }) {
           width={uiState?.viewMode === "list" ? 28 : 60}
           height={uiState?.viewMode === "list" ? 28 : 60}
         />
-        {isRenaming && isActive ? (
+        {activeRenaming && isActive ? (
           <input
             type="text"
             name="folderName"

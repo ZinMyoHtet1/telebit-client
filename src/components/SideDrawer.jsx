@@ -9,10 +9,14 @@ import LogoutIcon from "../svgs/LogoutIcon";
 import UploadIcon from "../svgs/UploadIcon";
 import CreateFolderIcon from "../svgs/CreateFolderIcon";
 import { directoryContext } from "../contexts/DirectoryContext";
+import DownloadIcon from "../svgs/DownloadIcon";
+import { useNavigate } from "react-router-dom";
+import HomeIcon from "../svgs/HomeIcon";
 function SideDrawer() {
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
   const { state: directoryState, dispatch: directoryDispatch } =
     useContext(directoryContext);
+  const navigate = useNavigate();
   const drawerRef = useRef();
 
   const directory = directoryState?.currentDirectory;
@@ -21,6 +25,18 @@ function SideDrawer() {
     uiDispatch({ type: "CLOSE_SIDEDRAWER" });
   };
 
+  const handleClickDownloads = () => {
+    navigate("/downloads");
+    handleClose();
+  };
+
+  const handleClickUploads = () => {
+    navigate("/uploads");
+    handleClose();
+  };
+  // const handleClickHome = () => {
+  //   navigate("/", { replace: true });
+  // };
   const handleCreateFolder = () => {
     if (directory?.id) directoryDispatch({ type: "ADD_TEMP_DIRECTORY" });
     handleClose();
@@ -58,6 +74,14 @@ function SideDrawer() {
       <button className="drawer_item btn" onClick={handleCreateFolder}>
         <CreateFolderIcon width={24} height={24} fillColor="#4361ee" />
         <span>Create Folder</span>
+      </button>
+      <button className="drawer_item btn" onClick={handleClickDownloads}>
+        <DownloadIcon width={24} height={24} fillColor="#4361ee" />
+        <span>Downloads</span>
+      </button>
+      <button className="drawer_item btn" onClick={handleClickUploads}>
+        <UploadIcon width={24} height={24} fillColor="#4361ee" />
+        <span>Uploads</span>
       </button>
       <button className="drawer_item btn">
         <DeleteIcon width={24} height={24} fillColor="#4361ee" />

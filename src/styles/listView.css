@@ -1,0 +1,15 @@
+.list_view {
+  padding: 10px 60px;
+  width: 100%;
+}
+
+.list_view .list_title {
+  font-size: 20px;
+  color: var(--secondary-text-color);
+  padding: 10px 0;
+}
+
+.list_view .content_container {
+  /* padding: 0 10px; */
+  width: 100%;
+}

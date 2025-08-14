@@ -1,11 +1,17 @@
 const initialValues = {
   isLoading: false,
   isUploading: false,
+  isDeleting: false,
+  isRenaming: false,
   uploadPercent: 0,
-  isError: false,
   errorMessage: null,
+  parentId: "root",
   files: [],
   mediaContent: null,
+  pendingContents: [],
+  uploadingContents: [],
+  currentUploadContent: null,
+  donwloadingContent: null,
 };
 
 function fileReducer(state, action) {
@@ -14,7 +20,6 @@ function fileReducer(state, action) {
       return {
         ...state,
         isLoading: true,
-        isError: false,
         errorMessage: null,
       };
     case "STOP_LOADING":
@@ -22,6 +27,7 @@ function fileReducer(state, action) {
         ...state,
         isLoading: false,
       };
+
     case "START_UPLOADING":
       return {
         ...state,
@@ -39,6 +45,36 @@ function fileReducer(state, action) {
         ...state,
         uploadPercent: action.payload,
       };
+    case "SET_PARENTID":
+      return {
+        ...state,
+        parentId: action.payload,
+      };
+    case "SET_DOWNLOADING_CONTENT":
+      return {
+        ...state,
+        downloadingContent: action.payload,
+      };
+
+    case "SET_PENDING_CONTENTS":
+      return {
+        ...state,
+        pendingContents: action.payload,
+      };
+    case "ADD_UPLOADING_CONTENTS":
+      return {
+        ...state,
+        uploadingContents: [...state.uploadingContents, ...action.payload],
+        currentUploadContent: state.currentUploadContent
+          ? state.currentUploadContent
+          : action.payload[0] || null,
+      };
+    case "SET_UPLOADING_CONTENTS":
+      return {
+        ...state,
+        uploadingContents: action.payload,
+        currentUploadContent: action.payload[0] || null,
+      };
     case "SET_MEDIA_CONTENT":
       return {
         ...state,
@@ -49,10 +85,19 @@ function fileReducer(state, action) {
         ...state,
         files: action.payload,
       };
+    case "NEXT_UPLOAD":
+      return {
+        ...state,
+        uploadingContents: state.uploadingContents.slice(1),
+        currentUploadContent: state.uploadingContents[1] || null,
+      };
     case "UPLOAD_FILE":
       return {
         ...state,
-        files: [...state.files, action.payload],
+        files:
+          state.parentId === action.payload.parentId
+            ? [...state.files, action.payload.file]
+            : state.files,
       };
 
     case "RENAME_FILE":
@@ -69,11 +114,18 @@ function fileReducer(state, action) {
         files: state.files.filter((file) => file.uploadId !== action.payload),
       };
     case "RESET":
-      return initialValues;
+      return {
+        ...initialValues,
+        isUploading: state.isUploading,
+        uploadingContents: state.uploadingContents,
+        currentUploadContent: state.currentUploadContent,
+        uploadPercent: state.uploadPercent,
+        pendingContents: state.pendingContents,
+        downloadingContent: state.downloadingContent,
+      };
     case "ERROR":
       return {
         ...state,
-        isError: true,
         errorMessage: action.payload,
       };
     default:

@@ -1,0 +1,16 @@
+#overlay_page.hidden {
+  display: none;
+}
+
+#overlay_page .wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 400px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 25px;
+  gap: 10px;
+  height: fit-content;
+}

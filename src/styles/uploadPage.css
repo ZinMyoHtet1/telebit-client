@@ -40,7 +40,7 @@
 
 .dropzone {
   border: 2px dashed #ccc;
-  padding: 3rem 2rem;
+  padding: 4rem 2rem;
   border-radius: 10px;
   cursor: pointer;
   position: relative;
@@ -72,6 +72,10 @@
 .drop-icon {
   font-size: 2rem;
   margin-bottom: 0.5rem;
+}
+
+.thumbnail-preview img {
+  height: 120px;
 }
 
 .upload-progress {

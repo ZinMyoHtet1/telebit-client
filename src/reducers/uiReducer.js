@@ -1,10 +1,16 @@
 const initialValues = {
   isLoading: false,
+  isDeleting: false,
+  isRenaming: false,
+  creatingFolder: false,
+  activeRenaming: false,
   actionBar: false,
   uploadPage: false,
-  isRenaming: false,
+  uploadingStatus: false,
   sideDrawer: false,
   mediaViewer: false,
+  overlayPage: false,
+  isError: null,
   viewMode: "thumbnail",
 };
 
@@ -20,6 +26,38 @@ function uiReducer(state, action) {
         ...state,
         isLoading: false,
       };
+
+    case "START_CREATING_FOLDER":
+      return {
+        ...state,
+        creatingFolder: true,
+      };
+    case "STOP_CREATING_FOLDER":
+      return {
+        ...state,
+        creatingFolder: false,
+      };
+
+    case "START_DELETING":
+      return {
+        ...state,
+        isDeleting: true,
+      };
+    case "STOP_DELETING":
+      return {
+        ...state,
+        isDeleting: false,
+      };
+    case "START_RENAMING":
+      return {
+        ...state,
+        isRenaming: true,
+      };
+    case "STOP_RENAMING":
+      return {
+        ...state,
+        isRenaming: false,
+      };
     case "OPEN_ACTIONBAR":
       return {
         ...state,
@@ -30,6 +68,30 @@ function uiReducer(state, action) {
       return {
         ...state,
         actionBar: false,
+      };
+
+    case "OPEN_OVERLAYPAGE":
+      return {
+        ...state,
+        overlayPage: true,
+      };
+
+    case "CLOSE_OVERLAYPAGE":
+      return {
+        ...state,
+        overlayPage: false,
+      };
+
+    case "OPEN_UPLOADINGSTATUS":
+      return {
+        ...state,
+        uploadingStatus: true,
+      };
+
+    case "CLOSE_UPLOADINGSTATUS":
+      return {
+        ...state,
+        uploadingStatus: false,
       };
 
     case "OPEN_MEDIAVIEWER":
@@ -71,13 +133,13 @@ function uiReducer(state, action) {
     case "ACTIVE_RENAMING":
       return {
         ...state,
-        isRenaming: true,
+        activeRenaming: true,
       };
 
     case "REMOVE_ACTIVE_RENAMING":
       return {
         ...state,
-        isRenaming: false,
+        activeRenaming: false,
       };
 
     case "SET_LIST_VIEW":

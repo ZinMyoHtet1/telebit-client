@@ -1,0 +1,10 @@
+#loading {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#loading .loading_message {
+  font-size: 18px;
+}

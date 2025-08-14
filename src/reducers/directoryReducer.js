@@ -1,11 +1,12 @@
 const initialValues = {
   isLoading: false,
   isRenaming: false,
+  isDeleting: false,
+  activeRenaming: false,
   currentDirectory: null,
   childDirectories: [],
   parentDirectories: [],
   activeContent: null,
-  isError: false,
   errorMessage: null,
 };
 
@@ -15,13 +16,33 @@ function directoryReducer(state, action) {
       return {
         ...state,
         isLoading: true,
-        isError: false,
         errorMessage: null,
       };
     case "STOP_LOADING":
       return {
         ...state,
         isLoading: false,
+      };
+
+    case "START_DELETING":
+      return {
+        ...state,
+        isDeleting: true,
+      };
+    case "STOP_DELETING":
+      return {
+        ...state,
+        isDeleting: false,
+      };
+    case "START_RENAMING":
+      return {
+        ...state,
+        isRenaming: true,
+      };
+    case "STOP_RENAMING":
+      return {
+        ...state,
+        isRenaming: false,
       };
 
     case "FETCH_CURRENTDIRECTORY":
@@ -49,13 +70,13 @@ function directoryReducer(state, action) {
     case "ACTIVE_RENAMING":
       return {
         ...state,
-        isRenaming: true,
+        activeRenaming: true,
       };
 
     case "REMOVE_ACTIVE_RENAMING":
       return {
         ...state,
-        isRenaming: false,
+        activeRenaming: false,
       };
 
     case "RENAME_DIRECTORY":
@@ -105,7 +126,6 @@ function directoryReducer(state, action) {
     case "ERROR":
       return {
         ...state,
-        isError: true,
         errorMessage: action.payload,
       };
     default:

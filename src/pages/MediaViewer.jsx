@@ -63,10 +63,11 @@ function MediaViewer() {
   const [currentContent, setCurrentContent] = useState(null);
 
   const hidden = !uiState?.mediaViewer;
+  // if (hidden) return null;
   const files = fileState?.files || [];
   const mediaContents = files?.filter(
     (file) =>
-      file.mimeType.startsWith("video") || file.mimeType.startsWith("image")
+      file.mimeType.startsWith("video") || file?.mimeType?.startsWith("image")
   );
 
   //   console.log(mediaContents, "contents");
@@ -95,10 +96,7 @@ function MediaViewer() {
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % mediaContents.length);
-    console.log("clicked");
   };
-
-  console.log(currentContent, "currentCOntent");
 
   const handlePrev = () => {
     setCurrentIndex(
@@ -125,10 +123,6 @@ function MediaViewer() {
   };
 
   if (!currentContent) return null;
-
-  //   useEffect(() => {
-  //     setCurrentContent(mediaContents[currentIndex]);
-  //   }, [currentIndex, mediaContents]);
 
   return (
     <div

@@ -4,6 +4,7 @@ import { uiContext } from "../contexts/UIContext";
 import { fileContext } from "../contexts/FileContext";
 import getVideoThumbnail from "../utils/getVideoThumbnail";
 import generateUploadId from "../utils/generateUploadId";
+import getFileIcon from "../utils/getFileIcon";
 import { uploadFile } from "../actions/fileActions";
 import { directoryContext } from "../contexts/DirectoryContext";
 import formatName from "../utils/formatName";
@@ -24,6 +25,10 @@ export default function UploadPage() {
   const isUploading = fileState?.isUploading;
   const progress = fileState?.uploadPercent;
 
+  // const isVideo = file?.type.startsWith("video/") || null;
+
+  const isPhoto = file?.type.startsWith("image/") || null;
+
   // Handle file selection
   const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
@@ -40,6 +45,7 @@ export default function UploadPage() {
   // Remove selected file
   const handleRemoveFile = () => {
     setFile(null);
+    // setFileImage(null);
     setThumbnail(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
@@ -87,14 +93,15 @@ export default function UploadPage() {
 
   useEffect(() => {
     if (progress === 100) {
-      setFile(null);
-      setThumbnail(null);
-
       setTimeout(() => {
+        setFile(null);
+        setThumbnail(null);
+
         fileDispatch({ type: "SET_PERCENT", payload: 0 });
       }, 3000);
     }
   }, [fileDispatch, progress]);
+  console.log("fjlsj");
 
   return (
     <div className="upload_page overlay_page">
@@ -106,40 +113,61 @@ export default function UploadPage() {
         {/* <h1 className="title">Telebit</h1> */}
         <h1 className="subtitle">Upload Your Files</h1>
 
-        <div
-          className={`dropzone ${file ? "selected" : ""}`}
-          onClick={handleUploadAreaClick}
-        >
-          <input
-            type="file"
-            onChange={handleFileChange}
-            className="file-input"
-            id="uploadFileInput"
-            ref={fileInputRef}
-            onClick={(e) => e.stopPropagation()}
-          />
-          <div className="dropzone-text">
-            <span className="drop-icon">📤</span>
-            <p>Drag & Drop Files Here or Click to Browse</p>
-          </div>
-        </div>
-
         {/* File info */}
-        {file && (
-          <div className="file-item">
-            <div>{formatName(file.name, 40)}</div>
-            <button className="remove-file" onClick={handleRemoveFile}>
-              ✕
-            </button>
+        {file ? (
+          <>
+            <div className="file-item">
+              <div>{formatName(file.name, 40)}</div>
+              <button className="remove-file" onClick={handleRemoveFile}>
+                ✕
+              </button>
+            </div>
+            <div className="thumbnail-preview">
+              <img
+                src={
+                  thumbnail
+                    ? thumbnail
+                    : isPhoto
+                    ? URL.createObjectURL(file)
+                    : getFileIcon(file.type, file.name.split(".").at(-1))
+                }
+                alt="Video thumbnail"
+              />
+            </div>
+          </>
+        ) : (
+          <div
+            className={`dropzone ${file ? "selected" : ""}`}
+            onClick={handleUploadAreaClick}
+          >
+            <input
+              type="file"
+              onChange={handleFileChange}
+              className="file-input"
+              id="uploadFileInput"
+              ref={fileInputRef}
+              onClick={(e) => e.stopPropagation()}
+            />
+            <div className="dropzone-text">
+              <span className="drop-icon">📤</span>
+              <p>Drag & Drop Files Here or Click to Browse</p>
+            </div>
           </div>
         )}
 
-        {/* Video thumbnail preview */}
-        {thumbnail && (
+        {/* Video thumbnail preview
+        {file && (
           <div className="thumbnail-preview">
-            <img src={thumbnail} alt="Video thumbnail" />
+            <img
+              src={
+                isVideoOrPhoto
+                  ? URL.createObjectURL(file)
+                  : getFileIcon(file.type, file.name.split(".").at(-1))
+              }
+              alt="Video thumbnail"
+            />
           </div>
-        )}
+        )} */}
 
         {/* Progress bar */}
         {(progress || isUploading) && (

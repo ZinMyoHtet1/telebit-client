@@ -30,8 +30,18 @@ function ActionBar() {
   const parentId = directoryState?.currentDirectory?.id || null;
   const isLoading = uiState?.isLoading;
 
+  const hidden =
+    !isActive || isLoading || uiState?.activeRenaming || uiState?.isDeleting;
+
   const handleClose = () => {
     directoryDispatch({ type: "SET_ACTIVE_CONTENT", payload: null });
+  };
+
+  const closeOverlayPage = () => {
+    uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
+  };
+  const openOverlayPage = () => {
+    uiDispatch({ type: "OPEN_OVERLAYPAGE" });
   };
 
   const handleCopyLink = () => {
@@ -59,8 +69,11 @@ function ActionBar() {
 
     function callback() {
       directoryDispatch({ type: "SET_ACTIVE_CONTENT", payload: null });
+      uiDispatch({ type: "STOP_DELETING" });
+      closeOverlayPage();
     }
-
+    uiDispatch({ type: "START_DELETING" });
+    openOverlayPage();
     content?.id
       ? deleteDirectory(content.id)(directoryDispatch, callback)
       : deleteFile(content.uploadId, parentId)(fileDispatch, callback);
@@ -75,9 +88,7 @@ function ActionBar() {
 
   return (
     <div
-      className={`action_bar ${
-        !isActive || isLoading || uiState?.isRenaming ? "hidden" : ""
-      }`}
+      className={`action_bar ${hidden ? "hidden" : ""}`}
       onMouseDown={(e) => e.stopPropagation()}
     >
       <button className="close_btn btn" onClick={handleClose}>

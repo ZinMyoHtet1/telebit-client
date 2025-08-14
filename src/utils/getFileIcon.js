@@ -13,7 +13,7 @@ import {
 } from "./../assets/fileIcons";
 
 function getFileIcon(contentType, extension) {
-  const type = contentType.split("/")[0];
+  const type = contentType?.split("/")[0];
   //   const extension = file.name.split(".").pop().toLowerCase();
 
   // Images

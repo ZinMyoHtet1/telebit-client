@@ -15,14 +15,24 @@ import UploadPage from "./pages/UploadPage";
 import uiReducer from "./reducers/uiReducer";
 import { UIProvider } from "./contexts/UIContext";
 import ViewMode from "./components/ViewMode";
+import Downloads from "./pages/Downloads";
+import UploadFile from "./pages/UploadFile";
+import { UploadProvider } from "./contexts/UploadContext.jsx";
+import Uploads from "./pages/Uploads.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements([
     <Route path="/">
       <Route index element={<Home />} />
     </Route>,
+    <Route path="/downloads">
+      <Route index element={<Downloads />} />
+    </Route>,
+    <Route path="/uploads">
+      <Route index element={<Uploads />} />
+    </Route>,
     <Route path="/upload/:dirId">
-      <Route index element={<UploadPage />} />
+      <Route index element={<UploadFile />} />
     </Route>,
     <Route path="/:dirId">
       <Route index element={<Home />} />
@@ -43,7 +53,6 @@ const router = createBrowserRouter(
 
 const directoryInitialValues = {
   isLoading: false,
-  isError: false,
   errorMessage: null,
   currentDirectory: null,
   childDirectories: [],
@@ -53,21 +62,32 @@ const directoryInitialValues = {
 
 const fileInitialValues = {
   isLoading: false,
+  isDeleting: false,
   isUploading: false,
+  isRenaming: false,
   uploadPercent: 0,
-  isError: false,
   errorMessage: null,
   mediaContent: null,
   files: [],
+  parentId: "root",
+  pendingContents: [],
+  donwloadingContent: null,
+  uploadingContents: [],
 };
 
 const uiInitialValues = {
   isLoading: false,
+  isDeleting: false,
+  isUploading: false,
+  isRenaming: false,
+  activeRenaming: false,
+  creatingFolder: false,
   actionBar: false,
   uploadPage: false,
-  isRenaming: false,
   sideDrawer: false,
   mediaViewer: false,
+  uploadingStatus: false,
+  overlayPage: false,
   viewMode: "thumbnail",
 };
 
@@ -95,7 +115,9 @@ function App() {
     >
       <FileProvider value={{ state: fileState, dispatch: fileDispatch }}>
         <UIProvider value={{ state: uiState, dispatch: uiDispatch }}>
-          <RouterProvider router={router} />
+          <UploadProvider>
+            <RouterProvider router={router} />
+          </UploadProvider>
         </UIProvider>
       </FileProvider>
     </DirectoryProvider>

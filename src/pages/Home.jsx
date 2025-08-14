@@ -11,7 +11,7 @@ import { fetchDirectories, fetchDirectory } from "../actions/directoryActions";
 import { fetchFiles } from "../actions/fileActions";
 import { fileContext } from "../contexts/FileContext";
 import LoadingSpinner from "../svgs/LoadingSpinner";
-import UploadPage from "./UploadPage";
+// import UploadPage from "./UploadPage";
 
 import "./../styles/home.css";
 import ActionBar from "../components/ActionBar";
@@ -20,7 +20,11 @@ import { startWebSocket } from "../utils/socket";
 import ViewMode from "../components/ViewMode";
 import SideDrawer from "../components/SideDrawer";
 import MediaViewer from "./MediaViewer";
-// import { socketOpen, socketMessage } from "../utils/socket";
+import ErrorMessage from "../components/ErrorMessage";
+import UploadFile from "./UploadFile";
+import UploadingStatus from "../components/UploadingStatus";
+import OverlayPage from "./OvelayPage";
+import Loading from "../components/Loading";
 
 function Home() {
   const navigate = useNavigate();
@@ -35,17 +39,17 @@ function Home() {
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
 
   const isOpenUploadPage = uiState?.uploadPage;
+  // const isDeleting = fileState?.isDeleting;
 
   const isLoading = directoryState.isLoading || fileState.isLoading;
   const mainDirectory = directoryState.currentDirectory || null;
   const childDirectories = directoryState.childDirectories;
-  const files = fileState.files;
+  const files = fileState?.files;
 
   useEffect(() => {
     startWebSocket((data) =>
       fileDispatch({ type: "SET_PERCENT", payload: data.percent })
     );
-    // socketOnMessage((data) => setProgress(data.percent));
   }, [fileDispatch]);
 
   useEffect(() => {
@@ -57,17 +61,28 @@ function Home() {
   }, [childDirectories, files]);
 
   useEffect(() => {
+    if (mainDirectory?.id === currentDirId) return;
+
     directoryDispatch({ type: "RESET" });
     fileDispatch({ type: "RESET" });
 
     if (currentDirId === "root") {
       navigate("/", { replace: true });
     }
+    fileDispatch({ type: "SET_PARENTID", payload: currentDirId });
     fetchDirectory(currentDirId)(directoryDispatch);
-  }, [currentDirId, directoryDispatch, fileDispatch, navigate]);
+  }, [
+    currentDirId,
+    directoryDispatch,
+    fileDispatch,
+    mainDirectory?.id,
+    navigate,
+  ]);
 
   useEffect(() => {
     if (!mainDirectory?.id) return;
+    if (childDirectories.length || files.length) return;
+
     const fetchPromises = [];
 
     if (mainDirectory?.childDirIds.length)
@@ -85,17 +100,23 @@ function Home() {
     if (mainDirectory?.files?.length)
       fetchPromises.push(fetchFiles(mainDirectory.files)(fileDispatch));
     Promise.all(fetchPromises);
-  }, [directoryDispatch, fileDispatch, mainDirectory]);
+  }, [childDirectories, directoryDispatch, fileDispatch, files, mainDirectory]);
 
   return (
     <div id="home_page" className="page">
-      {isOpenUploadPage ? <UploadPage /> : null}
+      {isOpenUploadPage ? <UploadFile /> : null}
       <MediaViewer />
 
+      <UploadingStatus />
       <div className="wrapper">
         <Navbar />
         <ContentNavbar />
         <SideDrawer />
+
+        <OverlayPage>
+          <Loading />
+        </OverlayPage>
+
         <div
           className="view_mode_container"
           style={{
@@ -113,11 +134,16 @@ function Home() {
         </div>
 
         <ActionBar />
+        <ErrorMessage />
 
         {contents?.length ? (
           <ContentContainer
             contents={contents.sort((a, b) => a.createdAt - b.createdAt)}
           />
+        ) : !isLoading ? (
+          () => {
+            setTimeout(() => "No directories or files"), 2000;
+          }
         ) : null}
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import ListViewIcon from "../svgs/ListViewIcon";
 import ThumbnailViewIcon from "../svgs/ThumbnailViewIcon";
 
@@ -10,12 +10,21 @@ function ViewMode() {
   const handleClickList = () => {
     if (state?.isLoading) return;
     dispatch({ type: "SET_LIST_VIEW" });
+    localStorage.setItem("viewMode", "list");
   };
 
   const handleClickThumbnail = () => {
     if (state?.isLoading) return;
     dispatch({ type: "SET_THUMBNAIL_VIEW" });
+    localStorage.setItem("viewMode", "thumbnail");
   };
+
+  useEffect(() => {
+    const viewMode = localStorage.getItem("viewMode") || "thumbnail";
+    viewMode === "thumbnail"
+      ? dispatch({ type: "SET_THUMBNAIL_VIEW" })
+      : dispatch({ type: "SET_LIST_VIEW" });
+  }, [dispatch]);
 
   return (
     <div id="view_mode">

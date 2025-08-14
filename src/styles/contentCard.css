@@ -27,8 +27,13 @@
   border-bottom: 0.015px solid rgba(0, 0, 0, 0.05);
 }
 
+.content_card.list:last-child {
+  border-bottom: none;
+}
+
 .content_card:hover,
-.content_card.active {
+.content_card.active,
+.content_card.list:hover {
   border: 0.025px solid rgba(0, 0, 0, 0.1);
   background-color: rgba(0, 0, 0, 0.02);
 }

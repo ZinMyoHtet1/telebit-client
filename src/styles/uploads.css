@@ -1,0 +1,52 @@
+#uploads_page .wrapper {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 30px 20px;
+  border-radius: 8px;
+}
+
+#uploads_page .wrapper .page_navbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 4px;
+  border-bottom: 0.25px solid rgba(0, 0, 0, 0.05);
+}
+
+#uploads_page .wrapper .page_navbar button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: transparent;
+  border-radius: 20px;
+  padding: 8px;
+}
+
+#uploads_page .wrapper .page_navbar button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+#uploads_page .wrapper .page_navbar .page_name {
+  font-weight: 600;
+  font-size: 24px;
+  color: var(--secondary-text-color);
+  margin-left: 4px;
+}
+
+#uploads_page .wrapper .listview_container {
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex: 1; /* let it expand to fill remaining height */
+  min-height: 0; /* important in flex to allow scroll */
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 10px;
+  overflow-y: auto;
+  /* background-color: red; */
+}

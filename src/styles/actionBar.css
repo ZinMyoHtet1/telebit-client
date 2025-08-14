@@ -1,6 +1,7 @@
 .action_bar {
   display: flex;
   width: 400px;
+  height: fit-content;
   flex-direction: column;
   padding: 10px 16px 40px;
   background-color: #fff;
@@ -16,12 +17,14 @@
   transform: translateX(50%) translateY(0);
   opacity: 1;
   pointer-events: auto;
-  transition: transform 0.2s ease-in, opacity 0.2s ease-in;
+  transition: transform 0.2s ease-in, opacity 0.2s ease-in, height 0.2s ease-in;
 }
 
 .action_bar.hidden {
   transform: translateX(50%) translateY(100px); /* slide down */
+  height: 0px;
   opacity: 0;
+  display: none;
   pointer-events: none; /* prevent interaction */
 }
 

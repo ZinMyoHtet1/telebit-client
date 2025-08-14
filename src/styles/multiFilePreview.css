@@ -1,0 +1,58 @@
+#multi_file_preview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: flex-start;
+  width: 100%;
+}
+#multi_file_preview .content_item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 5px 0;
+}
+
+#multi_file_preview .content_item h3 {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+#multi_file_preview .preview_content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+#multi_file_preview .preview_content img {
+  height: 40px;
+  width: fit-content;
+}
+
+#multi_file_preview .preview_content .content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  font-size: 16px;
+  gap: 2px;
+}
+
+#multi_file_preview .preview_content .content .content_size {
+  font-size: 12px;
+}
+
+#multi_file_preview .preview_content .remove_btn {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  border: none;
+  background: none;
+}
+
+#multi_file_preview .preview_content .remove_btn img {
+  height: 16px;
+}
