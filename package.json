@@ -1,4 +1,5 @@
 {
+  "proxy": "https://telebit-api.onrender.com",
   "name": "telebit",
   "private": true,
   "version": "0.0.0",

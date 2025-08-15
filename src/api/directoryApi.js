@@ -2,8 +2,10 @@ import axios from "axios";
 
 const userId = "dusoshsuofusfjjcso";
 
+const api = "https://telebit-api.onrender.com";
+
 const instance = axios.create({
-  baseURL: "http://localhost:4040/directories",
+  baseURL: `${api}/directories`,
   headers: {
     userId,
   },
