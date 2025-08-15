@@ -12,14 +12,32 @@ import { directoryContext } from "../contexts/DirectoryContext";
 import DownloadIcon from "../svgs/DownloadIcon";
 import { useNavigate } from "react-router-dom";
 import HomeIcon from "../svgs/HomeIcon";
+import { mediaQueryContext } from "../contexts/MediaQueryContext";
 function SideDrawer() {
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
+  const { windowWidth } = useContext(mediaQueryContext);
+
   const { state: directoryState, dispatch: directoryDispatch } =
     useContext(directoryContext);
   const navigate = useNavigate();
   const drawerRef = useRef();
 
   const directory = directoryState?.currentDirectory;
+
+  const getIconSize = (windowWidth) => {
+    switch (true) {
+      case windowWidth < 380:
+        return 14;
+      case windowWidth < 820:
+        return 18;
+      case windowWidth < 1000:
+        return 20;
+      case windowWidth > 1000:
+        return 24;
+      default:
+        24;
+    }
+  };
 
   const handleClose = () => {
     uiDispatch({ type: "CLOSE_SIDEDRAWER" });
@@ -65,38 +83,73 @@ function SideDrawer() {
       ref={drawerRef}
     >
       <button className="close_btn btn" onClick={handleClose}>
-        <CloseIcon />
+        <CloseIcon
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
+        />
       </button>
       <button className="drawer_item btn" onClick={handleUploadFile}>
-        <UploadIcon width={24} height={24} fillColor="#4361ee" />
+        <UploadIcon
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
+          fillColor="#4361ee"
+        />
         <span>Upload File</span>
       </button>
       <button className="drawer_item btn" onClick={handleCreateFolder}>
-        <CreateFolderIcon width={24} height={24} fillColor="#4361ee" />
+        <CreateFolderIcon
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
+          fillColor="#4361ee"
+        />
         <span>Create Folder</span>
       </button>
       <button className="drawer_item btn" onClick={handleClickDownloads}>
-        <DownloadIcon width={24} height={24} fillColor="#4361ee" />
+        <DownloadIcon
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
+          fillColor="#4361ee"
+        />
         <span>Downloads</span>
       </button>
       <button className="drawer_item btn" onClick={handleClickUploads}>
-        <UploadIcon width={24} height={24} fillColor="#4361ee" />
+        <UploadIcon
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
+          fillColor="#4361ee"
+        />
         <span>Uploads</span>
       </button>
       <button className="drawer_item btn">
-        <DeleteIcon width={24} height={24} fillColor="#4361ee" />
+        <DeleteIcon
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
+          fillColor="#4361ee"
+        />
         <span>trash</span>
       </button>
       <button className="drawer_item btn">
-        <StatsIcon width={24} height={24} fillColor="#4361ee" />
+        <StatsIcon
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
+          fillColor="#4361ee"
+        />
         <span>Statistics</span>
       </button>
       <button className="drawer_item btn">
-        <SettingIcon width={24} height={24} fillColor="#4361ee" />
+        <SettingIcon
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
+          fillColor="#4361ee"
+        />
         <span>Setting</span>
       </button>
       <button className="drawer_item btn">
-        <LogoutIcon width={24} height={24} fillColor="#4361ee" />
+        <LogoutIcon
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
+          fillColor="#4361ee"
+        />
         <span>Logout</span>
       </button>
     </div>

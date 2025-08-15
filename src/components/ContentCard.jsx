@@ -11,6 +11,7 @@ import { createDirectory, renameDirectory } from "../actions/directoryActions";
 import { renameFile } from "../actions/fileActions";
 import { fileContext } from "../contexts/FileContext";
 import { uiContext } from "../contexts/UIContext";
+import { mediaQueryContext } from "../contexts/MediaQueryContext";
 
 // dispatch({ type: "REMOVE_ACTIVE_RENAMING" });
 
@@ -18,6 +19,7 @@ function ContentCard({ content, ...rest }) {
   const { state, dispatch } = useContext(directoryContext);
   const { state: fileState, dispatch: fileDispatch } = useContext(fileContext);
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
+  const { windowWidth } = useContext(mediaQueryContext);
   const [contentName, setcontentName] = useState("");
   const [clickCount, setClickCount] = useState(0);
   const navigate = useNavigate();
@@ -29,6 +31,42 @@ function ContentCard({ content, ...rest }) {
     : state?.activeContent?.uploadId === content.uploadId;
   const activeRenaming = uiState?.activeRenaming;
   const isLoading = state?.isLoading || fileState?.isLoading;
+
+  const getFolderSize = (windowWidth) => {
+    switch (true) {
+      case windowWidth < 380:
+        return 45;
+      case windowWidth < 660:
+        return 50;
+      case windowWidth < 820:
+        return 60;
+
+      case windowWidth > 820:
+        return 70;
+      default:
+        return 70;
+    }
+  };
+
+  const listViewFolderSize = (windowWidth) => {
+    switch (true) {
+      case windowWidth < 380:
+        return 20;
+      case windowWidth < 660:
+        return 26;
+      case windowWidth < 820:
+        return 28;
+      case windowWidth > 820:
+        return 30;
+      default:
+        return 30;
+    }
+  };
+
+  const folderIconSize =
+    uiState?.viewMode === "list"
+      ? listViewFolderSize(windowWidth)
+      : getFolderSize(windowWidth);
 
   const handleOpenActive = () => {
     dispatch({
@@ -224,8 +262,8 @@ function ContentCard({ content, ...rest }) {
       >
         <FolderSolid
           className="content_icon"
-          width={uiState?.viewMode === "list" ? 28 : 60}
-          height={uiState?.viewMode === "list" ? 28 : 60}
+          width={folderIconSize}
+          height={folderIconSize}
         />
         {activeRenaming && isActive ? (
           <input
@@ -251,8 +289,8 @@ function ContentCard({ content, ...rest }) {
       >
         <FolderSolid
           className="content_icon folder"
-          width={uiState?.viewMode === "list" ? 28 : 60}
-          height={uiState?.viewMode === "list" ? 28 : 60}
+          width={folderIconSize}
+          height={folderIconSize}
         />
         <input
           type="text"

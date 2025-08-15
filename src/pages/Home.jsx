@@ -25,6 +25,7 @@ import UploadFile from "./UploadFile";
 import UploadingStatus from "../components/UploadingStatus";
 import OverlayPage from "./OvelayPage";
 import Loading from "../components/Loading";
+import { mediaQueryContext } from "../contexts/MediaQueryContext";
 
 function Home() {
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ function Home() {
     useContext(directoryContext);
   const { state: fileState, dispatch: fileDispatch } = useContext(fileContext);
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
+  const { windowWidth } = useContext(mediaQueryContext);
 
   const isOpenUploadPage = uiState?.uploadPage;
   // const isDeleting = fileState?.isDeleting;
@@ -45,6 +47,21 @@ function Home() {
   const mainDirectory = directoryState.currentDirectory || null;
   const childDirectories = directoryState.childDirectories;
   const files = fileState?.files;
+
+  const getIconSize = (windowWidth) => {
+    switch (true) {
+      case windowWidth < 380:
+        return 16;
+      case windowWidth < 660:
+        return 20;
+      case windowWidth < 820:
+        return 24;
+      case windowWidth > 820:
+        return 28;
+      default:
+        28;
+    }
+  };
 
   useEffect(() => {
     startWebSocket((data) =>
@@ -117,18 +134,11 @@ function Home() {
           <Loading />
         </OverlayPage>
 
-        <div
-          className="view_mode_container"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            padding: "5px 0",
-          }}
-        >
+        <div className="view_mode_container">
           <LoadingSpinner
             className={`loading_spinner ${isLoading ? "active" : ""}`}
-            width={24}
-            height={24}
+            width={getIconSize(windowWidth)}
+            height={getIconSize(windowWidth)}
           />
           <ViewMode />
         </div>

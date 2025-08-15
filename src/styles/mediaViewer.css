@@ -33,24 +33,73 @@
   cursor: pointer;
   padding: 10px;
   z-index: 310;
+  display: block;
 }
 
 #media_viewer .media_navbar {
   display: flex;
   width: 100%;
-  /* background-color: red; */
   color: #aeacac;
   justify-content: space-between;
   padding: 4px 10px;
 }
 
 #media_viewer .close_btn {
-  /* position: absolute;
-  top: 20px;
-  right: 20px; */
   background: none;
   border: none;
   font-size: 1.5rem;
   color: white;
   cursor: pointer;
+}
+
+@media screen and (max-width: 1020px) {
+  #media_viewer .left_arrow_btn,
+  #media_viewer .right_arrow_btn {
+    background: none;
+    border: none;
+    font-size: 1rem;
+  }
+  #media_viewer .media_navbar {
+    padding: 2px 8px;
+    font-size: 14px;
+  }
+
+  #media_viewer .close_btn {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #media_viewer .left_arrow_btn,
+  #media_viewer .right_arrow_btn {
+    padding: 4px;
+    font-size: 0.8rem;
+    /* display: none; */
+  }
+  #media_viewer .media_navbar {
+    /* padding: 2px 8px; */
+    font-size: 12px;
+  }
+
+  #media_viewer .close_btn {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  #media_viewer .left_arrow_btn,
+  #media_viewer .right_arrow_btn {
+    padding: 4px;
+    font-size: 0.8rem;
+    display: none;
+  }
+
+  #media_viewer .media_navbar {
+    padding: 2px 4px;
+    font-size: 10px;
+  }
+
+  #media_viewer .close_btn {
+    font-size: 0.6rem;
+  }
 }

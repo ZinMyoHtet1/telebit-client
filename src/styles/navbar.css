@@ -24,3 +24,30 @@
   align-items: flex-start;
   justify-content: center;
 }
+
+@media screen and (max-width: 820px) {
+  #navbar div {
+    gap: 6px;
+  }
+  #navbar .app_name {
+    font-size: 22px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  #navbar div {
+    gap: 4px;
+  }
+  #navbar .app_name {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  #navbar div {
+    gap: 2px;
+  }
+  #navbar .app_name {
+    font-size: 16px;
+  }
+}

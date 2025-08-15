@@ -8,3 +8,21 @@
 #loading .loading_message {
   font-size: 18px;
 }
+
+@media screen and (max-width: 660px) {
+  #loading {
+    gap: 6px;
+  }
+  #loading .loading_message {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  #loading {
+    gap: 4px;
+  }
+  #loading .loading_message {
+    font-size: 12px;
+  }
+}

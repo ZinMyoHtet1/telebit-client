@@ -14,12 +14,15 @@ import DeleteIcon from "./../svgs/DeleteIcon";
 import CloseIcon from "../svgs/CloseIcon";
 import DownloadIcon from "../svgs/DownloadIcon";
 import LinkIcon from "../svgs/LinkIcon";
+import { mediaQueryContext } from "../contexts/MediaQueryContext";
 
 function ActionBar() {
   const { state: directoryState, dispatch: directoryDispatch } =
     useContext(directoryContext);
   const { dispatch: fileDispatch } = useContext(fileContext);
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
+  const { windowWidth } = useContext(mediaQueryContext);
+
   const [isCopied, setIsCopied] = useState(false);
 
   const isActive =
@@ -32,6 +35,17 @@ function ActionBar() {
 
   const hidden =
     !isActive || isLoading || uiState?.activeRenaming || uiState?.isDeleting;
+
+  const getIconSize = (windowWidth) => {
+    switch (true) {
+      case windowWidth < 300:
+        return 12;
+      case windowWidth < 820:
+        return 16;
+      default:
+        20;
+    }
+  };
 
   const handleClose = () => {
     directoryDispatch({ type: "SET_ACTIVE_CONTENT", payload: null });
@@ -92,34 +106,52 @@ function ActionBar() {
       onMouseDown={(e) => e.stopPropagation()}
     >
       <button className="close_btn btn" onClick={handleClose}>
-        <CloseIcon />
+        <CloseIcon
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
+        />
       </button>
       {content?.mimeType ? (
         <>
           <button className="copy_link_btn btn" onClick={handleCopyLink}>
-            <LinkIcon />
+            <LinkIcon
+              width={getIconSize(windowWidth)}
+              height={getIconSize(windowWidth)}
+            />
             <span className="action_name">
               {isCopied ? "Copied!" : "Copy Link"}
             </span>
           </button>
           <button className="download_btn btn" onClick={handleDownload}>
-            <DownloadIcon />
+            <DownloadIcon
+              width={getIconSize(windowWidth)}
+              height={getIconSize(windowWidth)}
+            />
             <span className="action_name">Download</span>
           </button>
         </>
       ) : null}
 
       <button className="rename_btn btn" onClick={handleRename}>
-        <RenameIcon />
+        <RenameIcon
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
+        />
         <span className="action_name">Rename</span>
       </button>
       <button className="rename_btn btn">
-        <CopyIcon />
+        <CopyIcon
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
+        />
         <span className="action_name">Copy</span>
       </button>
 
       <button className="rename_btn btn" onClick={handleDelete}>
-        <DeleteIcon />
+        <DeleteIcon
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
+        />
         <span className="action_name">Delete</span>
       </button>
 

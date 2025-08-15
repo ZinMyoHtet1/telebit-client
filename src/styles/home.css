@@ -3,8 +3,6 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 30px 20px;
-  border-radius: 8px;
 }
 
 #home_page svg.loading_spinner {
@@ -15,4 +13,22 @@
 
 #home_page svg.loading_spinner.active {
   opacity: 1;
+}
+
+#home_page .view_mode_container {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+@media screen and (max-width: 660px) {
+  #home_page .view_mode_container {
+    padding: 3px 0;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  #home_page .view_mode_container {
+    padding: 2px 0;
+  }
 }
