@@ -14,3 +14,18 @@
   gap: 10px;
   height: fit-content;
 }
+
+@media screen and (max-width: 660px) {
+  #overlay_page .wrapper {
+    padding: 18px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  #overlay_page .wrapper {
+    padding: 12px;
+    margin: 0 4px;
+    border-radius: 8px;
+    gap: 4px;
+  }
+}

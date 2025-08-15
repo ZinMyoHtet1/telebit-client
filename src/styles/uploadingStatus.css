@@ -68,3 +68,97 @@
   font-size: 18px;
   color: var(--secondary-text-color);
 }
+
+@media screen and (max-width: 1020px) {
+  #uploading_status {
+    bottom: 8%;
+    right: 3%;
+    /* padding: 8px 12px; */
+  }
+
+  #uploading_status .status {
+    font-size: 16px;
+    color: var(--primary-color);
+    margin-bottom: 6px;
+  }
+
+  #uploading_status .progress_bar {
+    width: 240px;
+  }
+
+  #uploading_status .progress_bar #uploading_progress {
+    width: 180px;
+  }
+
+  #uploading_status .content {
+    font-size: 10px;
+  }
+
+  #uploading_status .success_message {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  #uploading_status {
+    bottom: 4%;
+    right: 2%;
+    padding: 6px 10px;
+
+    /* padding: 8px 12px; */
+  }
+
+  #uploading_status .status {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  #uploading_status .progress_bar {
+    width: 200px;
+  }
+
+  #uploading_status .progress_bar #uploading_progress {
+    width: 140px;
+  }
+
+  #uploading_status .content {
+    font-size: 8px;
+  }
+
+  #uploading_status .success_message {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  #uploading_status {
+    bottom: 3%;
+    right: 1%;
+    padding: 4px 6px;
+
+    /* padding: 8px 12px; */
+  }
+
+  #uploading_status .status {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  #uploading_status .progress_bar {
+    width: 160px;
+    height: 2px;
+  }
+
+  #uploading_status .progress_bar #uploading_progress {
+    width: 100px;
+    height: 1px;
+  }
+
+  #uploading_status .content {
+    font-size: 6px;
+  }
+
+  #uploading_status .success_message {
+    font-size: 10px;
+  }
+}

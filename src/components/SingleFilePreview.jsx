@@ -33,7 +33,7 @@ function SingleFilePreview({ file, handleClear }) {
     <div className="preview_content" id="single_file_preview">
       <div className="content_item">
         <h3 className="name">Selected File</h3>
-        <button className="clear" onClick={handleClear}>
+        <button className="clear_btn btn" onClick={handleClear}>
           Clear
         </button>
       </div>

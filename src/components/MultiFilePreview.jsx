@@ -44,15 +44,12 @@ function MultiFilePreview({ files, handleClear, handleRemoveFromList }) {
     <div id="multi_file_preview">
       <div className="content_item">
         <h3 className="name">Selected File</h3>
-        <button className="clear" onClick={handleClear}>
+        <button className="clear_btn btn" onClick={handleClear}>
           Clear
         </button>
       </div>
 
       {files.map(({ file }) => {
-        {
-          /* const file = fl["file"]; */
-        }
         return (
           <div key={file.name} className="preview_content">
             <img

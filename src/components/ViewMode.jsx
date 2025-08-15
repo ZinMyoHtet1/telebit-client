@@ -4,8 +4,25 @@ import ThumbnailViewIcon from "../svgs/ThumbnailViewIcon";
 
 import "./../styles/viewMode.css";
 import { uiContext } from "../contexts/UIContext";
+import { mediaQueryContext } from "../contexts/MediaQueryContext";
 function ViewMode() {
   const { state, dispatch } = useContext(uiContext);
+  const { windowWidth } = useContext(mediaQueryContext);
+
+  const getIconSize = (windowWidth) => {
+    switch (true) {
+      case windowWidth < 380:
+        return 10;
+      case windowWidth < 660:
+        return 12;
+      case windowWidth < 820:
+        return 16;
+      case windowWidth > 820:
+        return 18;
+      default:
+        18;
+    }
+  };
 
   const handleClickList = () => {
     if (state?.isLoading) return;
@@ -35,6 +52,8 @@ function ViewMode() {
       >
         <ListViewIcon
           fillColor={state?.viewMode === "list" ? "#fff" : "#000"}
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
         />
       </button>
       <button
@@ -44,6 +63,8 @@ function ViewMode() {
       >
         <ThumbnailViewIcon
           fillColor={state?.viewMode === "thumbnail" ? "#fff" : "#000"}
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
         />
       </button>
     </div>

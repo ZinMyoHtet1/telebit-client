@@ -19,6 +19,7 @@ import Downloads from "./pages/Downloads";
 import UploadFile from "./pages/UploadFile";
 import { UploadProvider } from "./contexts/UploadContext.jsx";
 import Uploads from "./pages/Uploads.jsx";
+import { MediaQueryProvider } from "./contexts/MediaQueryContext.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements([
@@ -116,7 +117,9 @@ function App() {
       <FileProvider value={{ state: fileState, dispatch: fileDispatch }}>
         <UIProvider value={{ state: uiState, dispatch: uiDispatch }}>
           <UploadProvider>
-            <RouterProvider router={router} />
+            <MediaQueryProvider>
+              <RouterProvider router={router} />
+            </MediaQueryProvider>
           </UploadProvider>
         </UIProvider>
       </FileProvider>

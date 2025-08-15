@@ -5,14 +5,32 @@ import { fileContext } from "../contexts/FileContext";
 
 import "./../styles/uploadCircleStatus.css";
 import { uiContext } from "../contexts/UIContext";
+import { mediaQueryContext } from "../contexts/MediaQueryContext";
 
 function UploadCircleStatus() {
   const { state: fileState } = useContext(fileContext);
   const { dispatch: uiDispatch } = useContext(uiContext);
+  const { windowWidth } = useContext(mediaQueryContext);
   const uploadingContents = fileState?.uploadingContents;
 
+  const getIconSize = (windowWidth) => {
+    switch (true) {
+      case windowWidth < 380:
+        return 14;
+      case windowWidth < 560:
+        return 16;
+      case windowWidth < 660:
+        return 18;
+      case windowWidth < 820:
+        return 20;
+      case windowWidth > 820:
+        return 24;
+      default:
+        24;
+    }
+  };
+
   const handleClick = () => {
-    console.log("onClikce");
     uiDispatch({ type: "OPEN_UPLOADINGSTATUS" });
   };
 
@@ -26,7 +44,10 @@ function UploadCircleStatus() {
       className={`btn ${uploadingContents?.length > 0 ? "" : "hidden"}`}
       onClick={handleClick}
     >
-      <UploadAnimateIcon width={24} height={24} />
+      <UploadAnimateIcon
+        width={getIconSize(windowWidth)}
+        height={getIconSize(windowWidth)}
+      />
     </div>
   );
 }
