@@ -89,17 +89,11 @@
 @media screen and (max-width: 360px) {
   #media_viewer .left_arrow_btn,
   #media_viewer .right_arrow_btn {
-    padding: 4px;
-    font-size: 0.8rem;
     display: none;
   }
 
   #media_viewer .media_navbar {
     padding: 2px 4px;
     font-size: 10px;
-  }
-
-  #media_viewer .close_btn {
-    font-size: 0.6rem;
   }
 }

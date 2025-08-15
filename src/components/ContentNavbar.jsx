@@ -23,8 +23,6 @@ function ContentNavbar() {
 
   const getIconSize = (windowWidth) => {
     switch (true) {
-      case windowWidth < 380:
-        return 14;
       case windowWidth < 820:
         return 16;
 
@@ -48,7 +46,7 @@ function ContentNavbar() {
           {mainDirectory?.id === "root" ? "Home" : mainDirectory?.name}
         </div>
       </div>
-      <ContentActions />
+      {windowWidth > 320 && <ContentActions />}
     </div>
   );
 }

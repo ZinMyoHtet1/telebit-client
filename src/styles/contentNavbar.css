@@ -55,7 +55,7 @@
   }
 }
 
-@media screen and (max-width: 450px) {
+/* @media screen and (max-width: 450px) {
   #content_navbar #directory .directory_name {
     font-size: 14px;
   }
@@ -65,4 +65,4 @@
   #content_navbar #directory .directory_name {
     font-size: 12px;
   }
-}
+} */

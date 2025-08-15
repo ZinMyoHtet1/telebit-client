@@ -26,8 +26,6 @@ function UploadingStatus() {
 
   const getIconSize = (windowWidth) => {
     switch (true) {
-      case windowWidth < 560:
-        return 12;
       case windowWidth < 720:
         return 14;
       case windowWidth < 1020:

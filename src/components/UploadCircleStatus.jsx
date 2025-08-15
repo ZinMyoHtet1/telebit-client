@@ -15,10 +15,6 @@ function UploadCircleStatus() {
 
   const getIconSize = (windowWidth) => {
     switch (true) {
-      case windowWidth < 380:
-        return 14;
-      case windowWidth < 560:
-        return 16;
       case windowWidth < 660:
         return 18;
       case windowWidth < 820:

@@ -5,3 +5,9 @@
   align-items: center;
   gap: 10px;
 }
+
+@media screen and (max-width: 540px) {
+  #content_actions {
+    gap: 4px;
+  }
+}

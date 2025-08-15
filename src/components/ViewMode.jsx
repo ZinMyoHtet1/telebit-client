@@ -11,10 +11,8 @@ function ViewMode() {
 
   const getIconSize = (windowWidth) => {
     switch (true) {
-      case windowWidth < 380:
-        return 10;
-      case windowWidth < 660:
-        return 12;
+      // case windowWidth < 660:
+      //   return 12;
       case windowWidth < 820:
         return 16;
       case windowWidth > 820:

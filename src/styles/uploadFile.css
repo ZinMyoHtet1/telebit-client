@@ -145,27 +145,4 @@
   #uploadArea.minimize {
     height: 30px;
   }
-  #uploadFile_page .wrapper h1 {
-    font-size: 14px;
-  }
-
-  #uploadArea img {
-    height: 30px;
-  }
-  #uploadArea h4 {
-    font-size: 10px;
-  }
-
-  #uploadArea.minimize h4 {
-    font-size: 8px;
-  }
-
-  #uploadFile_page .wrapper .actions {
-    gap: 4px;
-  }
-
-  #uploadFile_page .wrapper .actions button {
-    padding: 4px 8px;
-    font-size: 10px;
-  }
 }

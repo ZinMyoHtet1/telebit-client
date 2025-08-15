@@ -16,8 +16,6 @@ function Navbar() {
 
   const getIconSize = (windowWidth) => {
     switch (true) {
-      case windowWidth < 380:
-        return 16;
       case windowWidth < 540:
         return 20;
       case windowWidth < 820:

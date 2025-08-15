@@ -35,7 +35,7 @@ function ContentCard({ content, ...rest }) {
   const getFolderSize = (windowWidth) => {
     switch (true) {
       case windowWidth < 380:
-        return 45;
+        return 60;
       case windowWidth < 660:
         return 50;
       case windowWidth < 820:
@@ -50,8 +50,6 @@ function ContentCard({ content, ...rest }) {
 
   const listViewFolderSize = (windowWidth) => {
     switch (true) {
-      case windowWidth < 380:
-        return 20;
       case windowWidth < 660:
         return 26;
       case windowWidth < 820:

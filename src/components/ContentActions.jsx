@@ -21,8 +21,6 @@ function ContentActions() {
 
   return (
     <div id="content_actions">
-      {/* <button className="create_folder_btn btn">create folder</button>
-      <button className="upload_file_btn btn">upload file</button> */}
       <CustomButton
         variant="outline"
         text="Create Folder"

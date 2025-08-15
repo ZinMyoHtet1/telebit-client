@@ -26,9 +26,3 @@
     padding: 3px 0;
   }
 }
-
-@media screen and (max-width: 380px) {
-  #home_page .view_mode_container {
-    padding: 2px 0;
-  }
-}

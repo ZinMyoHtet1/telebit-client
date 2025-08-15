@@ -49,7 +49,7 @@ export function UploadProvider({ children }) {
   useEffect(() => {
     if (isLoading || currentFile) return;
     (async () => {
-      await clearFiles();
+      // await clearFiles();
 
       const uploadingContents = await getFiles("uploadingFiles");
       fileDispatch({

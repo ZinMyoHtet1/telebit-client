@@ -3,7 +3,7 @@ function startWebSocket(callback) {
     const uploadSessionId = Date.now().toString();
     sessionStorage.setItem("uploadSessionId", uploadSessionId);
 
-    const socket = new WebSocket("ws://localhost:4040");
+    const socket = new WebSocket("https://telebit-api.onrender.com");
 
     socket.onopen = () => {
       socket.send(JSON.stringify({ uploadSessionId }));
