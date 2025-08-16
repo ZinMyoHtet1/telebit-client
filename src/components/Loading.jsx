@@ -17,8 +17,6 @@ function Loading() {
 
   const getIconSize = (windowWidth) => {
     switch (true) {
-      case windowWidth < 540:
-        return 24;
       case windowWidth < 660:
         return 32;
       case windowWidth > 660:

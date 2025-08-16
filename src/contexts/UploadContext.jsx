@@ -4,7 +4,7 @@ import React, { createContext, useContext, useEffect } from "react";
 import { uploadFile } from "../actions/fileActions";
 import { fileContext } from "./FileContext";
 import createFormData from "../utils/createFormData";
-import { clearFiles, deleteFiles, getFiles, saveFiles } from "../utils/fileDB";
+import { deleteFiles, getFiles, saveFiles } from "../utils/fileDB";
 import { uiContext } from "./UIContext";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -14,18 +14,11 @@ const UploadContextProvider = uploadContext.Provider;
 export function UploadProvider({ children }) {
   const { state: fileState, dispatch: fileDispatch } = useContext(fileContext);
   const { state: uiState } = useContext(uiContext);
-  // const [uploadingFiles, setUploadingFiles] = useState([]);
-  // const [currentFile, setCurrentFile] = useState(null);
 
   const isLoading = uiState?.isLoading;
   const uploadingFiles = fileState?.uploadingContents;
   const currentFile = fileState?.currentUploadContent;
-  // useEffect(() => {
-  //   setUploadingFiles(fileState?.uploadingContents);
-  //   setCurrentFile(fileState?.currentUploadContent);
-  // }, [fileState?.currentUploadContent, fileState?.uploadingContents]);
 
-  // console.log(uploadingFiles, "uploading files");
   function startUpload(parentId, file) {
     async function callback() {
       setTimeout(async () => {
@@ -35,6 +28,7 @@ export function UploadProvider({ children }) {
       }, 1000);
     }
     createFormData(file).then((form) => {
+      console.log(file, form, "file");
       uploadFile(parentId, form)(fileDispatch, callback);
     });
   }

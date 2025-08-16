@@ -118,8 +118,8 @@ function MediaViewer() {
   };
 
   const handleSwipe = () => {
-    if (touchStartX - touchEndX > 50) handleNext(); // swipe left
-    if (touchEndX - touchStartX > 50) handlePrev(); // swipe right
+    if (touchStartX - touchEndX > 80) handleNext(); // swipe left
+    if (touchEndX - touchStartX > 80) handlePrev(); // swipe right
   };
 
   if (!currentContent) return null;

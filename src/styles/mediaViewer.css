@@ -80,10 +80,6 @@
     /* padding: 2px 8px; */
     font-size: 12px;
   }
-
-  #media_viewer .close_btn {
-    font-size: 0.8rem;
-  }
 }
 
 @media screen and (max-width: 360px) {

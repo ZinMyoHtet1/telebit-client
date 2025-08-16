@@ -46,7 +46,7 @@ function ContentNavbar() {
           {mainDirectory?.id === "root" ? "Home" : mainDirectory?.name}
         </div>
       </div>
-      {windowWidth > 320 && <ContentActions />}
+      {windowWidth > 380 && <ContentActions />}
     </div>
   );
 }

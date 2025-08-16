@@ -11,7 +11,7 @@ const instance = axios.create({
     userId,
     // uploadSessionId,
   },
-  //   withCredentials: true,
+  // withCredentials: true,
 });
 
 // const getRootDirectory = () => instance.get("/root");

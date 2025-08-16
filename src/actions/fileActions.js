@@ -23,7 +23,10 @@ const uploadFile =
     try {
       dispatch({ type: "START_UPLOADING" });
       dispatch({ type: "SET_PERCENT", payload: 0 });
+      console.log("start upload");
       const response = await FILE.uploadFile(parentId, form);
+      console.log("stop upload");
+
       dispatch({
         type: "UPLOAD_FILE",
         payload: { parentId, file: response.data.data },

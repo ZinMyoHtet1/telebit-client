@@ -71,27 +71,21 @@
 
 @media screen and (max-width: 820px) {
   #side_drawer {
-    width: 200px;
-    padding: 8px 8px 40px;
-  }
-
-  #side_drawer button {
-    font-size: 12px;
-    gap: 6px;
+    left: 6px;
+    top: 10px;
   }
 }
-/* 
-@media screen and (max-width: 380px) {
+
+@media screen and (max-width: 280px) {
   #side_drawer {
-    width: 160px;
+    width: 80%;
     padding: 4px 4px 30px;
     left: 6px;
     top: 10px;
   }
 
   #side_drawer button {
-    font-size: 10px;
+    font-size: 12px;
     padding: 4px 2px;
-    gap: 4px;
   }
-} */
+}

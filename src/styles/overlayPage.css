@@ -24,7 +24,7 @@
 @media screen and (max-width: 540px) {
   #overlay_page .wrapper {
     padding: 12px;
-    margin: 0 4px;
+    margin: 0 16px;
     border-radius: 8px;
     gap: 4px;
   }
