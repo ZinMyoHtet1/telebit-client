@@ -33,10 +33,9 @@ const uploadFile =
         payload: { parentId, file: response.data.data },
       });
       setTimeout(() => {
-        dispatch({ type: "SET_PERCENT", payload: 0 });
-
         dispatch({ type: "STOP_UPLOADING" });
         callback();
+        dispatch({ type: "SET_PERCENT", payload: 0 });
       }, 2000);
     } catch (error) {
       console.log(error);
