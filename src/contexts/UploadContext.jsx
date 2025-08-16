@@ -22,11 +22,12 @@ export function UploadProvider({ children }) {
 
   function startUpload(parentId, file) {
     async function callback() {
-      setTimeout(async () => {
-        fileDispatch({
-          type: "NEXT_UPLOAD",
-        });
-      }, 1000);
+      // uiDispatch({ type: "CLOSE_UPLOADINGSTATUS" });
+      // setTimeout(async () => {
+      fileDispatch({
+        type: "NEXT_UPLOAD",
+      });
+      // }, 2000);
     }
     createFormData(file).then((form) => {
       uploadFile(parentId, form)(fileDispatch, callback);

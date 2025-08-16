@@ -23,9 +23,7 @@ const uploadFile =
     try {
       dispatch({ type: "START_UPLOADING" });
       dispatch({ type: "SET_PERCENT", payload: 0 });
-      console.log("start upload");
       const response = await FILE.uploadFile(parentId, form);
-      console.log("stop upload");
 
       dispatch({ type: "SET_PERCENT", payload: 100 });
       dispatch({
@@ -34,9 +32,10 @@ const uploadFile =
       });
       setTimeout(() => {
         dispatch({ type: "STOP_UPLOADING" });
-        callback();
         dispatch({ type: "SET_PERCENT", payload: 0 });
-      }, 2000);
+
+        callback(); //next file
+      }, 1000);
     } catch (error) {
       console.log(error);
       dispatch({ type: "STOP_UPLOADING" });

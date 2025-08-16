@@ -9,10 +9,11 @@ import { mediaQueryContext } from "../contexts/MediaQueryContext";
 
 function UploadCircleStatus() {
   const { state: fileState } = useContext(fileContext);
-  const { dispatch: uiDispatch } = useContext(uiContext);
+  const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
   const { windowWidth } = useContext(mediaQueryContext);
   const uploadingContents = fileState?.uploadingContents;
-  // const uploadPercent = fileState?.uploadPercent;
+  // const [showProgressStatus, setShowProgressStatus] = useState(false);
+  const uploadingStatus = uiState?.uploadingStatus;
 
   const getIconSize = (windowWidth) => {
     switch (true) {
@@ -28,11 +29,12 @@ function UploadCircleStatus() {
   };
 
   const handleClick = () => {
+    if (uploadingStatus) return;
     uiDispatch({ type: "OPEN_UPLOADINGSTATUS" });
   };
 
   useEffect(() => {
-    if (uploadingContents && !uploadingContents.length)
+    if (!uploadingContents?.length)
       uiDispatch({ type: "CLOSE_UPLOADINGSTATUS" });
   }, [uiDispatch, uploadingContents]);
   return (
