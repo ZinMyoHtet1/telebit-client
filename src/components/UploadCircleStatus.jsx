@@ -12,7 +12,7 @@ function UploadCircleStatus() {
   const { dispatch: uiDispatch } = useContext(uiContext);
   const { windowWidth } = useContext(mediaQueryContext);
   const uploadingContents = fileState?.uploadingContents;
-  const uploadPercent = fileState?.uploadPercent;
+  // const uploadPercent = fileState?.uploadPercent;
 
   const getIconSize = (windowWidth) => {
     switch (true) {
@@ -37,7 +37,7 @@ function UploadCircleStatus() {
   }, [uiDispatch, uploadingContents]);
   return (
     <>
-      <div className="percent">{uploadPercent}</div>
+      {/* <div className="percent">{uploadPercent}</div> */}
       <div
         id="upload_circle_status"
         className={`btn ${uploadingContents?.length > 0 ? "" : "hidden"}`}
