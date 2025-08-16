@@ -16,7 +16,7 @@ import LoadingSpinner from "../svgs/LoadingSpinner";
 import "./../styles/home.css";
 import ActionBar from "../components/ActionBar";
 import { uiContext } from "../contexts/UIContext";
-import { startWebSocket } from "../utils/socket";
+// import { startWebSocket } from "../utils/socket";
 import ViewMode from "../components/ViewMode";
 import SideDrawer from "../components/SideDrawer";
 import MediaViewer from "./MediaViewer";
@@ -32,6 +32,8 @@ function Home() {
   // const [openUploadPage, setOpenUploadPage] = useState(false);
   const params = useParams();
   const [contents, setContents] = useState([]);
+  const [showNoContent, setShowNoContent] = useState(false);
+
   const currentDirId = params?.dirId || "root";
 
   const { state: directoryState, dispatch: directoryDispatch } =
@@ -64,10 +66,13 @@ function Home() {
   };
 
   useEffect(() => {
-    startWebSocket((data) =>
-      fileDispatch({ type: "SET_PERCENT", payload: data.percent })
-    );
-  }, [fileDispatch]);
+    if (!isLoading && !contents?.length) {
+      const timer = setTimeout(() => setShowNoContent(true), 2000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowNoContent(false);
+    }
+  }, [isLoading, contents]);
 
   useEffect(() => {
     uiDispatch({ type: isLoading ? "START_LOADING" : "STOP_LOADING" });
@@ -150,10 +155,8 @@ function Home() {
           <ContentContainer
             contents={contents.sort((a, b) => a.createdAt - b.createdAt)}
           />
-        ) : !isLoading ? (
-          () => {
-            setTimeout(() => "No directories or files"), 2000;
-          }
+        ) : !isLoading && showNoContent ? (
+          <div>No directories or files</div>
         ) : null}
       </div>
     </div>

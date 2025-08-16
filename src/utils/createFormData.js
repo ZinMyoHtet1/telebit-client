@@ -9,8 +9,10 @@ async function createFormData(file) {
   //   formData.append("contentType", file.type);
   formData.append("size", file.size);
   formData.append("file", file);
-  const thumbnail = await getVideoThumbnail(file);
-  formData.append("thumbnail", thumbnail);
+  if (file.type.startsWith("video")) {
+    const thumbnail = await getVideoThumbnail(file);
+    formData.append("thumbnail", thumbnail);
+  }
 
   return formData;
 }

@@ -6,6 +6,7 @@ import { fileContext } from "./FileContext";
 import createFormData from "../utils/createFormData";
 import { deleteFiles, getFiles, saveFiles } from "../utils/fileDB";
 import { uiContext } from "./UIContext";
+import { startWebSocket } from "../utils/socket";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const uploadContext = createContext();
@@ -28,7 +29,6 @@ export function UploadProvider({ children }) {
       }, 1000);
     }
     createFormData(file).then((form) => {
-      console.log(file, form, "file");
       uploadFile(parentId, form)(fileDispatch, callback);
     });
   }
@@ -39,6 +39,12 @@ export function UploadProvider({ children }) {
       await saveFiles("uploadingFiles", uploadingFiles);
     })();
   }, [uploadingFiles]);
+
+  useEffect(() => {
+    startWebSocket((data) =>
+      fileDispatch({ type: "SET_PERCENT", payload: data.percent })
+    );
+  }, [fileDispatch]);
 
   useEffect(() => {
     if (isLoading || currentFile) return;

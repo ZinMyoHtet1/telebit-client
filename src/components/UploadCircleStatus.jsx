@@ -12,6 +12,7 @@ function UploadCircleStatus() {
   const { dispatch: uiDispatch } = useContext(uiContext);
   const { windowWidth } = useContext(mediaQueryContext);
   const uploadingContents = fileState?.uploadingContents;
+  const uploadPercent = fileState?.uploadPercent;
 
   const getIconSize = (windowWidth) => {
     switch (true) {
@@ -35,16 +36,19 @@ function UploadCircleStatus() {
       uiDispatch({ type: "CLOSE_UPLOADINGSTATUS" });
   }, [uiDispatch, uploadingContents]);
   return (
-    <div
-      id="upload_circle_status"
-      className={`btn ${uploadingContents?.length > 0 ? "" : "hidden"}`}
-      onClick={handleClick}
-    >
-      <UploadAnimateIcon
-        width={getIconSize(windowWidth)}
-        height={getIconSize(windowWidth)}
-      />
-    </div>
+    <>
+      <div className="percent">{uploadPercent}</div>
+      <div
+        id="upload_circle_status"
+        className={`btn ${uploadingContents?.length > 0 ? "" : "hidden"}`}
+        onClick={handleClick}
+      >
+        <UploadAnimateIcon
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
+        />
+      </div>
+    </>
   );
 }
 

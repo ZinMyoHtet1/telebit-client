@@ -13,15 +13,15 @@ import { fileContext } from "../contexts/FileContext";
 import { uiContext } from "../contexts/UIContext";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
 
-// dispatch({ type: "REMOVE_ACTIVE_RENAMING" });
-
 function ContentCard({ content, ...rest }) {
   const { state, dispatch } = useContext(directoryContext);
   const { state: fileState, dispatch: fileDispatch } = useContext(fileContext);
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
   const { windowWidth } = useContext(mediaQueryContext);
-  const [contentName, setcontentName] = useState("");
+
+  const [contentName, setContentName] = useState("");
   const [clickCount, setClickCount] = useState(0);
+
   const navigate = useNavigate();
   const cardRef = useRef(null);
 
@@ -29,124 +29,93 @@ function ContentCard({ content, ...rest }) {
   const isActive = content?.id
     ? state?.activeContent?.id === content?.id
     : state?.activeContent?.uploadId === content.uploadId;
+
   const activeRenaming = uiState?.activeRenaming;
   const isLoading = state?.isLoading || fileState?.isLoading;
 
-  const getFolderSize = (windowWidth) => {
-    switch (true) {
-      case windowWidth < 380:
-        return 60;
-      case windowWidth < 660:
-        return 50;
-      case windowWidth < 820:
-        return 60;
-
-      case windowWidth > 820:
-        return 70;
-      default:
-        return 70;
-    }
-  };
-
-  const listViewFolderSize = (windowWidth) => {
-    switch (true) {
-      case windowWidth < 660:
-        return 26;
-      case windowWidth < 820:
-        return 28;
-      case windowWidth > 820:
-        return 30;
-      default:
-        return 30;
-    }
-  };
-
   const folderIconSize =
     uiState?.viewMode === "list"
-      ? listViewFolderSize(windowWidth)
-      : getFolderSize(windowWidth);
+      ? windowWidth < 660
+        ? 26
+        : windowWidth < 820
+        ? 28
+        : 30
+      : windowWidth < 380
+      ? 60
+      : windowWidth < 660
+      ? 50
+      : windowWidth < 820
+      ? 60
+      : 70;
 
+  // --- Click handling ---
   const handleOpenActive = () => {
-    dispatch({
-      type: "SET_ACTIVE_CONTENT",
-      payload: content,
-    });
-  };
-
-  const closeOverlayPage = () => {
-    uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
-  };
-  const openOverlayPage = () => {
-    uiDispatch({ type: "OPEN_OVERLAYPAGE" });
+    dispatch({ type: "SET_ACTIVE_CONTENT", payload: content });
   };
 
   const handleCloseActive = () => {
-    dispatch({
-      type: "SET_ACTIVE_CONTENT",
-      payload: null,
-    });
-  };
-
-  const handleChangeInput = (e) => {
-    if (isLoading) return;
-
-    e.preventDefault();
-    setcontentName(e.target.value.trimStart());
+    dispatch({ type: "SET_ACTIVE_CONTENT", payload: null });
   };
 
   const handleClick = () => {
     if (isLoading) return;
-    setClickCount((previous) => previous + 1);
-    setTimeout(() => setClickCount(0), 1000);
+    setClickCount((prev) => prev + 1);
   };
 
-  const handleDoubleClickOnMedia = (e) => {
-    e.stopPropagation();
-    handleCloseActive();
-    uiDispatch({ type: "OPEN_MEDIAVIEWER" });
-    fileDispatch({ type: "SET_MEDIA_CONTENT", payload: content });
-    // if (content?.watch) window.open(content.watch, "_blank");
-  };
+  // Handle single/double clicks safely
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (clickCount === 1) handleOpenActive();
+      if (clickCount === 2) handleCloseActive();
+    }, 200);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clickCount]);
 
-  const handleDoubleClickOnFolder = (e) => {
-    e.stopPropagation();
-    navigate(`/${content.id}`);
+  // --- Outside click handling ---
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (isLoading) return;
+      if (cardRef.current && !cardRef.current.contains(e.target)) {
+        dispatch({ type: "SET_ACTIVE_CONTENT", payload: null });
+        uiDispatch({ type: "REMOVE_ACTIVE_RENAMING" });
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [dispatch, isLoading, uiDispatch]);
 
-    dispatch({
-      type: "SET_ACTIVE_CONTENT",
-      payload: null,
-    });
+  const handleChangeInput = (e) => {
+    if (isLoading) return;
+    e.preventDefault();
+    setContentName(e.target.value.trimStart());
   };
 
   const handleKeyDown = (e) => {
     if (isLoading) return;
     if (e.key === "Enter") {
-      openOverlayPage();
-      if (activeRenaming) {
-        // console.log("rename clicke");
-        handleRenameContent(e);
-      } else {
-        handleCreateFolder(e);
-      }
+      if (activeRenaming) handleRenameContent();
+      else handleCreateFolder();
     }
     if (e.key === "Escape") {
       dispatch({ type: "REMOVE_TEMP_DIRECTORY" });
     }
   };
 
-  const handleCreateFolder = (e) => {
-    e.preventDefault();
-    if (!currentDirId || isLoading) return;
+  const openOverlayPage = () => uiDispatch({ type: "OPEN_OVERLAYPAGE" });
+  const closeOverlayPage = () => uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
 
+  const handleCreateFolder = () => {
+    if (!currentDirId || isLoading) return;
     if (!contentName.trim()) {
-      // Optionally remove temp folder instead
       dispatch({ type: "REMOVE_TEMP_DIRECTORY" });
       return;
     }
-    function callback() {
+
+    const callback = () => {
       uiDispatch({ type: "STOP_CREATING_FOLDER" });
       closeOverlayPage();
-    }
+    };
 
     openOverlayPage();
     uiDispatch({ type: "START_CREATING_FOLDER" });
@@ -154,51 +123,45 @@ function ContentCard({ content, ...rest }) {
       dispatch,
       callback
     );
-    // uiDispatch({ type: "REMOVE_TEMP_DIRECTORY" });
   };
 
-  const handleRenameContent = (e) => {
-    e.preventDefault();
-
-    function callback() {
-      uiDispatch({ type: "REMOVE_ACTIVE_RENAMING" });
-      setcontentName("");
-      uiDispatch({ type: "STOP_RENAMING" });
-      closeOverlayPage();
-    }
-
+  const handleRenameContent = () => {
     if (!contentName.trim()) {
-      // Optionally remove temp folder instead
       uiDispatch({ type: "REMOVE_ACTIVE_RENAMING" });
       return;
     }
+
+    const callback = () => {
+      uiDispatch({ type: "REMOVE_ACTIVE_RENAMING" });
+      setContentName("");
+      uiDispatch({ type: "STOP_RENAMING" });
+      closeOverlayPage();
+    };
+
     uiDispatch({ type: "START_RENAMING" });
     openOverlayPage();
-    content?.id
-      ? renameDirectory(content.id, contentName)(dispatch, callback)
-      : renameFile(content.uploadId, contentName)(fileDispatch, callback);
+
+    if (content?.id)
+      renameDirectory(content.id, contentName)(dispatch, callback);
+    else renameFile(content.uploadId, contentName)(fileDispatch, callback);
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      if (clickCount === 1) handleOpenActive();
-      if (clickCount === 2) handleCloseActive();
-    }, 200);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clickCount]);
+  const handleDoubleClickOnMedia = (e) => {
+    e.stopPropagation();
+    handleCloseActive();
+    uiDispatch({ type: "OPEN_MEDIAVIEWER" });
+    fileDispatch({ type: "SET_MEDIA_CONTENT", payload: content });
+  };
 
-  useEffect(() => {
-    function handleClickOutside(e) {
-      if (isLoading) return;
-      if (cardRef.current && !cardRef.current.contains(e.target)) {
-        dispatch({ type: "SET_ACTIVE_CONTENT", payload: null });
-        uiDispatch({ type: "REMOVE_ACTIVE_RENAMING" });
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [dispatch, uiDispatch, isLoading]);
-  if (content.mimeType)
+  const handleDoubleClickOnFolder = (e) => {
+    e.stopPropagation();
+    navigate(`/${content.id}`);
+    handleCloseActive();
+  };
+
+  // --- Render logic ---
+  if (content.mimeType) {
+    // File card
     return (
       <div
         className={`content_card ${isActive ? "active" : ""} ${
@@ -207,7 +170,6 @@ function ContentCard({ content, ...rest }) {
         ref={cardRef}
         onClick={handleClick}
         onDoubleClick={handleDoubleClickOnMedia}
-        onBlur={() => dispatch({ type: "SET_ACTIVE_CONTENT", payload: null })}
         {...rest}
       >
         <img
@@ -233,7 +195,6 @@ function ContentCard({ content, ...rest }) {
         {isActive && activeRenaming ? (
           <input
             type="text"
-            name="folderName"
             className="folder_name_input"
             autoFocus
             value={contentName}
@@ -246,7 +207,9 @@ function ContentCard({ content, ...rest }) {
         )}
       </div>
     );
+  }
 
+  // Folder card
   if (!content?.id.startsWith("temp-")) {
     return (
       <div
@@ -266,7 +229,6 @@ function ContentCard({ content, ...rest }) {
         {activeRenaming && isActive ? (
           <input
             type="text"
-            name="folderName"
             className="folder_name_input"
             autoFocus
             value={contentName}
@@ -279,30 +241,30 @@ function ContentCard({ content, ...rest }) {
         )}
       </div>
     );
-  } else {
-    return (
-      <div
-        className={`content_card ${uiState?.viewMode === "list" ? "list" : ""}`}
-        {...rest}
-      >
-        <FolderSolid
-          className="content_icon folder"
-          width={folderIconSize}
-          height={folderIconSize}
-        />
-        <input
-          type="text"
-          name="folderName"
-          className="folder_name_input"
-          autoFocus
-          value={contentName}
-          onBlur={handleCreateFolder}
-          onChange={handleChangeInput}
-          onKeyDown={handleKeyDown}
-        />
-      </div>
-    );
   }
+
+  // Temporary new folder input
+  return (
+    <div
+      className={`content_card ${uiState?.viewMode === "list" ? "list" : ""}`}
+      {...rest}
+    >
+      <FolderSolid
+        className="content_icon folder"
+        width={folderIconSize}
+        height={folderIconSize}
+      />
+      <input
+        type="text"
+        className="folder_name_input"
+        autoFocus
+        value={contentName}
+        onBlur={handleCreateFolder}
+        onChange={handleChangeInput}
+        onKeyDown={handleKeyDown}
+      />
+    </div>
+  );
 }
 
 export default ContentCard;
