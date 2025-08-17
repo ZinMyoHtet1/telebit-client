@@ -13,9 +13,9 @@ function startWebSocket(callback) {
       sessionStorage.setItem("uploadSessionId", uploadSessionId);
     }
 
-    const api = "http://localhost:4040";
-    // const api = "https://telebit-api.onrender.com";
-    const socket = new WebSocket(api);
+    // const api = "http://localhost:4040";
+    const socketApi = "https://telebit-api.onrender.com";
+    const socket = new WebSocket(socketApi);
 
     socket.onopen = () => {
       socket.send(JSON.stringify({ uploadSessionId }));

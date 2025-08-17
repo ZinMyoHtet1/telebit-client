@@ -3,8 +3,8 @@ import axios from "axios";
 // const userId = "dusoshsuofusfjjcso";
 // const uploadSessionId = sessionStorage.getItem("uploadSessionId");
 
-// const api = "https://telebit-api.onrender.com";
-const api = "http://localhost:4040";
+const api = "https://telebit-api.onrender.com";
+// const api = "http://localhost:4040";
 
 const instance = axios.create({
   baseURL: `${api}/files`,
