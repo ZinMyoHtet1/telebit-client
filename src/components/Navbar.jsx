@@ -13,6 +13,12 @@ function Navbar() {
   const handleOpenSideDrawer = () => {
     uiDispatch({ type: "OPEN_SIDEDRAWER" });
   };
+  // const handleLogout = () => {
+  //   // cookie.removeCookie();
+  //   cookieStore.delete("jwt");
+  //   sessionStorage.setItem("user", null);
+  //   navigate("/auth/login", { replace: true });
+  // };
 
   const getIconSize = (windowWidth) => {
     switch (true) {
@@ -39,7 +45,6 @@ function Navbar() {
         </div>
         <span className="app_name">Telebit</span>
       </div>
-
       <UploadCircleStatus />
     </div>
   );

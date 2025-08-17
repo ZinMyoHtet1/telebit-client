@@ -39,6 +39,12 @@ function SideDrawer() {
     uiDispatch({ type: "CLOSE_SIDEDRAWER" });
   };
 
+  const handleClickLogout = () => {
+    cookieStore.delete("jwt");
+    sessionStorage.setItem("user", null);
+    navigate("/auth/login", { replace: true });
+    handleClose();
+  };
   const handleClickDownloads = () => {
     navigate("/downloads");
     handleClose();
@@ -140,7 +146,7 @@ function SideDrawer() {
         />
         <span>Setting</span>
       </button>
-      <button className="drawer_item btn">
+      <button className="drawer_item btn" onClick={handleClickLogout}>
         <LogoutIcon
           width={getIconSize(windowWidth)}
           height={getIconSize(windowWidth)}

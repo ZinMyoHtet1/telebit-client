@@ -26,6 +26,11 @@ import UploadingStatus from "../components/UploadingStatus";
 import OverlayPage from "./OvelayPage";
 import Loading from "../components/Loading";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
+import cookie from "../utils/cookie";
+// import cookie from "../utils/cookie";
+// import { verifyToken } from "../actions/authActions";
+// import { authContext } from "../contexts/AuthContext";
+// import cookie from "../utils/cookie";
 
 function Home() {
   const navigate = useNavigate();
@@ -64,7 +69,15 @@ function Home() {
         28;
     }
   };
+  useEffect(() => {
+    let user = null;
+    user = JSON.parse(sessionStorage.getItem("user"));
+    if (!user) {
+      console.log(typeof user, "user");
 
+      navigate("/getStarted", { replace: true });
+    }
+  }, [navigate]);
   useEffect(() => {
     if (!isLoading && !contents?.length) {
       const timer = setTimeout(() => setShowNoContent(true), 2000);
@@ -83,6 +96,9 @@ function Home() {
   }, [childDirectories, files]);
 
   useEffect(() => {
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    if (!user) return;
+
     if (mainDirectory?.id === currentDirId) return;
 
     directoryDispatch({ type: "RESET" });

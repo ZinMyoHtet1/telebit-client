@@ -20,11 +20,28 @@ import UploadFile from "./pages/UploadFile";
 import { UploadProvider } from "./contexts/UploadContext.jsx";
 import Uploads from "./pages/Uploads.jsx";
 import { MediaQueryProvider } from "./contexts/MediaQueryContext.jsx";
+import Login from "./pages/Login.jsx";
+import OTPVerification from "./pages/OTPVerification.jsx";
+import { AuthProvider } from "./contexts/AuthContext.jsx";
+import LandingPage from "./pages/LandingPage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements([
     <Route path="/">
       <Route index element={<Home />} />
+      <Route path=":dirId" element={<Home />} />,
+    </Route>,
+    <Route path="/home">
+      <Route index element={<Home />} />
+      {/* <Route path=":dirId" element={<Home />} />, */}
+    </Route>,
+    <Route path="/getStarted">
+      <Route index element={<LandingPage />} />
+    </Route>,
+    <Route path="/auth">
+      <Route path="login" element={<Login />} />
+      <Route path="register" element={<Login />} />
+      <Route path="verifyEmail" element={<OTPVerification />} />
     </Route>,
     <Route path="/downloads">
       <Route index element={<Downloads />} />
@@ -34,9 +51,6 @@ const router = createBrowserRouter(
     </Route>,
     <Route path="/upload/:dirId">
       <Route index element={<UploadFile />} />
-    </Route>,
-    <Route path="/:dirId">
-      <Route index element={<Home />} />
     </Route>,
 
     // <Route path="/drive">
@@ -111,19 +125,21 @@ function App() {
   }, []);
 
   return (
-    <DirectoryProvider
-      value={{ state: directoryState, dispatch: directoryDispatch }}
-    >
-      <FileProvider value={{ state: fileState, dispatch: fileDispatch }}>
-        <UIProvider value={{ state: uiState, dispatch: uiDispatch }}>
-          <UploadProvider>
-            <MediaQueryProvider>
-              <RouterProvider router={router} />
-            </MediaQueryProvider>
-          </UploadProvider>
-        </UIProvider>
-      </FileProvider>
-    </DirectoryProvider>
+    <AuthProvider>
+      <DirectoryProvider
+        value={{ state: directoryState, dispatch: directoryDispatch }}
+      >
+        <FileProvider value={{ state: fileState, dispatch: fileDispatch }}>
+          <UIProvider value={{ state: uiState, dispatch: uiDispatch }}>
+            <UploadProvider>
+              <MediaQueryProvider>
+                <RouterProvider router={router} />
+              </MediaQueryProvider>
+            </UploadProvider>
+          </UIProvider>
+        </FileProvider>
+      </DirectoryProvider>
+    </AuthProvider>
   );
 }
 

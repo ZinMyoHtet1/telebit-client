@@ -11,7 +11,7 @@ const initialValues = {
   pendingContents: [],
   uploadingContents: [],
   currentUploadContent: null,
-  donwloadingContent: null,
+  downloadingContent: null,
 };
 
 function fileReducer(state, action) {
