@@ -5,15 +5,18 @@ import { uiContext } from "../contexts/UIContext";
 
 import "./../styles/loading.css";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
+import { authContext } from "../contexts/AuthContext";
 
 function Loading() {
   const { state: uiState } = useContext(uiContext);
   const { windowWidth } = useContext(mediaQueryContext);
+  const { state: authState } = useContext(authContext);
   const isDeleting = uiState?.isDeleting; //boolean
   const isRenaming = uiState?.isRenaming; //boolean
   const creatingFolder = uiState?.creatingFolder; //boolean
+  const isLoading = authState?.isLoading; //boolean
 
-  const object = { isDeleting, isRenaming, creatingFolder };
+  const object = { isDeleting, isRenaming, creatingFolder, isLoading };
 
   const getIconSize = (windowWidth) => {
     switch (true) {

@@ -8,8 +8,12 @@ import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import { userLogin, userRegister } from "../actions/authActions";
 import { authContext } from "../contexts/AuthContext";
+import Loading from "../components/Loading";
+import OverlayPage from "./OvelayPage";
+import { uiContext } from "../contexts/UIContext";
 function Login() {
   const { dispatch } = useContext(authContext);
+  const { dispatch: uiDispatch } = useContext(uiContext);
   const navigate = useNavigate();
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
@@ -23,6 +27,13 @@ function Login() {
   const [initialValues, setInitialValues] = useState(initialState);
   const [isLogin, setIsLogin] = useState(null);
 
+  const closeOverlayPage = () => {
+    uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
+  };
+  const openOverlayPage = () => {
+    uiDispatch({ type: "OPEN_OVERLAYPAGE" });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = {};
@@ -30,7 +41,9 @@ function Login() {
       if (value) formData[key] = value;
     });
     console.log(formData, "formData");
+
     if (isLogin) {
+      openOverlayPage();
       userLogin(formData, (data) => {
         if (data.status === "verification") {
           navigate("/auth/verifyEmail", {
@@ -40,7 +53,7 @@ function Login() {
         } else {
           console.log(data, "respnse");
           sessionStorage.setItem("user", JSON.stringify(data.data));
-
+          closeOverlayPage();
           navigate("/home", { replace: true });
         }
       })(dispatch);
@@ -102,6 +115,9 @@ function Login() {
     <GoogleOAuthProvider clientId="861972951011-27g6htjd7gvefembn81c8h1l190vjd3k.apps.googleusercontent.com">
       <div id="login_page" className="page">
         <div className="wrapper">
+          <OverlayPage>
+            <Loading />
+          </OverlayPage>
           <h3 className="title">{isLogin ? "Login" : "register"}</h3>
           <form id="login_form" onSubmit={handleSubmit}>
             {!isLogin && (

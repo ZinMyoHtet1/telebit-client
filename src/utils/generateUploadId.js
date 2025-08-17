@@ -1,7 +1,7 @@
-const userId = "dusoshsuofusfjjcso";
+// const userId = "dusoshsuofusfjjcso";
 
 function generateUploadId() {
-  return userId + Math.random().toString(36).substring(2, 10) + Date.now();
+  return Math.random().toString(36).substring(2, 16) + Date.now();
 }
 
 export default generateUploadId;

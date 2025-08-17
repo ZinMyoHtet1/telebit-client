@@ -3,6 +3,9 @@ import "./../styles/otpVerification.css";
 import { useNavigate } from "react-router-dom";
 import { verifyEmail } from "../actions/authActions";
 import { authContext } from "../contexts/AuthContext";
+import OverlayPage from "./OvelayPage";
+import Loading from "../components/Loading";
+import { uiContext } from "../contexts/UIContext";
 // import { verifyEmail } from "../actions/authActions.js";
 // import { appContext } from "../contexts/AppContext.js";
 
@@ -13,8 +16,16 @@ function OTPVerification() {
   const inputRefs = useRef([]);
   const navigate = useNavigate();
   const { dispatch } = useContext(authContext);
+  const { dispatch: uiDispatch } = useContext(uiContext);
 
   const email = history.state?.usr?.email;
+
+  const closeOverlayPage = () => {
+    uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
+  };
+  const openOverlayPage = () => {
+    uiDispatch({ type: "OPEN_OVERLAYPAGE" });
+  };
   useEffect(() => {
     if (countdown > 0) {
       const timer = setInterval(() => {
@@ -82,8 +93,10 @@ function OTPVerification() {
     const otp = initialValues.join("");
     const formData = { email, otp };
     // console.log(formData);
+    openOverlayPage();
     verifyEmail(formData, (data) => {
       sessionStorage.setItem("user", JSON.stringify(data.data));
+      closeOverlayPage();
       navigate("/", { replace: true });
     })(dispatch);
   };
@@ -97,6 +110,9 @@ function OTPVerification() {
   return (
     <div id="verification_container" className="overlay_page">
       <div className="wrapper">
+        <OverlayPage>
+          <Loading />
+        </OverlayPage>
         <img
           className="email_verification_icon"
           src="https://placehold.co/100x100/3b82f6/white?text=✓"

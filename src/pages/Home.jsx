@@ -26,7 +26,7 @@ import UploadingStatus from "../components/UploadingStatus";
 import OverlayPage from "./OvelayPage";
 import Loading from "../components/Loading";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
-import cookie from "../utils/cookie";
+// import cookie from "../utils/cookie";
 // import cookie from "../utils/cookie";
 // import { verifyToken } from "../actions/authActions";
 // import { authContext } from "../contexts/AuthContext";

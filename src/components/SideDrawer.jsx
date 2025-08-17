@@ -27,7 +27,7 @@ function SideDrawer() {
   const getIconSize = (windowWidth) => {
     switch (true) {
       case windowWidth < 1000:
-        return 20;
+        return 22;
       case windowWidth > 1000:
         return 24;
       default:

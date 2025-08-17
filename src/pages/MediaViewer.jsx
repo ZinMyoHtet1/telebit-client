@@ -122,7 +122,24 @@ function MediaViewer() {
     if (touchEndX - touchStartX > 80) handlePrev(); // swipe right
   };
 
-  if (!currentContent) return null;
+  // if (!currentContent) return null;
+
+  useEffect(() => {
+    // Push a new history state when the component mounts
+    history.pushState({ mediaOpen: true }, "");
+
+    // Listen for browser back button
+    // const handlePopState = () => {
+    //   dispatch({ type: CLOSE_VIDEO_PLAYER });
+    // };
+
+    window.addEventListener("popstate", handleClose);
+
+    return () => {
+      window.removeEventListener("popstate", handleClose);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div

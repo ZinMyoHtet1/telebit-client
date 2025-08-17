@@ -64,8 +64,7 @@
   }
 
   #side_drawer button {
-    font-size: 14px;
-    padding: 6px 4px;
+    font-size: 16px;
   }
 }
 
@@ -86,6 +85,6 @@
 
   #side_drawer button {
     font-size: 12px;
-    padding: 4px 2px;
+    padding: 6px 4px;
   }
 }

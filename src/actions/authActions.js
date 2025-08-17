@@ -9,19 +9,10 @@ const userLogin =
     try {
       dispatch({ type: "START_LOADING" });
       const response = await API.login(formData);
-      console.log("user login ", response);
       callback(response.data);
-      // if (response.data.status === "verification") {
-      //   navigate("/auth/verifyEmail", {
-      //     replace: true,
-      //     state: { email: formData.email },
-      //   });
-      //   return;
-      // }
-      // dispatch({ type: "LOGIN" });
-      // navigate("/", { replace: true });
     } catch (error) {
       console.log(error);
+      dispatch({ type: "STOP_LOADING" });
     } finally {
       dispatch({ type: "STOP_LOADING" });
     }
@@ -42,6 +33,8 @@ const userRegister =
       // dispatch({ type: REGISTER, payload: response.data.data });
     } catch (error) {
       console.log(error);
+      dispatch({ type: "STOP_LOADING" });
+
       dispatch({ type: "ERROR", payload: error.message });
     } finally {
       dispatch({ type: "STOP_LOADING" });
@@ -54,11 +47,11 @@ const verifyEmail =
     try {
       dispatch({ type: "START_LOADING" });
       const response = await API.verifyEmail(formData);
-      // dispatch({ type: "VERIFY_EMAIL" });
-      // navigate("/", { replace: true });
       callback(response.data);
     } catch (error) {
       console.log(error);
+      dispatch({ type: "STOP_LOADING" });
+
       dispatch({ type: "ERROR", payload: error.message });
     } finally {
       dispatch({ type: "STOP_LOADING" });
@@ -77,6 +70,8 @@ const verifyToken =
     } catch (error) {
       sessionStorage.clear();
       deleteCookie("jwt");
+      dispatch({ type: "STOP_LOADING" });
+
       console.log(error, "error from server");
       dispatch({ type: "ERROR", payload: error.message });
     } finally {
@@ -99,6 +94,8 @@ const verifyGoogleToken =
       // dispatch({ type: "LOGIN" });
 
       console.log(error, "error from server");
+      dispatch({ type: "STOP_LOADING" });
+
       dispatch({ type: "ERROR", payload: error.message });
     } finally {
       dispatch({ type: "STOP_LOADING" });
