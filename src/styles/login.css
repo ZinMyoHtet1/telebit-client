@@ -131,4 +131,12 @@
 
     /* padding-bottom: 40px; */
   }
+
+  #overlay_page .wrapper {
+    padding: 12px;
+    height: fit-content;
+    margin: 0 16px;
+    border-radius: 8px;
+    gap: 4px;
+  }
 }

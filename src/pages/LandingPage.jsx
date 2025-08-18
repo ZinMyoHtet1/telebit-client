@@ -20,13 +20,13 @@ function LandingPage() {
     user = JSON.parse(sessionStorage.getItem("user"));
     if (!user) {
       const jwt = cookie.getCookie("jwt");
+      // console.log(jwt, "jwt");
       if (!jwt) {
-        console.log("nojwt");
         navigate("/auth/login", { replace: true });
       } else {
-        verifyToken(jwt)(authDispatch, () => {
+        verifyToken(jwt, () => {
           navigate("/home", { replace: true });
-        });
+        })(authDispatch);
       }
 
       //verify token

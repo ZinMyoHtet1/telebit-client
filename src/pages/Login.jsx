@@ -114,10 +114,10 @@ function Login() {
   return (
     <GoogleOAuthProvider clientId="861972951011-27g6htjd7gvefembn81c8h1l190vjd3k.apps.googleusercontent.com">
       <div id="login_page" className="page">
+        <OverlayPage>
+          <Loading />
+        </OverlayPage>
         <div className="wrapper">
-          <OverlayPage>
-            <Loading />
-          </OverlayPage>
           <h3 className="title">{isLogin ? "Login" : "register"}</h3>
           <form id="login_form" onSubmit={handleSubmit}>
             {!isLogin && (
