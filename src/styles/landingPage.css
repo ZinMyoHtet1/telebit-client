@@ -1,3 +1,28 @@
+#landing_page {
+  min-height: 100vh;
+  width: 100%;
+}
+
+#landing_page.bg-ready {
+  background-image: url("./../assets/backgroundImage.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#landing_page.bg-loading {
+  background-color: #000; /* fallback color */
+}
+
+.loading-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: white;
+  font-size: 24px;
+}
+
 #landing_page .wrapper {
   display: grid;
   grid-template-rows: 80px 1fr 80px;

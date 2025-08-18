@@ -6,11 +6,12 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import "./../styles/login.css";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
-import { userLogin, userRegister } from "../actions/authActions";
+import { userLogin, userRegister, verifyToken } from "../actions/authActions";
 import { authContext } from "../contexts/AuthContext";
 import Loading from "../components/Loading";
 import OverlayPage from "./OvelayPage";
 import { uiContext } from "../contexts/UIContext";
+import cookie from "../utils/cookie";
 function Login() {
   const { dispatch } = useContext(authContext);
   const { dispatch: uiDispatch } = useContext(uiContext);
@@ -111,6 +112,24 @@ function Login() {
     setIsLogin(location.pathname.includes("login"));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
+
+  useEffect(() => {
+    let user = null;
+    user = JSON.parse(sessionStorage.getItem("user"));
+    if (!user) {
+      const jwt = cookie.getCookie("jwt");
+      // console.log(jwt, "jwt");
+      if (jwt) {
+        verifyToken(jwt, () => {
+          navigate("/home", { replace: true });
+        })(dispatch);
+      }
+
+      //verify token
+    } else {
+      navigate("/home", { replace: true });
+    }
+  }, [dispatch, navigate]);
   return (
     <GoogleOAuthProvider clientId="861972951011-27g6htjd7gvefembn81c8h1l190vjd3k.apps.googleusercontent.com">
       <div id="login_page" className="page">
