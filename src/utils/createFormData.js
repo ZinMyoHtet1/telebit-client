@@ -7,7 +7,7 @@ async function createFormData(file) {
   formData.append("filename", file.name);
   formData.append("uploadId", uploadId);
   //   formData.append("contentType", file.type);
-  formData.append("size", file.size);
+  formData.append("size", String(file.size));
   formData.append("file", file);
   if (file.type.startsWith("video")) {
     const thumbnail = await getVideoThumbnail(file);
