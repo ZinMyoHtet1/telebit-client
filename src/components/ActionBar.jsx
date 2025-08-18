@@ -39,7 +39,7 @@ function ActionBar() {
   const getIconSize = (windowWidth) => {
     switch (true) {
       case windowWidth < 820:
-        return 16;
+        return 18;
       default:
         20;
     }
