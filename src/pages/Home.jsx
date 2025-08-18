@@ -73,8 +73,6 @@ function Home() {
     let user = null;
     user = JSON.parse(sessionStorage.getItem("user"));
     if (!user) {
-      console.log(typeof user, "user");
-
       navigate("/getStarted", { replace: true });
     }
   }, [navigate]);

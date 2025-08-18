@@ -23,7 +23,9 @@ const uploadFile =
     try {
       dispatch({ type: "START_UPLOADING" });
       dispatch({ type: "SET_PERCENT", payload: 0 });
-      const response = await FILE.uploadFile(parentId, form);
+      const response = await FILE.uploadFile(parentId, form, (percent) =>
+        dispatch({ type: "SET_PERCENT", payload: +percent })
+      );
 
       dispatch({ type: "SET_PERCENT", payload: 100 });
       dispatch({

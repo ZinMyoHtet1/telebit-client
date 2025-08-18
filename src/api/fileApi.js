@@ -31,11 +31,18 @@ const getFiles = (uploadIds) =>
       },
     }
   );
-const uploadFile = (parentId, form) =>
+const uploadFile = (parentId, form, onProgress) =>
   instance.post(`/upload?directory=${parentId}`, form, {
     headers: {
       userId: JSON.parse(sessionStorage.getItem("user")).userId,
-      uploadSessionId: JSON.parse(sessionStorage.getItem("uploadSessionId")),
+    },
+    onUploadProgress: (progressEvent) => {
+      if (onProgress) {
+        const percent = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+        onProgress(percent);
+      }
     },
   });
 

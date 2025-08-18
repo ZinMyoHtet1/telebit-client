@@ -6,7 +6,7 @@ import { fileContext } from "./FileContext";
 import createFormData from "../utils/createFormData";
 import { deleteFiles, getFiles, saveFiles } from "../utils/fileDB";
 import { uiContext } from "./UIContext";
-import { startWebSocket } from "../utils/socket";
+// import { startWebSocket } from "../utils/socket";
 // import generateUploadId from "../utils/generateUploadId";
 // import Crypto  from "../utils"
 
@@ -44,11 +44,11 @@ export function UploadProvider({ children }) {
     })();
   }, [uploadingFiles]);
 
-  useEffect(() => {
-    startWebSocket((data) => {
-      fileDispatch({ type: "SET_PERCENT", payload: data.percent });
-    });
-  }, [fileDispatch]);
+  // useEffect(() => {
+  //   startWebSocket((data) => {
+  //     fileDispatch({ type: "SET_PERCENT", payload: data.percent });
+  //   });
+  // }, [fileDispatch]);
 
   useEffect(() => {
     if (isLoading || currentFile) return;
