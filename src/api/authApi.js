@@ -12,6 +12,7 @@ const instance = axios.create({
 });
 
 export default {
+  connect: () => axios.get(api),
   login: (formData) => instance.post("/login", formData),
   register: (formData) => instance.post("/register", formData),
   verifyEmail: (formData) => instance.patch("/verifyEmail", formData),

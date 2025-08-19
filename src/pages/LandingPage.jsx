@@ -6,6 +6,8 @@ import { authContext } from "../contexts/AuthContext";
 
 import bgImage from "./../assets/backgroundImage.png";
 
+import API from "./../api/authApi";
+
 import "./../styles/landingPage.css";
 
 function LandingPage() {
@@ -17,7 +19,9 @@ function LandingPage() {
     // preload background image
     const img = new Image();
     img.src = bgImage;
-    img.onload = () => setBgLoaded(true);
+    img.onload = () => {
+      API.connect().then(() => setBgLoaded(true));
+    };
   }, []);
 
   const handleGetStarted = () => {
@@ -41,9 +45,7 @@ function LandingPage() {
       id="landing_page"
       className={`page ${bgLoaded ? "bg-ready" : "bg-loading"}`}
     >
-      {!bgLoaded ? (
-        <div className="loading-screen">Loading...</div>
-      ) : (
+      {!bgLoaded && (
         <div className="wrapper">
           <div className="nav_bar">
             <div className="app_name">Telebit</div>

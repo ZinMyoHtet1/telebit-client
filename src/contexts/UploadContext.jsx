@@ -32,6 +32,7 @@ export function UploadProvider({ children }) {
       });
       // }, 2000);
     }
+
     createFormData(file).then((form) => {
       uploadFile(parentId, form)(fileDispatch, callback);
     });

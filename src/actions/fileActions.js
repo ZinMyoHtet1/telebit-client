@@ -26,13 +26,11 @@ const uploadFile =
       const response = await FILE.uploadFile(parentId, form, (percent) =>
         dispatch({ type: "SET_PERCENT", payload: +percent })
       );
-
-      dispatch({ type: "SET_PERCENT", payload: 100 });
-      dispatch({
-        type: "UPLOAD_FILE",
-        payload: { parentId, file: response.data.data },
-      });
       setTimeout(() => {
+        dispatch({
+          type: "UPLOAD_FILE",
+          payload: { parentId, file: response.data.data },
+        });
         dispatch({ type: "STOP_UPLOADING" });
         dispatch({ type: "SET_PERCENT", payload: 0 });
 

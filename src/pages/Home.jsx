@@ -54,7 +54,7 @@ function Home() {
   const mainDirectory = directoryState.currentDirectory || null;
   const childDirectories = directoryState.childDirectories;
   const files = fileState?.files;
-
+  // console.log(files, "files");
   const getIconSize = (windowWidth) => {
     switch (true) {
       // case windowWidth < 380:
