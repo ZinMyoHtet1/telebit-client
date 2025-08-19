@@ -1,69 +1,86 @@
 import React, { useContext, useEffect, useState } from "react";
-import cookie from "../utils/cookie";
 import { useNavigate } from "react-router-dom";
+
+import cookie from "../utils/cookie";
 import { verifyToken } from "../actions/authActions";
 import { authContext } from "../contexts/AuthContext";
-
-import bgImage from "./../assets/backgroundImage.png";
-
 import API from "./../api/authApi";
 
+import bgImage from "./../assets/backgroundImage.png";
 import "./../styles/landingPage.css";
 
 function LandingPage() {
   const { dispatch: authDispatch } = useContext(authContext);
   const navigate = useNavigate();
   const [bgLoaded, setBgLoaded] = useState(false);
+  const [serverConnected, setServerConnected] = useState(false);
 
   useEffect(() => {
-    // preload background image
+    // Preload background image
     const img = new Image();
     img.src = bgImage;
-    img.onload = () => {
-      API.connect().then(() => setBgLoaded(true));
-    };
+    img.onload = () => setBgLoaded(true);
+
+    // Connect API in background (don’t block UI)
+    API.connect()
+      .then(() => {
+        setServerConnected(true);
+      })
+      .catch((err) => {
+        console.error("API connection failed:", err);
+      });
   }, []);
 
+  const redirectToHome = () => navigate("/home", { replace: true });
+  const redirectToLogin = () => navigate("/auth/login", { replace: true });
+
   const handleGetStarted = () => {
-    let user = JSON.parse(sessionStorage.getItem("user"));
-    if (!user) {
-      const jwt = cookie.getCookie("jwt");
-      if (!jwt) {
-        navigate("/auth/login", { replace: true });
-      } else {
-        verifyToken(jwt, () => {
-          navigate("/home", { replace: true });
-        })(authDispatch);
-      }
-    } else {
-      navigate("/home", { replace: true });
-    }
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    if (user) return redirectToHome();
+
+    const jwt = cookie.getCookie("jwt");
+    if (!jwt) return redirectToLogin();
+
+    verifyToken(jwt, redirectToHome)(authDispatch);
   };
 
   return (
-    <div
-      id="landing_page"
-      className={`page ${bgLoaded ? "bg-ready" : "bg-loading"}`}
-    >
-      {!bgLoaded && (
-        <div className="wrapper">
-          <div className="nav_bar">
-            <div className="app_name">Telebit</div>
-            <div className="actions">
-              <button className="about_btn btn">about</button>
-              <button className="login_btn btn">Login</button>
+    <>
+      {serverConnected && (
+        <div
+          id="landing_page"
+          className={`page ${bgLoaded ? "bg-ready" : "bg-loading"}`}
+        >
+          <div className="wrapper">
+            <div className="nav_bar">
+              <div className="app_name">Telebit</div>
+              <div className="actions">
+                <button
+                  className="about_btn btn"
+                  onClick={() => navigate("/about")}
+                >
+                  About
+                </button>
+                <button
+                  className="login_btn btn"
+                  onClick={() => navigate("/auth/login")}
+                >
+                  Login
+                </button>
+              </div>
             </div>
-          </div>
-          <div className="content">
-            <h1>Unlimited Cloud Base</h1>
-            <p>Your Data, Everywhere</p>
-            <button className="getStarted_btn btn" onClick={handleGetStarted}>
-              Get Started
-            </button>
+
+            <div className="content">
+              <h1>Unlimited Cloud Base</h1>
+              <p>Your Data, Everywhere</p>
+              <button className="getStarted_btn btn" onClick={handleGetStarted}>
+                Get Started
+              </button>
+            </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
 
