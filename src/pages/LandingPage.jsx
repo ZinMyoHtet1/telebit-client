@@ -37,7 +37,8 @@ function LandingPage() {
     const user = JSON.parse(sessionStorage.getItem("user"));
     if (user) return redirectToHome();
 
-    const jwt = cookie.getCookie("jwt");
+    const jwt = JSON.parse(cookie.getCookie("jwt"));
+    console.log(jwt, "jwt");
     if (!jwt) return redirectToLogin();
 
     verifyToken(jwt, redirectToHome)(authDispatch);
