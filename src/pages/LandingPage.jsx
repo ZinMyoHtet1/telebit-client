@@ -19,8 +19,6 @@ function LandingPage() {
     // Preload background image
     const img = new Image();
     img.src = bgImage;
-    img.onload = () => setBgLoaded(true);
-
     // Connect API in background (don’t block UI)
     API.connect()
       .then(() => {
@@ -29,6 +27,7 @@ function LandingPage() {
       .catch((err) => {
         console.error("API connection failed:", err);
       });
+    img.onload = () => setBgLoaded(true);
   }, []);
 
   const redirectToHome = () => navigate("/home", { replace: true });
