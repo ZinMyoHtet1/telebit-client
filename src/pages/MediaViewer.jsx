@@ -127,12 +127,6 @@ function MediaViewer() {
   useEffect(() => {
     // Push a new history state when the component mounts
     history.pushState({ mediaOpen: true }, "");
-
-    // Listen for browser back button
-    // const handlePopState = () => {
-    //   dispatch({ type: CLOSE_VIDEO_PLAYER });
-    // };
-
     window.addEventListener("popstate", handleClose);
 
     return () => {

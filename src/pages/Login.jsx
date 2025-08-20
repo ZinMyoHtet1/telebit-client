@@ -117,7 +117,7 @@ function Login() {
     let user = null;
     user = JSON.parse(sessionStorage.getItem("user"));
     if (!user) {
-      const jwt = JSON.parse(cookie.getCookie("jwt"));
+      const jwt = cookie.getCookie("jwt");
 
       // console.log(jwt, "jwt");
       if (jwt) {

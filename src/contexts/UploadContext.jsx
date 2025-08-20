@@ -45,12 +45,6 @@ export function UploadProvider({ children }) {
     })();
   }, [uploadingFiles]);
 
-  // useEffect(() => {
-  //   startWebSocket((data) => {
-  //     fileDispatch({ type: "SET_PERCENT", payload: data.percent });
-  //   });
-  // }, [fileDispatch]);
-
   useEffect(() => {
     if (isLoading || currentFile) return;
     (async () => {
