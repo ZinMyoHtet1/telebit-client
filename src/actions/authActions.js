@@ -1,5 +1,4 @@
 // import { VERIFY_AUTH } from "../constants/authConstants.js";
-import deleteCookie from "../utils/deleteCookie.js";
 // import getCookie from "../utils/getCookie.js";
 import API from "./../api/authApi.js";
 
@@ -64,12 +63,13 @@ const verifyToken =
     try {
       dispatch({ type: "START_LOADING" });
       const response = await API.verifyToken(token);
-      sessionStorage.setItem("user", JSON.stringify(response.data.data));
+      localStorage.setItem("token", response.data.data.token);
+      sessionStorage.setItem("user", JSON.stringify(response.data.data.user));
       // dispatch({ type: "VERIFY_AUTH" });
       callback();
     } catch (error) {
       sessionStorage.clear();
-      deleteCookie("jwt");
+      localStorage.setItem("token", null);
       dispatch({ type: "STOP_LOADING" });
 
       console.log(error, "error from server");

@@ -11,7 +11,6 @@ import { authContext } from "../contexts/AuthContext";
 import Loading from "../components/Loading";
 import OverlayPage from "./OvelayPage";
 import { uiContext } from "../contexts/UIContext";
-import cookie from "../utils/cookie";
 function Login() {
   const { dispatch } = useContext(authContext);
   const { dispatch: uiDispatch } = useContext(uiContext);
@@ -52,8 +51,9 @@ function Login() {
             state: { email: formData.email },
           });
         } else {
-          console.log(data, "respnse");
-          sessionStorage.setItem("user", JSON.stringify(data.data));
+          // console.log(data, "respnse");
+          localStorage.setItem("token", data.data.token);
+          sessionStorage.setItem("user", JSON.stringify(data.data.user));
           closeOverlayPage();
           navigate("/home", { replace: true });
         }
@@ -117,11 +117,11 @@ function Login() {
     let user = null;
     user = JSON.parse(sessionStorage.getItem("user"));
     if (!user) {
-      const jwt = cookie.getCookie("jwt");
+      const token = JSON.parse(localStorage.getItem("token"));
 
       // console.log(jwt, "jwt");
-      if (jwt) {
-        verifyToken(jwt, () => {
+      if (token) {
+        verifyToken(token, () => {
           navigate("/home", { replace: true });
         })(dispatch);
       }

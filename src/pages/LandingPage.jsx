@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import cookie from "../utils/cookie";
 import { verifyToken } from "../actions/authActions";
 import { authContext } from "../contexts/AuthContext";
 import API from "./../api/authApi";
@@ -37,11 +36,12 @@ function LandingPage() {
     const user = JSON.parse(sessionStorage.getItem("user"));
     if (user) return redirectToHome();
 
-    const jwt = cookie.getCookie("jwt");
-    console.log(jwt, "jwt");
-    if (!jwt) return redirectToLogin();
+    const token = JSON.parse(localStorage.getItem("token"));
+    // cookieStore.get({})
+    console.log(token, "token");
+    if (!token) return redirectToLogin();
 
-    verifyToken(jwt, redirectToHome)(authDispatch);
+    verifyToken(token, redirectToHome)(authDispatch);
   };
 
   return (

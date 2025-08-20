@@ -95,7 +95,8 @@ function OTPVerification() {
     // console.log(formData);
     openOverlayPage();
     verifyEmail(formData, (data) => {
-      sessionStorage.setItem("user", JSON.stringify(data.data));
+      localStorage.setItem("token", data.data.token);
+      sessionStorage.setItem("user", JSON.stringify(data.data.user));
       closeOverlayPage();
       navigate("/", { replace: true });
     })(dispatch);
