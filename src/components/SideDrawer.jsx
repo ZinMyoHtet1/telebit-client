@@ -40,7 +40,7 @@ function SideDrawer() {
   };
 
   const handleClickLogout = () => {
-    cookieStore.delete("jwt");
+    localStorage.setItem("token", null);
     sessionStorage.setItem("user", null);
     navigate("/auth/login", { replace: true });
     handleClose();

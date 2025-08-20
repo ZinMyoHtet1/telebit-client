@@ -36,10 +36,10 @@ function LandingPage() {
     const user = JSON.parse(sessionStorage.getItem("user"));
     if (user) return redirectToHome();
 
-    const token = JSON.parse(localStorage.getItem("token"));
+    const token = localStorage.getItem("token");
     // cookieStore.get({})
     console.log(token, "token");
-    if (!token) return redirectToLogin();
+    if (!token || token === "null") return redirectToLogin();
 
     verifyToken(token, redirectToHome)(authDispatch);
   };

@@ -117,10 +117,10 @@ function Login() {
     let user = null;
     user = JSON.parse(sessionStorage.getItem("user"));
     if (!user) {
-      const token = JSON.parse(localStorage.getItem("token"));
+      const token = localStorage.getItem("token");
 
       // console.log(jwt, "jwt");
-      if (token) {
+      if (token && token !== "null") {
         verifyToken(token, () => {
           navigate("/home", { replace: true });
         })(dispatch);
