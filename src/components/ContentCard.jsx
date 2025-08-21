@@ -311,6 +311,7 @@ function ContentCard({ content, ...rest }) {
 
   const navigate = useNavigate();
   const cardRef = useRef(null);
+  const clickTimeout = useRef(null);
 
   const currentDirId = state?.currentDirectory?.id;
   const isActive = content?.id
@@ -336,17 +337,30 @@ function ContentCard({ content, ...rest }) {
       : 70;
 
   // --- Event Handlers ---
+
   const handleClick = () => {
     if (isLoading) return;
-    setTimeout(() => {
+
+    // Clear any existing timeout
+    if (clickTimeout.current) clearTimeout(clickTimeout.current);
+
+    // Set a timeout for single-click action
+    clickTimeout.current = setTimeout(() => {
       dispatch({ type: "SET_ACTIVE_CONTENT", payload: content });
-    }, 400);
+      clickTimeout.current = null;
+    }, 200); // 250ms is a good delay for differentiating clicks
   };
 
   const handleDoubleClick = () => {
-    dispatch({ type: "SET_ACTIVE_CONTENT", payload: null });
-
     if (isLoading) return;
+
+    // Cancel single-click timeout when double-click happens
+    if (clickTimeout.current) {
+      clearTimeout(clickTimeout.current);
+      clickTimeout.current = null;
+    }
+
+    dispatch({ type: "SET_ACTIVE_CONTENT", payload: null });
 
     if (content.mimeType) {
       uiDispatch({ type: "OPEN_MEDIAVIEWER" });
