@@ -121,6 +121,7 @@ function directoryReducer(state, action) {
         activeContent: action.payload,
       };
 
+    case "REFRESH":
     case "RESET":
       return initialValues;
     case "ERROR":

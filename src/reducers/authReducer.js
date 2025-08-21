@@ -1,26 +1,44 @@
 const initialValues = {
-  isLoading: false,
+  isLogin: false,
+  isRegistering: false,
   errorMessage: null,
+  logout: false,
   // user: null,
 };
 
 function authReducer(state, action) {
   switch (action.type) {
-    case "START_LOADING":
+    case "START_LOGIN":
       return {
         ...state,
-        isLoading: true,
+        isLogin: true,
       };
-    case "STOP_LOADING":
+    case "STOP_LOGIN":
       return {
         ...state,
-        isLoading: false,
+        isLogin: false,
+      };
+    case "START_REGISTER":
+      return {
+        ...state,
+        isRegistering: true,
+      };
+    case "STOP_REGISTER":
+      return {
+        ...state,
+        isRegistering: false,
       };
     // case "LOGIN":
     //   return {
     //     ...state,
     //     user: JSON.parse(sessionStorage.getItem("user")),
     //   };
+
+    case "LOGOUT":
+      return {
+        ...state,
+        logout: true,
+      };
     case "ERROR":
       return { ...state, errorMessage: action.payload };
     case "RESET":

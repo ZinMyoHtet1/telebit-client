@@ -10,8 +10,10 @@ export const authContext = createContext();
 const AuthContextProvider = authContext.Provider;
 
 const initialValues = {
-  isLoading: false,
+  isLogin: false,
+  isRegistering: false,
   errorMessage: null,
+  logout: false,
   // user: null,
 };
 

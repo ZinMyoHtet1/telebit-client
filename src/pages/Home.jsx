@@ -99,12 +99,16 @@ function Home() {
 
   useEffect(() => {
     // const user = JSON.parse(sessionStorage.getItem("user"));
-    if (!user) return;
+    if (!user || user === "null") return;
+
+    if (!user?.userId) {
+      navigate("/auth/login", { replace: true });
+    }
 
     if (mainDirectory?.id === currentDirId) return;
 
-    directoryDispatch({ type: "RESET" });
-    fileDispatch({ type: "RESET" });
+    directoryDispatch({ type: "REFRESH" });
+    fileDispatch({ type: "REFRESH" });
 
     if (currentDirId === "root") {
       navigate("/", { replace: true });

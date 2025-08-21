@@ -25,3 +25,15 @@
     width: 20px;
   }
 }
+
+@media screen and (max-width: 360px) {
+  #user_status {
+    display: flex;
+    font-size: 8px;
+  }
+
+  #user_status .profile_picture img {
+    height: 14px;
+    width: 14px;
+  }
+}

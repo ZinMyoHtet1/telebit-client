@@ -338,11 +338,16 @@ function ContentCard({ content, ...rest }) {
   // --- Event Handlers ---
   const handleClick = () => {
     if (isLoading) return;
-    dispatch({ type: "SET_ACTIVE_CONTENT", payload: content });
+    setTimeout(() => {
+      dispatch({ type: "SET_ACTIVE_CONTENT", payload: content });
+    }, 400);
   };
 
   const handleDoubleClick = () => {
+    dispatch({ type: "SET_ACTIVE_CONTENT", payload: null });
+
     if (isLoading) return;
+
     if (content.mimeType) {
       uiDispatch({ type: "OPEN_MEDIAVIEWER" });
       fileDispatch({ type: "SET_MEDIA_CONTENT", payload: content });

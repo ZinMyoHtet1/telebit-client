@@ -11,16 +11,20 @@ import CreateFolderIcon from "../svgs/CreateFolderIcon";
 import { directoryContext } from "../contexts/DirectoryContext";
 import DownloadIcon from "../svgs/DownloadIcon";
 import { useNavigate } from "react-router-dom";
-import HomeIcon from "../svgs/HomeIcon";
+// import HomeIcon from "../svgs/HomeIcon";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
 
 import logo from "../assets/app-logo.png";
+// import { fileContext } from "../contexts/FileContext";
+import { authContext } from "../contexts/AuthContext";
 function SideDrawer() {
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
-  const { windowWidth } = useContext(mediaQueryContext);
-
+  const { dispatch: authDispatch } = useContext(authContext);
+  // const { dispatch: fileDispatch } = useContext(fileContext);
   const { state: directoryState, dispatch: directoryDispatch } =
     useContext(directoryContext);
+  const { windowWidth } = useContext(mediaQueryContext);
+
   const navigate = useNavigate();
   const drawerRef = useRef();
 
@@ -41,11 +45,22 @@ function SideDrawer() {
     uiDispatch({ type: "CLOSE_SIDEDRAWER" });
   };
 
+  const openOverlayPage = () => uiDispatch({ type: "OPEN_OVERLAYPAGE" });
+  const closeOverlayPage = () => uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
+
   const handleClickLogout = () => {
-    localStorage.setItem("token", null);
-    sessionStorage.setItem("user", null);
-    navigate("/auth/login", { replace: true });
+    authDispatch({ type: "LOGOUT" });
+    openOverlayPage();
     handleClose();
+
+    setTimeout(() => {
+      localStorage.setItem("token", null);
+      sessionStorage.setItem("user", null);
+    }, 2000);
+    setTimeout(() => {
+      navigate("/auth/login", { replace: true });
+      closeOverlayPage();
+    }, 3000);
   };
   const handleClickDownloads = () => {
     navigate("/downloads");

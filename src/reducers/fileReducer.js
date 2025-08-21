@@ -113,7 +113,7 @@ function fileReducer(state, action) {
         ...state,
         files: state.files.filter((file) => file.uploadId !== action.payload),
       };
-    case "RESET":
+    case "REFRESH":
       return {
         ...initialValues,
         isUploading: state.isUploading,
@@ -123,6 +123,8 @@ function fileReducer(state, action) {
         pendingContents: state.pendingContents,
         downloadingContent: state.downloadingContent,
       };
+    case "RESET":
+      return initialValues;
     case "ERROR":
       return {
         ...state,

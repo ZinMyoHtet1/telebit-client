@@ -274,12 +274,16 @@ import Loading from "../components/Loading";
 import "./../styles/login.css";
 
 import logo from "./../assets/logo.svg";
+import { fileContext } from "../contexts/FileContext";
+import { directoryContext } from "../contexts/DirectoryContext";
 
 function Login() {
   const { dispatch } = useContext(authContext);
-  const { dispatch: uiDispatch } = useContext(uiContext);
+  const { dispatch: uiDispatch, state: uiState } = useContext(uiContext);
+  const { dispatch: fileDispatch } = useContext(fileContext);
+  const { dispatch: directoryDispatch } = useContext(directoryContext);
   const navigate = useNavigate();
-
+  console.log(uiState.overlayPage, "uistte");
   const [isLogin, setIsLogin] = useState(true);
 
   const initialState = {
@@ -296,12 +300,55 @@ function Login() {
     setFormValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const openOverlayPage = () => uiDispatch({ type: "OPEN_OVERLAYPAGE" });
+  const closeOverlayPage = () => uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   openOverlayPage();
+
+  //   if (isLogin) {
+  //     userLogin(formValues, (data) => {
+  //       if (data.status === "verification") {
+  //         navigate("/auth/verifyEmail", {
+  //           replace: true,
+  //           state: { email: formValues.email },
+  //         });
+  //       } else {
+  //         localStorage.setItem("token", data.data.token);
+  //         sessionStorage.setItem("user", JSON.stringify(data.data.user));
+  //         // uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
+  //         navigate("/home", { replace: true });
+  //       }
+  //     })(dispatch);
+  //   } else {
+  //     userRegister(formValues, () => {
+  //       navigate("/auth/verifyEmail", {
+  //         replace: true,
+  //         state: { email: formValues.email },
+  //       });
+  //     })(dispatch);
+  //   }
+  //   closeOverlayPage();
+
+  //   // fileDispatch({ type: "RESET" });
+  //   // directoryDispatch({ type: "RESET" });
+  //   // uiDispatch({ type: "RESET" });
+  // };
+
+  function resetAll() {
+    fileDispatch({ type: "RESET" });
+    directoryDispatch({ type: "RESET" });
+    uiDispatch({ type: "RESET" });
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (isLogin) {
-      uiDispatch({ type: "OPEN_OVERLAYPAGE" });
+      openOverlayPage();
+
       userLogin(formValues, (data) => {
         if (data.status === "verification") {
+          closeOverlayPage();
           navigate("/auth/verifyEmail", {
             replace: true,
             state: { email: formValues.email },
@@ -309,12 +356,17 @@ function Login() {
         } else {
           localStorage.setItem("token", data.data.token);
           sessionStorage.setItem("user", JSON.stringify(data.data.user));
-          uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
+          closeOverlayPage();
+          resetAll();
           navigate("/home", { replace: true });
         }
       })(dispatch);
     } else {
+      openOverlayPage();
       userRegister(formValues, () => {
+        closeOverlayPage();
+        resetAll();
+
         navigate("/auth/verifyEmail", {
           replace: true,
           state: { email: formValues.email },

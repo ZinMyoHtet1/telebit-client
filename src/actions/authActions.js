@@ -6,14 +6,19 @@ const userLogin =
   (formData, callback = () => {}) =>
   async (dispatch) => {
     try {
-      dispatch({ type: "START_LOADING" });
+      dispatch({ type: "START_LOGIN" });
       const response = await API.login(formData);
       callback(response.data);
     } catch (error) {
       console.log(error);
-      dispatch({ type: "STOP_LOADING" });
+      dispatch({ type: "STOP_LOGIN" });
+      dispatch({ type: "ERROR", payload: error.message });
+
+      // dispatch({ type: "STOP_LOADING" });
     } finally {
-      dispatch({ type: "STOP_LOADING" });
+      dispatch({ type: "STOP_LOGIN" });
+
+      // dispatch({ type: "STOP_LOADING" });
     }
   };
 
@@ -21,7 +26,7 @@ const userRegister =
   (formData, callback = () => {}) =>
   async (dispatch) => {
     try {
-      dispatch({ type: "START_LOADING" });
+      dispatch({ type: "START_REGISTER" });
       await API.register(formData);
       // navigate("/auth/verifyEmail", {
       //   replace: true,
@@ -32,11 +37,11 @@ const userRegister =
       // dispatch({ type: REGISTER, payload: response.data.data });
     } catch (error) {
       console.log(error);
-      dispatch({ type: "STOP_LOADING" });
+      dispatch({ type: "STOP_REGISTER" });
 
       dispatch({ type: "ERROR", payload: error.message });
     } finally {
-      dispatch({ type: "STOP_LOADING" });
+      dispatch({ type: "STOP_REGISTER" });
     }
   };
 
