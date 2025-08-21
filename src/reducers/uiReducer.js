@@ -10,6 +10,8 @@ const initialValues = {
   sideDrawer: false,
   mediaViewer: false,
   overlayPage: false,
+  messagePage: false,
+  message: null,
   isError: null,
   viewMode: "thumbnail",
 };
@@ -80,6 +82,20 @@ function uiReducer(state, action) {
       return {
         ...state,
         overlayPage: false,
+      };
+
+    case "OPEN_MESSAGEPAGE":
+      return {
+        ...state,
+        messagePage: true,
+        message: action.payload || { message: "something went wrong!" },
+      };
+
+    case "CLOSE_MESSAGEPAGE":
+      return {
+        ...state,
+        messagePage: false,
+        message: null,
       };
 
     case "OPEN_UPLOADINGSTATUS":

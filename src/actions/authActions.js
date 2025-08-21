@@ -12,7 +12,12 @@ const userLogin =
     } catch (error) {
       console.log(error);
       dispatch({ type: "STOP_LOGIN" });
-      dispatch({ type: "ERROR", payload: error.message });
+      // uiDispatch({ type: "OPEN_MESSAGEPAGE" });
+
+      dispatch({
+        type: "ERROR",
+        payload: { message: error.message, title: "Login Failed!" },
+      });
 
       // dispatch({ type: "STOP_LOADING" });
     } finally {
@@ -39,7 +44,10 @@ const userRegister =
       console.log(error);
       dispatch({ type: "STOP_REGISTER" });
 
-      dispatch({ type: "ERROR", payload: error.message });
+      dispatch({
+        type: "ERROR",
+        payload: { message: error.message, title: "Register Failed!" },
+      });
     } finally {
       dispatch({ type: "STOP_REGISTER" });
     }
@@ -56,7 +64,10 @@ const verifyEmail =
       console.log(error);
       dispatch({ type: "STOP_LOADING" });
 
-      dispatch({ type: "ERROR", payload: error.message });
+      dispatch({
+        type: "ERROR",
+        payload: { message: error.message, title: "Verification Failed!" },
+      });
     } finally {
       dispatch({ type: "STOP_LOADING" });
     }
@@ -77,8 +88,13 @@ const verifyToken =
       localStorage.setItem("token", null);
       dispatch({ type: "STOP_LOADING" });
 
-      console.log(error, "error from server");
-      dispatch({ type: "ERROR", payload: error.message });
+      dispatch({
+        type: "ERROR",
+        payload: {
+          message: error.message,
+          title: "Verification Token Failed!",
+        },
+      });
     } finally {
       dispatch({ type: "STOP_LOADING" });
     }

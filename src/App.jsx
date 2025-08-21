@@ -103,6 +103,9 @@ const uiInitialValues = {
   mediaViewer: false,
   uploadingStatus: false,
   overlayPage: false,
+  messagePage: false,
+  message: null,
+
   viewMode: "thumbnail",
 };
 

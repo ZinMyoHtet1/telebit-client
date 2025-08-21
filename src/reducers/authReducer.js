@@ -41,6 +41,11 @@ function authReducer(state, action) {
       };
     case "ERROR":
       return { ...state, errorMessage: action.payload };
+    case "REMOVE_ERROR":
+      return {
+        ...state,
+        errorMessage: null,
+      };
     case "RESET":
       return initialValues;
     default:

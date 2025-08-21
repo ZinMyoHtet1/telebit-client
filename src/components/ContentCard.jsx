@@ -328,10 +328,8 @@ function ContentCard({ content, ...rest }) {
         : windowWidth < 820
         ? 28
         : 30
-      : windowWidth < 380
-      ? 60
       : windowWidth < 660
-      ? 50
+      ? 60
       : windowWidth < 820
       ? 60
       : 70;

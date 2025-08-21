@@ -276,16 +276,17 @@ import "./../styles/login.css";
 import logo from "./../assets/logo.svg";
 import { fileContext } from "../contexts/FileContext";
 import { directoryContext } from "../contexts/DirectoryContext";
+import MessagePage from "./MessagePage";
 
 function Login() {
-  const { dispatch } = useContext(authContext);
-  const { dispatch: uiDispatch, state: uiState } = useContext(uiContext);
+  const { state: authState, dispatch: authDispatch } = useContext(authContext);
+  const { dispatch: uiDispatch } = useContext(uiContext);
   const { dispatch: fileDispatch } = useContext(fileContext);
   const { dispatch: directoryDispatch } = useContext(directoryContext);
   const navigate = useNavigate();
-  console.log(uiState.overlayPage, "uistte");
   const [isLogin, setIsLogin] = useState(true);
 
+  const errorMessage = authState?.errorMessage;
   const initialState = {
     email: "",
     password: "",
@@ -302,38 +303,14 @@ function Login() {
 
   const openOverlayPage = () => uiDispatch({ type: "OPEN_OVERLAYPAGE" });
   const closeOverlayPage = () => uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   openOverlayPage();
 
-  //   if (isLogin) {
-  //     userLogin(formValues, (data) => {
-  //       if (data.status === "verification") {
-  //         navigate("/auth/verifyEmail", {
-  //           replace: true,
-  //           state: { email: formValues.email },
-  //         });
-  //       } else {
-  //         localStorage.setItem("token", data.data.token);
-  //         sessionStorage.setItem("user", JSON.stringify(data.data.user));
-  //         // uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
-  //         navigate("/home", { replace: true });
-  //       }
-  //     })(dispatch);
-  //   } else {
-  //     userRegister(formValues, () => {
-  //       navigate("/auth/verifyEmail", {
-  //         replace: true,
-  //         state: { email: formValues.email },
-  //       });
-  //     })(dispatch);
-  //   }
-  //   closeOverlayPage();
-
-  //   // fileDispatch({ type: "RESET" });
-  //   // directoryDispatch({ type: "RESET" });
-  //   // uiDispatch({ type: "RESET" });
-  // };
+  const openMessagePage = (message) => {
+    setTimeout(() => {
+      authDispatch({ type: "REMOVE_ERROR" });
+    }, 1000);
+    uiDispatch({ type: "OPEN_MESSAGEPAGE", payload: message });
+  };
+  // const closeMessagePage = () => uiDispatch({ type: "CLOSE_MESSAGEPAGE" });
 
   function resetAll() {
     fileDispatch({ type: "RESET" });
@@ -360,7 +337,7 @@ function Login() {
           resetAll();
           navigate("/home", { replace: true });
         }
-      })(dispatch);
+      })(authDispatch);
     } else {
       openOverlayPage();
       userRegister(formValues, () => {
@@ -371,7 +348,7 @@ function Login() {
           replace: true,
           state: { email: formValues.email },
         });
-      })(dispatch);
+      })(authDispatch);
     }
   };
 
@@ -382,12 +359,20 @@ function Login() {
       if (token && token !== "null") {
         verifyToken(token, () => {
           navigate("/home", { replace: true });
-        })(dispatch);
+        })(authDispatch);
       }
     } else {
       navigate("/home", { replace: true });
     }
-  }, [dispatch, navigate]);
+  }, [authDispatch, navigate]);
+
+  useEffect(() => {
+    if (!errorMessage) return;
+    closeOverlayPage();
+    openMessagePage(errorMessage);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errorMessage]);
 
   return (
     <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
@@ -395,6 +380,7 @@ function Login() {
         <OverlayPage>
           <Loading />
         </OverlayPage>
+        <MessagePage />
         <div className="login-card">
           <div className="logo">
             <img src={logo} alt="Telebit Logo" className="logo-icon" />
