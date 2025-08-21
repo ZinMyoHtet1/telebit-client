@@ -46,6 +46,7 @@ function Home() {
   const { state: fileState, dispatch: fileDispatch } = useContext(fileContext);
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
   const { windowWidth } = useContext(mediaQueryContext);
+  const [user, setUser] = useState(null);
 
   const isOpenUploadPage = uiState?.uploadPage;
   // const isDeleting = fileState?.isDeleting;
@@ -54,7 +55,6 @@ function Home() {
   const mainDirectory = directoryState.currentDirectory || null;
   const childDirectories = directoryState.childDirectories;
   const files = fileState?.files;
-  // console.log(files, "files");
   const getIconSize = (windowWidth) => {
     switch (true) {
       // case windowWidth < 380:
@@ -69,12 +69,16 @@ function Home() {
         28;
     }
   };
+
+  // console.log(contents, "contents");
   useEffect(() => {
     let user = null;
     user = JSON.parse(sessionStorage.getItem("user"));
-    if (!user) {
+    if (!user || user === "null") {
       navigate("/getStarted", { replace: true });
+      setUser(null);
     }
+    setUser(user);
   }, [navigate]);
   useEffect(() => {
     if (!isLoading && !contents?.length) {
@@ -94,7 +98,7 @@ function Home() {
   }, [childDirectories, files]);
 
   useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem("user"));
+    // const user = JSON.parse(sessionStorage.getItem("user"));
     if (!user) return;
 
     if (mainDirectory?.id === currentDirId) return;
@@ -113,11 +117,12 @@ function Home() {
     fileDispatch,
     mainDirectory?.id,
     navigate,
+    user,
   ]);
 
   useEffect(() => {
     if (!mainDirectory?.id) return;
-    if (childDirectories.length || files.length) return;
+    if (childDirectories?.length || files?.length) return;
 
     const fetchPromises = [];
 
@@ -136,7 +141,15 @@ function Home() {
     if (mainDirectory?.files?.length)
       fetchPromises.push(fetchFiles(mainDirectory.files)(fileDispatch));
     Promise.all(fetchPromises);
-  }, [childDirectories, directoryDispatch, fileDispatch, files, mainDirectory]);
+  }, [
+    childDirectories,
+    directoryDispatch,
+    fileDispatch,
+    files?.length,
+    mainDirectory,
+  ]);
+
+  if (!user?.email) return;
 
   return (
     <div id="home_page" className="page">

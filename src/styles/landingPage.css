@@ -41,7 +41,7 @@
 }
 
 #landing_page .wrapper .nav_bar .app_name {
-  font-size: 24px;
+  height: 40px;
 }
 
 #landing_page .wrapper .nav_bar .actions {
@@ -67,10 +67,12 @@
   font-size: 3.4rem;
   letter-spacing: 12px;
   color: #fff;
+  text-transform: uppercase;
 }
 
 #landing_page .wrapper .content p {
   font-size: 1.4rem;
+  text-transform: capitalize;
 }
 
 #landing_page .wrapper .content button {
@@ -86,6 +88,10 @@
   #landing_page .wrapper .content h1 {
     font-size: 3rem;
     letter-spacing: 8px;
+  }
+
+  #landing_page .wrapper .nav_bar .app_name {
+    height: 32px;
   }
 }
 
@@ -118,5 +124,9 @@
     align-items: flex-start;
     justify-content: flex-start;
     gap: 10px;
+  }
+
+  #landing_page .wrapper .nav_bar .app_name {
+    height: 24px;
   }
 }

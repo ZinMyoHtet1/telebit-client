@@ -13,6 +13,8 @@ import DownloadIcon from "../svgs/DownloadIcon";
 import { useNavigate } from "react-router-dom";
 import HomeIcon from "../svgs/HomeIcon";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
+
+import logo from "../assets/app-logo.png";
 function SideDrawer() {
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
   const { windowWidth } = useContext(mediaQueryContext);
@@ -90,6 +92,9 @@ function SideDrawer() {
           height={getIconSize(windowWidth)}
         />
       </button>
+      <div className="app_name">
+        <img src={logo} alt="app_logo" />
+      </div>
       <button className="drawer_item btn" onClick={handleUploadFile}>
         <UploadIcon
           width={getIconSize(windowWidth)}

@@ -30,7 +30,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 8px;
-  padding: 8px 6px;
+  padding: 8px;
   background-color: transparent;
   border: none;
   border-bottom: 0.025px solid rgba(0, 0, 0, 0.05);
@@ -58,6 +58,14 @@
   /* background-color: aqua; */
 }
 
+#side_drawer .app_name {
+  padding: 10px 4px 20px;
+}
+
+#side_drawer .app_name img {
+  height: 38px;
+}
+
 @media screen and (max-width: 1000px) {
   #side_drawer {
     width: 250px;
@@ -72,6 +80,14 @@
   #side_drawer {
     left: 6px;
     top: 10px;
+  }
+
+  #side_drawer .app_name {
+    padding: 6px 4px 14px;
+  }
+
+  #side_drawer .app_name img {
+    height: 28px;
   }
 }
 

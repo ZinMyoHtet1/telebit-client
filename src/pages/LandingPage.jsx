@@ -6,19 +6,21 @@ import { authContext } from "../contexts/AuthContext";
 import API from "./../api/authApi";
 
 import bgImage from "./../assets/backgroundImage.png";
+import app_logo from "./../assets/app-logo.png";
 import "./../styles/landingPage.css";
+import LoadingPage from "./LoadingPage";
 
 function LandingPage() {
   const { dispatch: authDispatch } = useContext(authContext);
   const navigate = useNavigate();
   const [bgLoaded, setBgLoaded] = useState(false);
   const [serverConnected, setServerConnected] = useState(false);
+  const [showPage, setShowPage] = useState(false); // ✅ New state for delay
 
   useEffect(() => {
-    // Preload background image
     const img = new Image();
     img.src = bgImage;
-    // Connect API in background (don’t block UI)
+
     API.connect()
       .then(() => {
         setServerConnected(true);
@@ -26,7 +28,15 @@ function LandingPage() {
       .catch((err) => {
         console.error("API connection failed:", err);
       });
+
     img.onload = () => setBgLoaded(true);
+
+    // ✅ Minimum 2-second delay
+    const timer = setTimeout(() => {
+      setShowPage(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const redirectToHome = () => navigate("/home", { replace: true });
@@ -37,8 +47,6 @@ function LandingPage() {
     if (user) return redirectToHome();
 
     const token = localStorage.getItem("token");
-    // cookieStore.get({})
-    console.log(token, "token");
     if (!token || token === "null") return redirectToLogin();
 
     verifyToken(token, redirectToHome)(authDispatch);
@@ -46,14 +54,14 @@ function LandingPage() {
 
   return (
     <>
-      {serverConnected && (
+      {serverConnected && showPage ? ( // ✅ Wait for both API and timer
         <div
           id="landing_page"
           className={`page ${bgLoaded ? "bg-ready" : "bg-loading"}`}
         >
           <div className="wrapper">
             <div className="nav_bar">
-              <div className="app_name">Telebit</div>
+              <img className="app_name" src={app_logo} alt="app-logo" />
               <div className="actions">
                 <button
                   className="about_btn btn"
@@ -72,13 +80,15 @@ function LandingPage() {
 
             <div className="content">
               <h1>Unlimited Cloud Base</h1>
-              <p>Your Data, Everywhere</p>
+              <p>your data, everywhere</p>
               <button className="getStarted_btn btn" onClick={handleGetStarted}>
                 Get Started
               </button>
             </div>
           </div>
         </div>
+      ) : (
+        <LoadingPage />
       )}
     </>
   );

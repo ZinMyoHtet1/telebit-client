@@ -1,0 +1,116 @@
+/* ---- Skeleton Shimmer ---- */
+:root {
+  --sk-bg: #eceff3;
+  --sk-highlight: #f6f8fb;
+  --sk-radius: 12px;
+  --sk-speed: 1.2s;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sk-bg: #2b2f36;
+    --sk-highlight: #343a44;
+  }
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--sk-bg);
+  border-radius: var(--sk-radius);
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--sk-highlight) 45%,
+    var(--sk-highlight) 55%,
+    transparent 100%
+  );
+  animation: sk-shimmer var(--sk-speed) ease-in-out infinite;
+}
+@keyframes sk-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Common shapes */
+.skeleton.line {
+  height: 12px;
+  border-radius: 8px;
+}
+.skeleton.line.sm {
+  height: 10px;
+}
+.skeleton.line.lg {
+  height: 16px;
+}
+.skeleton.block {
+  height: 44px;
+}
+.skeleton.circle {
+  border-radius: 999px;
+  aspect-ratio: 1 / 1;
+}
+
+/* Width helpers */
+.w-25 {
+  width: 25%;
+}
+.w-33 {
+  width: 33%;
+}
+.w-50 {
+  width: 50%;
+}
+.w-66 {
+  width: 66%;
+}
+.w-75 {
+  width: 75%;
+}
+.w-100 {
+  width: 100%;
+}
+
+/* Optional “pulse” variant (no shimmer) */
+.skeleton.pulse::after {
+  display: none;
+}
+.skeleton.pulse {
+  animation: sk-pulse 1.4s ease-in-out infinite;
+}
+@keyframes sk-pulse {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Reduced motion: disable shimmer automatically */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after {
+    animation: none;
+  }
+  .skeleton {
+    animation: sk-pulse 1.4s ease-in-out infinite;
+  }
+}
+
+/* Handy layout utilities for examples */
+.sk-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.sk-row {
+  display: flex;
+  gap: 10px;
+}

@@ -6,6 +6,8 @@ import { uiContext } from "../contexts/UIContext";
 import UploadCircleStatus from "./UploadCircleStatus";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
 
+import ProfileIcon from "../svgs/ProfileIcon";
+import UserStatus from "./UserStatus";
 function Navbar() {
   const { dispatch: uiDispatch } = useContext(uiContext);
   const { windowWidth } = useContext(mediaQueryContext);
@@ -13,12 +15,6 @@ function Navbar() {
   const handleOpenSideDrawer = () => {
     uiDispatch({ type: "OPEN_SIDEDRAWER" });
   };
-  // const handleLogout = () => {
-  //   // cookie.removeCookie();
-  //   cookieStore.delete("jwt");
-  //   sessionStorage.setItem("user", null);
-  //   navigate("/auth/login", { replace: true });
-  // };
 
   const getIconSize = (windowWidth) => {
     switch (true) {
@@ -45,7 +41,10 @@ function Navbar() {
         </div>
         <span className="app_name">Telebit</span>
       </div>
-      <UploadCircleStatus />
+      <div>
+        <UploadCircleStatus />
+        <UserStatus />
+      </div>
     </div>
   );
 }
