@@ -4,7 +4,7 @@ import React, { createContext, useContext, useEffect } from "react";
 import { uploadFile } from "../actions/fileActions";
 import { fileContext } from "./FileContext";
 import createFormData from "../utils/createFormData";
-import { clearFiles, getFiles, saveFiles } from "../utils/fileDB";
+import { getFiles, saveFiles } from "../utils/fileDB";
 import { uiContext } from "./UIContext";
 // import { startWebSocket } from "../utils/socket";
 // import generateUploadId from "../utils/generateUploadId";
@@ -49,8 +49,11 @@ export function UploadProvider({ children }) {
   useEffect(() => {
     if (isLoading || !currentFile) return;
     (async () => {
-      await clearFiles();
-      await saveFiles("uploadingFiles", uploadingFiles);
+      if (uploadingFiles.length === 1) {
+        await saveFiles("uploadingFiles", []);
+      } else {
+        await saveFiles("uploadingFiles", uploadingFiles);
+      }
     })();
   }, [uploadingFiles, currentFile, isLoading]);
 
