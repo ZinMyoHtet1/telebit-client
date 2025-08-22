@@ -1,5 +1,5 @@
 // UploadContext.jsx
-import React, { createContext, useContext, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { uploadFile } from "../actions/fileActions";
 import { fileContext } from "./FileContext";
@@ -17,6 +17,7 @@ const UploadContextProvider = uploadContext.Provider;
 export function UploadProvider({ children }) {
   const { state: fileState, dispatch: fileDispatch } = useContext(fileContext);
   const { state: uiState } = useContext(uiContext);
+  const [isRetreived, setIsRetreived] = useState(false);
   // const [socket, setSocket] = useState(null);
 
   const isLoading = uiState?.isLoading;
@@ -41,27 +42,23 @@ export function UploadProvider({ children }) {
   useEffect(() => {
     (async () => {
       const files = await getFiles("uploadingFiles");
-      console.log("save in db", files);
       fileDispatch({ type: "SET_UPLOADING_CONTENTS", payload: files });
+      setIsRetreived(true);
     })();
   }, [fileDispatch]);
 
   useEffect(() => {
-    if (isLoading || !currentFile) return;
+    if (isLoading || !isRetreived) return;
     (async () => {
-      if (uploadingFiles.length === 1) {
-        await saveFiles("uploadingFiles", []);
-      } else {
-        await saveFiles("uploadingFiles", uploadingFiles);
-      }
+      await saveFiles("uploadingFiles", uploadingFiles);
     })();
-  }, [uploadingFiles, currentFile, isLoading]);
+  }, [uploadingFiles, isRetreived, isLoading]);
 
   useEffect(() => {
-    if (currentFile?.parentId)
-      startUpload(currentFile.parentId, currentFile["file"]);
+    if (isLoading || !currentFile?.parentId) return;
+    startUpload(currentFile.parentId, currentFile["file"]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentFile?.file]);
+  }, [currentFile?.file, isLoading]);
 
   return <UploadContextProvider value={{}}>{children}</UploadContextProvider>;
 }

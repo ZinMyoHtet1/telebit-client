@@ -7,6 +7,7 @@ import { deleteDirectory } from "../actions/directoryActions";
 import { fileContext } from "../contexts/FileContext";
 import { deleteFile } from "../actions/fileActions";
 
+import EyeIcon from "./../svgs/EyeIcon";
 import RenameIcon from "./../svgs/RenameIcon";
 import CopyIcon from "./../svgs/CopyIcon";
 import PasteIcon from "./../svgs/PasteIcon";
@@ -15,6 +16,7 @@ import CloseIcon from "../svgs/CloseIcon";
 import DownloadIcon from "../svgs/DownloadIcon";
 import LinkIcon from "../svgs/LinkIcon";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
+import PlayIcon from "../svgs/PlayIcon";
 
 function ActionBar() {
   const { state: directoryState, dispatch: directoryDispatch } =
@@ -54,6 +56,12 @@ function ActionBar() {
   };
   const openOverlayPage = () => {
     uiDispatch({ type: "OPEN_OVERLAYPAGE" });
+  };
+
+  const handleOpenMedia = () => {
+    directoryDispatch({ type: "SET_ACTIVE_CONTENT", payload: null });
+    uiDispatch({ type: "OPEN_MEDIAVIEWER" });
+    fileDispatch({ type: "SET_MEDIA_CONTENT", payload: content });
   };
 
   const handleCopyLink = () => {
@@ -111,6 +119,25 @@ function ActionBar() {
       </button>
       {content?.mimeType ? (
         <>
+          {content.mimeType.startsWith("video") ||
+          content.mimeType.startsWith("image") ? (
+            <button className="media_btn btn" onClick={handleOpenMedia}>
+              {content.mimeType.startsWith("video") ? (
+                <PlayIcon
+                  width={getIconSize(windowWidth)}
+                  height={getIconSize(windowWidth)}
+                />
+              ) : (
+                <EyeIcon
+                  width={getIconSize(windowWidth)}
+                  height={getIconSize(windowWidth)}
+                />
+              )}
+              <span className="action_name">
+                {content.mimeType.startsWith("video") ? "Play" : "View"}
+              </span>
+            </button>
+          ) : null}
           <button className="copy_link_btn btn" onClick={handleCopyLink}>
             <LinkIcon
               width={getIconSize(windowWidth)}

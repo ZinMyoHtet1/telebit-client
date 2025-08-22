@@ -63,7 +63,9 @@ function UploadFile() {
   const handleUpload = async () => {
     if (!selectedFiles?.length) return;
 
-    // await getFiles("uploadingFiles")
+    // const previousFiles = await getFiles("uploadingFiles");
+    //     await saveFiles("uploadingFiles", uploadingFiles);
+
     fileDispatch({
       type: "ADD_UPLOADING_CONTENTS",
       payload: selectedFiles,

@@ -42,7 +42,6 @@ function Navbar() {
         <span className="app_name">Telebit</span>
       </div>
       <div>
-        <UploadCircleStatus />
         <UserStatus />
       </div>
     </div>
