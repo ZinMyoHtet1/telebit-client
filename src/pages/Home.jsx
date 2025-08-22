@@ -26,11 +26,6 @@ import UploadingStatus from "../components/UploadingStatus";
 import OverlayPage from "./OvelayPage";
 import Loading from "../components/Loading";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
-// import cookie from "../utils/cookie";
-// import cookie from "../utils/cookie";
-// import { verifyToken } from "../actions/authActions";
-// import { authContext } from "../contexts/AuthContext";
-// import cookie from "../utils/cookie";
 
 function Home() {
   const navigate = useNavigate();
@@ -49,6 +44,8 @@ function Home() {
   const [user, setUser] = useState(null);
 
   const isOpenUploadPage = uiState?.uploadPage;
+  const isError = directoryState?.errorMessage || fileState?.errorMessage;
+
   // const isDeleting = fileState?.isDeleting;
 
   const isLoading = directoryState.isLoading || fileState.isLoading;
@@ -186,8 +183,8 @@ function Home() {
           <ContentContainer
             contents={contents.sort((a, b) => a.createdAt - b.createdAt)}
           />
-        ) : !isLoading && showNoContent ? (
-          <div>No directories or files</div>
+        ) : !isLoading && showNoContent && !isError ? (
+          <div className="empty_directory_message">no directories or files</div>
         ) : null}
       </div>
     </div>

@@ -93,6 +93,16 @@ body {
   transform: translateY(-0.8px);
 }
 
+.empty_directory_message {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary-text-color);
+  font-weight: 400;
+}
+
 @media screen and (max-width: 1020px) {
   .wrapper {
     width: 800px;

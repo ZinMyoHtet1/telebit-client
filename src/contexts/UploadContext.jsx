@@ -4,7 +4,7 @@ import React, { createContext, useContext, useEffect } from "react";
 import { uploadFile } from "../actions/fileActions";
 import { fileContext } from "./FileContext";
 import createFormData from "../utils/createFormData";
-import { deleteFiles, getFiles, saveFiles } from "../utils/fileDB";
+import { getFiles, saveFiles } from "../utils/fileDB";
 import { uiContext } from "./UIContext";
 // import { startWebSocket } from "../utils/socket";
 // import generateUploadId from "../utils/generateUploadId";
@@ -40,23 +40,19 @@ export function UploadProvider({ children }) {
 
   useEffect(() => {
     (async () => {
-      await deleteFiles("uploadingFiles");
-      await saveFiles("uploadingFiles", uploadingFiles);
+      const files = await getFiles("uploadingFiles");
+      console.log("save in db", files);
+      fileDispatch({ type: "SET_UPLOADING_CONTENTS", payload: files });
     })();
-  }, [uploadingFiles]);
+  }, [fileDispatch]);
 
   useEffect(() => {
-    if (isLoading || currentFile) return;
+    if (isLoading || !currentFile) return;
     (async () => {
-      // await clearFiles();
-
-      const uploadingContents = await getFiles("uploadingFiles");
-      fileDispatch({
-        type: "SET_UPLOADING_CONTENTS",
-        payload: uploadingContents || [],
-      });
+      console.log("running");
+      await saveFiles("uploadingFiles", uploadingFiles);
     })();
-  }, [currentFile, fileDispatch, isLoading]);
+  }, [uploadingFiles, currentFile, isLoading]);
 
   useEffect(() => {
     if (currentFile?.parentId)

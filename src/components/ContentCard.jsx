@@ -446,7 +446,7 @@ function ContentCard({ content, ...rest }) {
             content.thumbnail
               ? content.thumbnail
               : content.mimeType.startsWith("image")
-              ? content.watch
+              ? content?.thumbnail || content.watch
               : getFileIcon(
                   content.mimeType,
                   content.filename.split(".").at(-1)

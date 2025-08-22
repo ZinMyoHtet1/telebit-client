@@ -110,7 +110,7 @@ const uiInitialValues = {
   overlayPage: false,
   messagePage: false,
   message: null,
-
+  isError: false,
   viewMode: "thumbnail",
 };
 

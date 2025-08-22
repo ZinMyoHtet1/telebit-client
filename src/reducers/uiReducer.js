@@ -12,7 +12,7 @@ const initialValues = {
   overlayPage: false,
   messagePage: false,
   message: null,
-  isError: null,
+  isError: false,
   viewMode: "thumbnail",
 };
 
@@ -167,6 +167,16 @@ function uiReducer(state, action) {
       return {
         ...state,
         viewMode: "thumbnail",
+      };
+    case "ERROR":
+      return {
+        ...state,
+        isError: true,
+      };
+    case "REMOVE_ERROR":
+      return {
+        ...state,
+        isError: false,
       };
     case "RESET":
       return initialValues;

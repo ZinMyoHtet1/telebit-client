@@ -1,4 +1,5 @@
 import generateUploadId from "./generateUploadId";
+import getImageThumbnail from "./getImageThumbnail";
 import getVideoThumbnail from "./getVideoThumbnail";
 
 async function createFormData(file) {
@@ -11,6 +12,11 @@ async function createFormData(file) {
   formData.append("file", file);
   if (file.type.startsWith("video")) {
     const thumbnail = await getVideoThumbnail(file);
+    formData.append("thumbnail", thumbnail);
+  }
+
+  if (file.type.startsWith("image")) {
+    const thumbnail = await getImageThumbnail(file);
     formData.append("thumbnail", thumbnail);
   }
 
