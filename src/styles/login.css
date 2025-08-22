@@ -259,6 +259,25 @@
   text-decoration: underline;
 }
 
+.password-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 40px; /* space for icon */
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
 /* Responsive */
 @media (max-width: 480px) {
   .login-card {

@@ -14,7 +14,7 @@ function Loading() {
   const isDeleting = uiState?.isDeleting; //boolean
   const isRenaming = uiState?.isRenaming; //boolean
   const creatingFolder = uiState?.creatingFolder; //boolean
-  // const isLoading = authState?.isLoading; //boolean
+  const isLoading = authState?.isLoading; //boolean
   const isLoggingOut = authState?.logout;
   const isLogin = authState?.isLogin;
   const isRegistering = authState?.isRegistering;
@@ -25,6 +25,7 @@ function Loading() {
     isLoggingOut,
     isLogin,
     isRegistering,
+    isLoading,
   };
 
   const getIconSize = (windowWidth) => {

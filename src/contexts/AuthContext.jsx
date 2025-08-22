@@ -14,6 +14,8 @@ const initialValues = {
   isRegistering: false,
   errorMessage: null,
   logout: false,
+  isLoading: false,
+
   // user: null,
 };
 

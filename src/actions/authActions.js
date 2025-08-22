@@ -12,18 +12,13 @@ const userLogin =
     } catch (error) {
       console.log(error);
       dispatch({ type: "STOP_LOGIN" });
-      // uiDispatch({ type: "OPEN_MESSAGEPAGE" });
 
       dispatch({
         type: "ERROR",
         payload: { message: error.message, title: "Login Failed!" },
       });
-
-      // dispatch({ type: "STOP_LOADING" });
     } finally {
       dispatch({ type: "STOP_LOGIN" });
-
-      // dispatch({ type: "STOP_LOADING" });
     }
   };
 
@@ -33,13 +28,7 @@ const userRegister =
     try {
       dispatch({ type: "START_REGISTER" });
       await API.register(formData);
-      // navigate("/auth/verifyEmail", {
-      //   replace: true,
-      //   state: { email: formData.email },
-      // });
       callback();
-
-      // dispatch({ type: REGISTER, payload: response.data.data });
     } catch (error) {
       console.log(error);
       dispatch({ type: "STOP_REGISTER" });
@@ -61,7 +50,6 @@ const verifyEmail =
       const response = await API.verifyEmail(formData);
       callback(response.data);
     } catch (error) {
-      console.log(error);
       dispatch({ type: "STOP_LOADING" });
 
       dispatch({
@@ -81,7 +69,6 @@ const verifyToken =
       const response = await API.verifyToken(token);
       localStorage.setItem("token", response.data.data.token);
       sessionStorage.setItem("user", JSON.stringify(response.data.data.user));
-      // dispatch({ type: "VERIFY_AUTH" });
       callback();
     } catch (error) {
       sessionStorage.clear();
@@ -109,11 +96,8 @@ const verifyGoogleToken =
       await API.verifyGoogleToken(token);
       dispatch({ type: "LOGIN" });
 
-      // navigate("/", { replace: true });
       callback();
     } catch (error) {
-      // dispatch({ type: "LOGIN" });
-
       console.log(error, "error from server");
       dispatch({ type: "STOP_LOADING" });
 
@@ -123,4 +107,106 @@ const verifyGoogleToken =
     }
   };
 
-export { userLogin, userRegister, verifyEmail, verifyToken, verifyGoogleToken };
+const resendOTP =
+  (email, callback = () => {}) =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: "START_LOADING" });
+      await API.resendOTP(email);
+
+      callback();
+    } catch (error) {
+      dispatch({ type: "STOP_LOADING" });
+
+      dispatch({
+        type: "ERROR",
+        payload: {
+          message: error.message,
+          title: "Resend OTP failed!",
+        },
+      });
+    } finally {
+      dispatch({ type: "STOP_LOADING" });
+    }
+  };
+
+const forgotPassword =
+  (email, callback = () => {}) =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: "START_LOADING" });
+      await API.forgotPassword(email);
+
+      callback();
+    } catch (error) {
+      dispatch({ type: "STOP_LOADING" });
+
+      dispatch({
+        type: "ERROR",
+        payload: {
+          message: error.message,
+          title: "Failed!",
+        },
+      });
+    } finally {
+      dispatch({ type: "STOP_LOADING" });
+    }
+  };
+
+const verifyResetOTP =
+  (formData, callback = () => {}) =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: "START_LOADING" });
+      const response = await API.verifyResetOTP(formData);
+
+      callback(response.data);
+    } catch (error) {
+      dispatch({ type: "STOP_LOADING" });
+
+      dispatch({
+        type: "ERROR",
+        payload: {
+          message: error.message,
+          title: "Failed!",
+        },
+      });
+    } finally {
+      dispatch({ type: "STOP_LOADING" });
+    }
+  };
+
+const resetPassword =
+  (resetToken, formData, callback = () => {}) =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: "START_LOADING" });
+      const response = await API.resetPassword(resetToken, formData);
+
+      callback(response.data);
+    } catch (error) {
+      dispatch({ type: "STOP_LOADING" });
+
+      dispatch({
+        type: "ERROR",
+        payload: {
+          message: error.message,
+          title: "Failed!",
+        },
+      });
+    } finally {
+      dispatch({ type: "STOP_LOADING" });
+    }
+  };
+
+export {
+  userLogin,
+  userRegister,
+  verifyEmail,
+  verifyToken,
+  verifyGoogleToken,
+  resendOTP,
+  forgotPassword,
+  verifyResetOTP,
+  resetPassword,
+};

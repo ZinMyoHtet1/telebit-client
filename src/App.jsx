@@ -24,6 +24,8 @@ import Login from "./pages/Login.jsx";
 import OTPVerification from "./pages/OTPVerification.jsx";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
+import ForgetPasswordPage from "./pages/ForgetPasswordPage.jsx";
+import ResetPasswordPage from "./pages/ResetPasswordPage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements([
@@ -38,7 +40,10 @@ const router = createBrowserRouter(
     <Route path="/getStarted">
       <Route index element={<LandingPage />} />
     </Route>,
+
     <Route path="/auth">
+      <Route path="forgot-password" element={<ForgetPasswordPage />} />
+      <Route path="reset-password" element={<ResetPasswordPage />} />
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Login />} />
       <Route path="verifyEmail" element={<OTPVerification />} />

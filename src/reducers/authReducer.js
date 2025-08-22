@@ -1,4 +1,5 @@
 const initialValues = {
+  isLoading: false,
   isLogin: false,
   isRegistering: false,
   errorMessage: null,
@@ -8,6 +9,16 @@ const initialValues = {
 
 function authReducer(state, action) {
   switch (action.type) {
+    case "START_LOADING":
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case "STOP_LOADING":
+      return {
+        ...state,
+        isLoading: false,
+      };
     case "START_LOGIN":
       return {
         ...state,

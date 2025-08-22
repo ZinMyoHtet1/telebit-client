@@ -58,6 +58,7 @@ function SideDrawer() {
       sessionStorage.setItem("user", null);
     }, 2000);
     setTimeout(() => {
+      authDispatch({ type: "RESET" });
       navigate("/auth/login", { replace: true });
       closeOverlayPage();
     }, 3000);
