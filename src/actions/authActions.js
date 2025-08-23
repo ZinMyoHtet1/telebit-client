@@ -15,7 +15,10 @@ const userLogin =
 
       dispatch({
         type: "ERROR",
-        payload: { message: error.message, title: "Login Failed!" },
+        payload: {
+          message: error.response.data.message,
+          title: "Login Failed!",
+        },
       });
     } finally {
       dispatch({ type: "STOP_LOGIN" });
@@ -35,7 +38,10 @@ const userRegister =
 
       dispatch({
         type: "ERROR",
-        payload: { message: error.message, title: "Register Failed!" },
+        payload: {
+          message: error.response.data.message,
+          title: "Register Failed!",
+        },
       });
     } finally {
       dispatch({ type: "STOP_REGISTER" });
@@ -54,7 +60,10 @@ const verifyEmail =
 
       dispatch({
         type: "ERROR",
-        payload: { message: error.message, title: "Verification Failed!" },
+        payload: {
+          message: error.response.data.message,
+          title: "Verification Failed!",
+        },
       });
     } finally {
       dispatch({ type: "STOP_LOADING" });
@@ -78,7 +87,7 @@ const verifyToken =
       dispatch({
         type: "ERROR",
         payload: {
-          message: error.message,
+          message: error.response.data.message,
           title: "Verification Token Failed!",
         },
       });
@@ -101,7 +110,7 @@ const verifyGoogleToken =
       console.log(error, "error from server");
       dispatch({ type: "STOP_LOADING" });
 
-      dispatch({ type: "ERROR", payload: error.message });
+      dispatch({ type: "ERROR", payload: error.response.data.message });
     } finally {
       dispatch({ type: "STOP_LOADING" });
     }
@@ -121,7 +130,7 @@ const resendOTP =
       dispatch({
         type: "ERROR",
         payload: {
-          message: error.message,
+          message: error.response.data.message,
           title: "Resend OTP failed!",
         },
       });
@@ -144,7 +153,7 @@ const forgotPassword =
       dispatch({
         type: "ERROR",
         payload: {
-          message: error.message,
+          message: error.response.data.message,
           title: "Failed!",
         },
       });
@@ -167,7 +176,7 @@ const verifyResetOTP =
       dispatch({
         type: "ERROR",
         payload: {
-          message: error.message,
+          message: error.response.data.message,
           title: "Failed!",
         },
       });
@@ -190,7 +199,7 @@ const resetPassword =
       dispatch({
         type: "ERROR",
         payload: {
-          message: error.message,
+          message: error.response.data.message,
           title: "Failed!",
         },
       });

@@ -17,6 +17,8 @@ import DownloadIcon from "../svgs/DownloadIcon";
 import LinkIcon from "../svgs/LinkIcon";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
 import PlayIcon from "../svgs/PlayIcon";
+import OpenIcon from "../svgs/OpenIcon";
+import { useNavigate } from "react-router-dom";
 
 function ActionBar() {
   const { state: directoryState, dispatch: directoryDispatch } =
@@ -24,6 +26,7 @@ function ActionBar() {
   const { dispatch: fileDispatch } = useContext(fileContext);
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
   const { windowWidth } = useContext(mediaQueryContext);
+  const navigate = useNavigate();
 
   const [isCopied, setIsCopied] = useState(false);
 
@@ -64,6 +67,10 @@ function ActionBar() {
     fileDispatch({ type: "SET_MEDIA_CONTENT", payload: content });
   };
 
+  const handleOpenFolder = () => {
+    navigate(`/${content.id}`);
+  };
+
   const handleCopyLink = () => {
     if (isCopied) return;
     const data = content?.watch || "no url";
@@ -72,6 +79,19 @@ function ActionBar() {
       setIsCopied(true);
     }
   };
+
+  const handleCopy = () => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(content);
+    }
+  };
+
+  // const handlePaste = () => {
+  //   if (navigator.clipboard) {
+  //     const text = navigator.clipboard.readText(content);
+  //     return text;
+  //   }
+  // };
 
   const handleDownload = () => {
     if (content?.download) window.open(content?.download, "_parent");
@@ -155,7 +175,15 @@ function ActionBar() {
             <span className="action_name">Download</span>
           </button>
         </>
-      ) : null}
+      ) : (
+        <button className="open_btn btn" onClick={handleOpenFolder}>
+          <OpenIcon
+            width={getIconSize(windowWidth)}
+            height={getIconSize(windowWidth)}
+          />
+          <span className="action_name">Open</span>
+        </button>
+      )}
 
       <button className="rename_btn btn" onClick={handleRename}>
         <RenameIcon
@@ -164,7 +192,7 @@ function ActionBar() {
         />
         <span className="action_name">Rename</span>
       </button>
-      <button className="rename_btn btn">
+      <button className="copy_btn btn" onClick={handleCopy}>
         <CopyIcon
           width={getIconSize(windowWidth)}
           height={getIconSize(windowWidth)}
@@ -179,11 +207,6 @@ function ActionBar() {
         />
         <span className="action_name">Delete</span>
       </button>
-
-      {/* <button className="rename_btn btn">
-        <PasteIcon />
-        <span className="action_name">Paste</span>
-      </button> */}
     </div>
   );
 }
