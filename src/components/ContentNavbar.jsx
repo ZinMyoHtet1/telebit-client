@@ -36,7 +36,7 @@ function ContentNavbar() {
 
   return (
     <div id="content_navbar">
-      {uiState?.isLoading && (
+      {!uiState?.isLoading && (
         <div id="directory">
           {mainDirectory?.id !== "root" ? (
             <button className="route_back_btn btn" onClick={handleBack}>

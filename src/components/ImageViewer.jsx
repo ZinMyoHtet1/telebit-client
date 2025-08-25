@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./../styles/imageViewer.css";
 
-import LoadingSpinner from "./../svgs/LoadingSpinner";
+import TubeSpinner from "./../svgs/TubeSpinner";
 
 function ImageViewer({ content }) {
   const [loading, setLoading] = useState(true);
@@ -12,7 +12,7 @@ function ImageViewer({ content }) {
 
   return (
     <div id="image_viewer">
-      {loading && <LoadingSpinner fillColor="#aca3a3" />}
+      {loading && <TubeSpinner fillColor="#aca3a3" />}
       <img
         src={content?.watch}
         alt={content?.filename}
