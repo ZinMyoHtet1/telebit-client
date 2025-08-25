@@ -30,7 +30,6 @@ function UploadFile() {
   };
 
   const handleUploadAreaClick = () => {
-    console.log("click upload area");
     inputRef.current?.click();
   };
 
