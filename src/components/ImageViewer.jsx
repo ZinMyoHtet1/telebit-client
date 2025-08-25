@@ -12,7 +12,7 @@ function ImageViewer({ content }) {
 
   return (
     <div id="image_viewer">
-      {loading && <TubeSpinner fillColor="#aca3a3" />}
+      {loading && <TubeSpinner fillColor="#aca3a3" width={32} height={32} />}
       <img
         src={content?.watch}
         alt={content?.filename}
