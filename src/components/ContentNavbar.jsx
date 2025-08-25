@@ -46,7 +46,9 @@ function ContentNavbar() {
           </button>
         ) : null}
         <div className="directory_name">
-          {mainDirectory?.id === "root" ? "Home" : mainDirectory?.name || "  "}
+          {mainDirectory?.id === "root"
+            ? "Home"
+            : mainDirectory?.name || "\u00A0"}
         </div>
       </div>
       {windowWidth > 380 ? <ContentActions /> : <UploadCircleStatus />}
