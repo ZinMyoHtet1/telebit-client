@@ -83,6 +83,10 @@
 }
 
 @media screen and (max-width: 360px) {
+  #media_viewer .slide_page {
+    justify-content: center;
+    align-items: center;
+  }
   #media_viewer .left_arrow_btn,
   #media_viewer .right_arrow_btn {
     display: none;
