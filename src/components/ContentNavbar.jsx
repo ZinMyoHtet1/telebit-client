@@ -36,21 +36,19 @@ function ContentNavbar() {
 
   return (
     <div id="content_navbar">
-      {!uiState?.isLoading && (
-        <div id="directory">
-          {mainDirectory?.id !== "root" ? (
-            <button className="route_back_btn btn" onClick={handleBack}>
-              <BackIcon
-                width={getIconSize(windowWidth)}
-                height={getIconSize(windowWidth)}
-              />
-            </button>
-          ) : null}
-          <div className="directory_name">
-            {mainDirectory?.id === "root" ? "Home" : mainDirectory?.name}
-          </div>
+      <div id="directory">
+        {mainDirectory?.id !== "root" && !uiState?.isLoading ? (
+          <button className="route_back_btn btn" onClick={handleBack}>
+            <BackIcon
+              width={getIconSize(windowWidth)}
+              height={getIconSize(windowWidth)}
+            />
+          </button>
+        ) : null}
+        <div className="directory_name">
+          {mainDirectory?.id === "root" ? "Home" : mainDirectory?.name}
         </div>
-      )}
+      </div>
       {windowWidth > 380 ? <ContentActions /> : <UploadCircleStatus />}
     </div>
   );
