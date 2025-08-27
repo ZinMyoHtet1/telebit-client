@@ -9,6 +9,7 @@ import bgImage from "./../assets/backgroundImage.png";
 import app_logo from "./../assets/app-logo.png";
 import "./../styles/landingPage.css";
 import LoadingPage from "./LoadingPage";
+import CustomButton from "../components/CustomButton";
 
 function LandingPage() {
   const { dispatch: authDispatch } = useContext(authContext);
@@ -63,18 +64,16 @@ function LandingPage() {
             <div className="nav_bar">
               <img className="app_name" src={app_logo} alt="app-logo" />
               <div className="actions">
-                <button
+                <CustomButton
+                  text="About"
                   className="about_btn btn"
-                  onClick={() => navigate("/about")}
-                >
-                  About
-                </button>
-                <button
+                  variant="outline"
+                />
+                <CustomButton
+                  text="Login"
                   className="login_btn btn"
-                  onClick={() => navigate("/auth/login")}
-                >
-                  Login
-                </button>
+                  handleClick={() => navigate("/auth/login")}
+                />
               </div>
             </div>
 

@@ -5,13 +5,25 @@
   border: 1px solid #4361ee;
   background-color: #4361ee;
   border-radius: 6px;
-  font-weight: 400;
+  font-weight: 600;
+
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .custom_button.outline {
   background-color: #fff;
   color: #4361ee;
+  background-color: transparent;
+}
+
+.custom_button.text {
+  background-color: #fff;
+  color: #4361ee;
+  background-color: transparent;
+  border: none;
+  color: var(--primary-text-color);
+  font-weight: 600;
+  box-shadow: none;
 }
 
 @media screen and (max-width: 820px) {
