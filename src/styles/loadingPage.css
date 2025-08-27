@@ -4,8 +4,8 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background-color: #caf0f8;
-  backdrop-filter: blur(12px);
+  background-color: var(--background-color);
+  /* backdrop-filter: blur(12px); */
 }
 
 #loading_page .app_logo img {
