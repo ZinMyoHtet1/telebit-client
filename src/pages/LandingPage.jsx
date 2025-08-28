@@ -83,6 +83,13 @@ function LandingPage() {
               <button className="getStarted_btn btn" onClick={handleGetStarted}>
                 Get Started
               </button>
+
+              <div
+                className="signup_btn btn"
+                onClick={() => navigate("/auth/register")}
+              >
+                sign up for free 100GB
+              </div>
             </div>
           </div>
         </div>

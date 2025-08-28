@@ -44,9 +44,11 @@ const router = createBrowserRouter(
     <Route path="/auth">
       <Route path="forgot-password" element={<ForgetPasswordPage />} />
       <Route path="reset-password" element={<ResetPasswordPage />} />
-      <Route path="login" element={<Login />} />
-      <Route path="register" element={<Login />} />
+      {/* <Route path="register" element={<Login />} /> */}
       <Route path="verifyEmail" element={<OTPVerification />} />
+    </Route>,
+    <Route path="/auth/:mode">
+      <Route index element={<Login />} />
     </Route>,
     <Route path="/downloads">
       <Route index element={<Downloads />} />

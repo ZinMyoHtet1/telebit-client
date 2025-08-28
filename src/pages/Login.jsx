@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { userLogin, userRegister, verifyToken } from "../actions/authActions";
 import { authContext } from "../contexts/AuthContext";
 import { uiContext } from "../contexts/UIContext";
@@ -26,7 +26,10 @@ function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const params = useParams();
+  const mode = params?.mode;
 
+  console.log(params, "parmas");
   const errorMessage = authState?.errorMessage;
 
   const initialState = {
@@ -94,6 +97,14 @@ function Login() {
     }
   };
 
+  const handleSwitchMode = () => {
+    if (isLogin) {
+      navigate("/auth/register");
+    } else {
+      navigate("/auth/login");
+    }
+  };
+
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem("user"));
     if (!user || user === "null") {
@@ -107,6 +118,22 @@ function Login() {
       navigate("/home", { replace: true });
     }
   }, [authDispatch, navigate]);
+
+  useEffect(() => {
+    if (!mode) return; // Wait until mode is available
+
+    switch (mode.toLowerCase()) {
+      case "login":
+        setIsLogin(true);
+        break;
+      case "register":
+        setIsLogin(false);
+        break;
+      default:
+        navigate("/getStarted", { replace: true });
+        break;
+    }
+  }, [mode, navigate]);
 
   useEffect(() => {
     if (!errorMessage) return;
@@ -213,7 +240,7 @@ function Login() {
 
           <p className="signup-text">
             {isLogin ? "Don’t have an account?" : "Already have an account?"}{" "}
-            <span onClick={() => setIsLogin(!isLogin)} className="signup-link">
+            <span onClick={handleSwitchMode} className="signup-link">
               {isLogin ? "Sign Up" : "Login"}
             </span>
           </p>
