@@ -15,13 +15,11 @@ import { useNavigate } from "react-router-dom";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
 
 import logo from "../assets/app-logo.png";
-import { fileContext } from "../contexts/FileContext";
 import { authContext } from "../contexts/AuthContext";
 import formatFileSize from "../utils/formatFileSize";
 function SideDrawer() {
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
   const { dispatch: authDispatch } = useContext(authContext);
-  const { state: fileState } = useContext(fileContext);
   const { state: directoryState, dispatch: directoryDispatch } =
     useContext(directoryContext);
   const { windowWidth } = useContext(mediaQueryContext);
@@ -33,8 +31,10 @@ function SideDrawer() {
   const directory = directoryState?.currentDirectory;
 
   const totalStorage = 1024 * 1024 * 1024 * 100;
-  const fileSizes = fileState?.files?.map((file) => +file.size) || [0];
-  const usedStorage = fileSizes.reduce((acc, cur) => acc + cur, 0);
+
+  const user = JSON.parse(sessionStorage.getItem("user"));
+
+  const usedStorage = user.usedStorage || 0;
 
   const getIconSize = (windowWidth) => {
     switch (true) {
