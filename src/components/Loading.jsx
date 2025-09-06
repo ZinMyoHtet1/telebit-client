@@ -15,8 +15,18 @@ function Loading() {
   const isRenaming = uiState?.isRenaming; //boolean
   const creatingFolder = uiState?.creatingFolder; //boolean
   const isLoading = authState?.isLoading; //boolean
-
-  const object = { isDeleting, isRenaming, creatingFolder, isLoading };
+  const isLoggingOut = authState?.logout;
+  const isLogin = authState?.isLogin;
+  const isRegistering = authState?.isRegistering;
+  const object = {
+    isDeleting,
+    isRenaming,
+    creatingFolder,
+    isLoggingOut,
+    isLogin,
+    isRegistering,
+    isLoading,
+  };
 
   const getIconSize = (windowWidth) => {
     switch (true) {
@@ -37,6 +47,13 @@ function Loading() {
         return "Renaming...";
       case object["creatingFolder"]:
         return "Creating Folder...";
+
+      case object["isLoggingOut"]:
+        return "Logging Out...";
+      case object["isLogin"]:
+        return "Logging in...";
+      case object["isRegistering"]:
+        return "Registering...";
       default:
         return "Loading...";
     }

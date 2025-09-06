@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import "./../styles/sideDrawer.css";
 import { uiContext } from "../contexts/UIContext";
 import DeleteIcon from "../svgs/DeleteIcon";
@@ -11,18 +11,30 @@ import CreateFolderIcon from "../svgs/CreateFolderIcon";
 import { directoryContext } from "../contexts/DirectoryContext";
 import DownloadIcon from "../svgs/DownloadIcon";
 import { useNavigate } from "react-router-dom";
-import HomeIcon from "../svgs/HomeIcon";
+// import HomeIcon from "../svgs/HomeIcon";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
+
+import logo from "../assets/app-logo.png";
+import { authContext } from "../contexts/AuthContext";
+import formatFileSize from "../utils/formatFileSize";
 function SideDrawer() {
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
-  const { windowWidth } = useContext(mediaQueryContext);
-
+  const { dispatch: authDispatch } = useContext(authContext);
   const { state: directoryState, dispatch: directoryDispatch } =
     useContext(directoryContext);
+  const { windowWidth } = useContext(mediaQueryContext);
+
   const navigate = useNavigate();
   const drawerRef = useRef();
+  const [percentage, setPercentage] = useState(0);
 
   const directory = directoryState?.currentDirectory;
+
+  const totalStorage = 1024 * 1024 * 1024 * 100;
+
+  const user = JSON.parse(sessionStorage.getItem("user"));
+
+  const usedStorage = user.usedStorage || 0;
 
   const getIconSize = (windowWidth) => {
     switch (true) {
@@ -39,11 +51,23 @@ function SideDrawer() {
     uiDispatch({ type: "CLOSE_SIDEDRAWER" });
   };
 
+  const openOverlayPage = () => uiDispatch({ type: "OPEN_OVERLAYPAGE" });
+  const closeOverlayPage = () => uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
+
   const handleClickLogout = () => {
-    cookieStore.delete("jwt");
-    sessionStorage.setItem("user", null);
-    navigate("/auth/login", { replace: true });
+    authDispatch({ type: "LOGOUT" });
+    openOverlayPage();
     handleClose();
+
+    setTimeout(() => {
+      localStorage.setItem("token", null);
+      sessionStorage.setItem("user", null);
+    }, 2000);
+    setTimeout(() => {
+      authDispatch({ type: "RESET" });
+      navigate("/auth/login", { replace: true });
+      closeOverlayPage();
+    }, 3000);
   };
   const handleClickDownloads = () => {
     navigate("/downloads");
@@ -68,6 +92,10 @@ function SideDrawer() {
   };
 
   useEffect(() => {
+    setPercentage((usedStorage / totalStorage) * 100);
+  }, [totalStorage, usedStorage]);
+
+  useEffect(() => {
     function handleClickOutside(e) {
       // if (isLoading) return;
       if (drawerRef.current && !drawerRef.current.contains(e.target)) {
@@ -90,6 +118,32 @@ function SideDrawer() {
           height={getIconSize(windowWidth)}
         />
       </button>
+      <div className="app_name">
+        <img src={logo} alt="app_logo" />
+      </div>
+      <div className="storage_item">
+        <div className="storage_bar">
+          <div
+            className="storage_fill"
+            style={{ width: `${percentage}%` }}
+          ></div>
+        </div>
+        <div className="storage_info">
+          {formatFileSize(usedStorage)} of {formatFileSize(totalStorage)} used{" "}
+          <span
+            style={{
+              padding: "4px 12px",
+              border: "1px solid #3731edff",
+              borderRadius: "4px",
+              fontSize: "12px",
+              color: "#3731edff",
+            }}
+            className="btn"
+          >
+            buy
+          </span>
+        </div>
+      </div>
       <button className="drawer_item btn" onClick={handleUploadFile}>
         <UploadIcon
           width={getIconSize(windowWidth)}
@@ -154,6 +208,18 @@ function SideDrawer() {
         />
         <span>Logout</span>
       </button>
+
+      {/* <div className="storage_item">
+        <div className="storage_bar">
+          <div
+            className="storage_fill"
+            style={{ width: `${percentage}%` }}
+          ></div>
+        </div>
+        <div className="storage_info">
+          {formatFileSize(usedStorage)} of {formatFileSize(totalStorage)} used
+        </div>
+      </div> */}
     </div>
   );
 }

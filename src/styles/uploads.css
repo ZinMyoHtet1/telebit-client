@@ -49,3 +49,17 @@
   overflow-y: auto;
   /* background-color: red; */
 }
+
+@media screen and (max-width: 820px) {
+  #uploads_page .wrapper {
+    padding: 20px 10px;
+  }
+  #uploads_page .wrapper .page_navbar {
+    padding: 4px;
+    border-bottom: 0.25px solid rgba(0, 0, 0, 0.05);
+  }
+
+  #uploads_page .wrapper .page_navbar .page_name {
+    font-size: 20px;
+  }
+}

@@ -23,3 +23,15 @@
     height: fit-content;
   }
 }
+
+@media screen and (max-width: 360px) {
+  #video_player {
+    max-width: 100%;
+    min-height: calc(100vh * 0.8);
+  }
+
+  #video_player video {
+    width: 100%;
+    height: fit-content;
+  }
+}

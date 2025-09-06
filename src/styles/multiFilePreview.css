@@ -4,6 +4,8 @@
   gap: 10px;
   justify-content: flex-start;
   width: 100%;
+  max-height: 240px;
+  overflow: auto;
 }
 #multi_file_preview .content_item {
   display: flex;

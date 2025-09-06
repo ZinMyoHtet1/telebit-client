@@ -5,6 +5,7 @@ import CustomButton from "./CustomButton";
 import { directoryContext } from "../contexts/DirectoryContext";
 // import { useNavigate } from "react-router-dom";
 import { uiContext } from "../contexts/UIContext";
+import UploadCircleStatus from "./UploadCircleStatus";
 
 function ContentActions() {
   const { state, dispatch } = useContext(directoryContext);
@@ -21,6 +22,8 @@ function ContentActions() {
 
   return (
     <div id="content_actions">
+      <UploadCircleStatus />
+
       <CustomButton
         variant="outline"
         text="Create Folder"

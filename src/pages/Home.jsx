@@ -26,11 +26,6 @@ import UploadingStatus from "../components/UploadingStatus";
 import OverlayPage from "./OvelayPage";
 import Loading from "../components/Loading";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
-// import cookie from "../utils/cookie";
-// import cookie from "../utils/cookie";
-// import { verifyToken } from "../actions/authActions";
-// import { authContext } from "../contexts/AuthContext";
-// import cookie from "../utils/cookie";
 
 function Home() {
   const navigate = useNavigate();
@@ -46,15 +41,17 @@ function Home() {
   const { state: fileState, dispatch: fileDispatch } = useContext(fileContext);
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
   const { windowWidth } = useContext(mediaQueryContext);
+  const [user, setUser] = useState(null);
 
   const isOpenUploadPage = uiState?.uploadPage;
+  const isError = directoryState?.errorMessage || fileState?.errorMessage;
+
   // const isDeleting = fileState?.isDeleting;
 
   const isLoading = directoryState.isLoading || fileState.isLoading;
   const mainDirectory = directoryState.currentDirectory || null;
   const childDirectories = directoryState.childDirectories;
   const files = fileState?.files;
-
   const getIconSize = (windowWidth) => {
     switch (true) {
       // case windowWidth < 380:
@@ -69,14 +66,16 @@ function Home() {
         28;
     }
   };
+
+  // console.log(contents, "contents");
   useEffect(() => {
     let user = null;
     user = JSON.parse(sessionStorage.getItem("user"));
-    if (!user) {
-      console.log(typeof user, "user");
-
+    if (!user || user === "null") {
       navigate("/getStarted", { replace: true });
+      setUser(null);
     }
+    setUser(user);
   }, [navigate]);
   useEffect(() => {
     if (!isLoading && !contents?.length) {
@@ -96,13 +95,17 @@ function Home() {
   }, [childDirectories, files]);
 
   useEffect(() => {
-    const user = JSON.parse(sessionStorage.getItem("user"));
-    if (!user) return;
+    // const user = JSON.parse(sessionStorage.getItem("user"));
+    if (!user || user === "null") return;
+
+    if (!user?.userId) {
+      navigate("/auth/login", { replace: true });
+    }
 
     if (mainDirectory?.id === currentDirId) return;
 
-    directoryDispatch({ type: "RESET" });
-    fileDispatch({ type: "RESET" });
+    directoryDispatch({ type: "REFRESH" });
+    fileDispatch({ type: "REFRESH" });
 
     if (currentDirId === "root") {
       navigate("/", { replace: true });
@@ -115,11 +118,12 @@ function Home() {
     fileDispatch,
     mainDirectory?.id,
     navigate,
+    user,
   ]);
 
   useEffect(() => {
     if (!mainDirectory?.id) return;
-    if (childDirectories.length || files.length) return;
+    if (childDirectories?.length || files?.length) return;
 
     const fetchPromises = [];
 
@@ -138,7 +142,15 @@ function Home() {
     if (mainDirectory?.files?.length)
       fetchPromises.push(fetchFiles(mainDirectory.files)(fileDispatch));
     Promise.all(fetchPromises);
-  }, [childDirectories, directoryDispatch, fileDispatch, files, mainDirectory]);
+  }, [
+    childDirectories,
+    directoryDispatch,
+    fileDispatch,
+    files?.length,
+    mainDirectory,
+  ]);
+
+  if (!user?.email) return;
 
   return (
     <div id="home_page" className="page">
@@ -171,8 +183,8 @@ function Home() {
           <ContentContainer
             contents={contents.sort((a, b) => a.createdAt - b.createdAt)}
           />
-        ) : !isLoading && showNoContent ? (
-          <div>No directories or files</div>
+        ) : !isLoading && showNoContent && !isError ? (
+          <div className="empty_directory_message">no directories or files</div>
         ) : null}
       </div>
     </div>

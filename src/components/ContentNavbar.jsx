@@ -7,8 +7,11 @@ import "./../styles/contentNavbar.css";
 import { directoryContext } from "../contexts/DirectoryContext";
 import { useNavigate } from "react-router-dom";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
+import { uiContext } from "../contexts/UIContext";
+import UploadCircleStatus from "./UploadCircleStatus";
 function ContentNavbar() {
   const { windowWidth } = useContext(mediaQueryContext);
+  const { state: uiState } = useContext(uiContext);
 
   const { state } = useContext(directoryContext);
   const navigate = useNavigate();
@@ -34,7 +37,7 @@ function ContentNavbar() {
   return (
     <div id="content_navbar">
       <div id="directory">
-        {mainDirectory?.id !== "root" ? (
+        {mainDirectory?.id !== "root" && !uiState?.isLoading ? (
           <button className="route_back_btn btn" onClick={handleBack}>
             <BackIcon
               width={getIconSize(windowWidth)}
@@ -43,10 +46,12 @@ function ContentNavbar() {
           </button>
         ) : null}
         <div className="directory_name">
-          {mainDirectory?.id === "root" ? "Home" : mainDirectory?.name}
+          {mainDirectory?.id === "root"
+            ? "Home"
+            : mainDirectory?.name || "\u00A0"}
         </div>
       </div>
-      {windowWidth > 380 && <ContentActions />}
+      {windowWidth > 380 ? <ContentActions /> : <UploadCircleStatus />}
     </div>
   );
 }

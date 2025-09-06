@@ -10,7 +10,9 @@ const initialValues = {
   sideDrawer: false,
   mediaViewer: false,
   overlayPage: false,
-  isError: null,
+  messagePage: false,
+  message: null,
+  isError: false,
   viewMode: "thumbnail",
 };
 
@@ -82,6 +84,20 @@ function uiReducer(state, action) {
         overlayPage: false,
       };
 
+    case "OPEN_MESSAGEPAGE":
+      return {
+        ...state,
+        messagePage: true,
+        message: action.payload || { message: "something went wrong!" },
+      };
+
+    case "CLOSE_MESSAGEPAGE":
+      return {
+        ...state,
+        messagePage: false,
+        message: null,
+      };
+
     case "OPEN_UPLOADINGSTATUS":
       return {
         ...state,
@@ -151,6 +167,16 @@ function uiReducer(state, action) {
       return {
         ...state,
         viewMode: "thumbnail",
+      };
+    case "ERROR":
+      return {
+        ...state,
+        isError: true,
+      };
+    case "REMOVE_ERROR":
+      return {
+        ...state,
+        isError: false,
       };
     case "RESET":
       return initialValues;

@@ -1,68 +1,102 @@
-import React, { useContext, useEffect } from "react";
-import cookie from "../utils/cookie";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { verifyToken } from "../actions/authActions";
 import { authContext } from "../contexts/AuthContext";
+import API from "./../api/authApi";
 
 import bgImage from "./../assets/backgroundImage.png";
-
+import app_logo from "./../assets/app-logo.png";
 import "./../styles/landingPage.css";
+import LoadingPage from "./LoadingPage";
+import CustomButton from "../components/CustomButton";
 
 function LandingPage() {
   const { dispatch: authDispatch } = useContext(authContext);
-  // const [user, setUser] = useState(null);
-
   const navigate = useNavigate();
-  useEffect(() => {}, [authDispatch, navigate]);
+  const [bgLoaded, setBgLoaded] = useState(false);
+  const [serverConnected, setServerConnected] = useState(false);
+  const [showPage, setShowPage] = useState(false); // ✅ New state for delay
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = bgImage;
+
+    API.connect()
+      .then(() => {
+        setServerConnected(true);
+      })
+      .catch((err) => {
+        console.error("API connection failed:", err);
+      });
+
+    img.onload = () => setBgLoaded(true);
+
+    // ✅ Minimum 2-second delay
+    const timer = setTimeout(() => {
+      setShowPage(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const redirectToHome = () => navigate("/home", { replace: true });
+  const redirectToLogin = () => navigate("/auth/login", { replace: true });
 
   const handleGetStarted = () => {
-    let user = null;
-    user = JSON.parse(sessionStorage.getItem("user"));
-    if (!user) {
-      const jwt = cookie.getCookie("jwt");
-      // console.log(jwt, "jwt");
-      if (!jwt) {
-        navigate("/auth/login", { replace: true });
-      } else {
-        verifyToken(jwt, () => {
-          navigate("/home", { replace: true });
-        })(authDispatch);
-      }
+    const user = JSON.parse(sessionStorage.getItem("user"));
+    if (user) return redirectToHome();
 
-      //verify token
-    } else {
-      navigate("/home", { replace: true });
-    }
+    const token = localStorage.getItem("token");
+    if (!token || token === "null") return redirectToLogin();
+
+    verifyToken(token, redirectToHome)(authDispatch);
   };
+
   return (
-    <div
-      id="landing_page"
-      className="page"
-      style={{
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        minHeight: "100vh", // ensures it fills the screen
-      }}
-    >
-      <div className="wrapper">
-        <div className="nav_bar">
-          <div className="app_name">Telebit</div>
-          <div className="actions">
-            <button className="about_btn btn">about</button>
-            <button className="login_btn btn">Login</button>
+    <>
+      {serverConnected && showPage ? ( // ✅ Wait for both API and timer
+        <div
+          id="landing_page"
+          className={`page ${bgLoaded ? "bg-ready" : "bg-loading"}`}
+        >
+          <div className="wrapper">
+            <div className="nav_bar">
+              <img className="app_name" src={app_logo} alt="app-logo" />
+              <div className="actions">
+                <CustomButton
+                  text="About"
+                  className="about_btn btn"
+                  variant="outline"
+                />
+                <CustomButton
+                  text="Login"
+                  className="login_btn btn"
+                  handleClick={() => navigate("/auth/login")}
+                />
+              </div>
+            </div>
+
+            <div className="content">
+              <h1>Unlimited Cloud Base</h1>
+              <p>your data, everywhere</p>
+              <button className="getStarted_btn btn" onClick={handleGetStarted}>
+                Get Started
+              </button>
+
+              <div
+                className="signup_btn btn"
+                onClick={() => navigate("/auth/register")}
+              >
+                sign up for free 100GB
+              </div>
+            </div>
           </div>
         </div>
-        <div className="content">
-          <h1>Unlimited Cloud Base</h1>
-          <p>Your Data, Everywhere</p>
-          <button className="getStarted_btn btn" onClick={handleGetStarted}>
-            Get Started
-          </button>
-        </div>
-      </div>
-    </div>
+      ) : (
+        <LoadingPage />
+      )}
+    </>
   );
 }
 

@@ -11,7 +11,7 @@ const fetchDirectory =
       callback();
     } catch (error) {
       console.log(error);
-      dispatch({ type: "ERROR", payload: error.message });
+      dispatch({ type: "ERROR", payload: error.response.data.message });
     } finally {
       dispatch({ type: "STOP_LOADING" });
     }
@@ -28,7 +28,7 @@ const fetchDirectories =
       callback();
     } catch (error) {
       console.log(error);
-      dispatch({ type: "ERROR", payload: error.message });
+      dispatch({ type: "ERROR", payload: error.response.data.message });
     } finally {
       dispatch({ type: "STOP_LOADING" });
     }
@@ -45,7 +45,7 @@ const createDirectory =
       callback();
     } catch (error) {
       console.log(error);
-      dispatch({ type: "ERROR", payload: error.message });
+      dispatch({ type: "ERROR", payload: error.response.data.message });
     }
   };
 
@@ -60,7 +60,7 @@ const renameDirectory =
       callback();
     } catch (error) {
       console.log(error);
-      dispatch({ type: "ERROR", payload: error.message });
+      dispatch({ type: "ERROR", payload: error.response.data.message });
     }
   };
 
@@ -75,7 +75,7 @@ const deleteDirectory =
       callback();
     } catch (error) {
       console.log(error);
-      dispatch({ type: "ERROR", payload: error.message });
+      dispatch({ type: "ERROR", payload: error.response.data.message });
     }
   };
 
