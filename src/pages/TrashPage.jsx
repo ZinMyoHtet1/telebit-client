@@ -29,7 +29,9 @@ function TrashPage() {
           </button>
           <div className="page_name">Trashes</div>
         </div>
-        <div className="message_text">Permanently Delete After 1 day</div>
+        <div className="message_text">
+          automative delete content permanently after 1 day
+        </div>
         {trashes.length ? (
           <div className="trashes_container content_container">
             {trashes.map((trash) => (

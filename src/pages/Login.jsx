@@ -29,7 +29,6 @@ function Login() {
   const params = useParams();
   const mode = params?.mode;
 
-  console.log(params, "parmas");
   const errorMessage = authState?.errorMessage;
 
   const initialState = {
