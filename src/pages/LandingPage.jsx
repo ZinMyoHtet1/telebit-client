@@ -44,7 +44,10 @@ function LandingPage() {
   const redirectToLogin = () => navigate("/auth/login", { replace: true });
 
   const handleGetStarted = () => {
-    const user = JSON.parse(sessionStorage.getItem("user"));
+    const user =
+      sessionStorage.getItem("user") !== "undefined"
+        ? JSON.parse(sessionStorage.getItem("user"))
+        : null;
     if (user) return redirectToHome();
 
     const token = localStorage.getItem("token");

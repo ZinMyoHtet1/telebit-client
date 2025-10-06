@@ -70,7 +70,8 @@ function Home() {
   // console.log(contents, "contents");
   useEffect(() => {
     let user = null;
-    user = JSON.parse(sessionStorage.getItem("user"));
+    if (sessionStorage.getItem("user") !== "undefined")
+      user = JSON.parse(sessionStorage.getItem("user"));
     if (!user || user === "null") {
       navigate("/getStarted", { replace: true });
       setUser(null);

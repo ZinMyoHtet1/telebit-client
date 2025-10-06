@@ -80,6 +80,35 @@ body {
   border-radius: 8px;
 }
 
+.wrapper .page_navbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 4px;
+  border-bottom: 0.25px solid rgba(0, 0, 0, 0.05);
+}
+
+.wrapper .page_navbar button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: transparent;
+  border-radius: 20px;
+  padding: 8px;
+}
+
+.wrapper .page_navbar button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.wrapper .page_navbar .page_name {
+  font-weight: 600;
+  font-size: 24px;
+  color: var(--secondary-text-color);
+  margin-left: 4px;
+}
+
 .btn {
   cursor: pointer;
   transition: transform 0.1s ease-in;
@@ -103,6 +132,65 @@ body {
   color: var(--secondary-text-color);
   font-weight: 400;
 }
+
+/* Content Container */
+.content_container {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(120px, 1fr));
+  align-content: baseline;
+  justify-items: center;
+  position: relative;
+  /* display: flex; */
+  flex: 1; /* let it expand to fill remaining height */
+  min-height: 0; /* important in flex to allow scroll */
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  /* align-content: center; */
+  gap: 6px;
+  overflow-y: auto;
+  /* background-color: red; */
+}
+
+.content_container.list {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  flex-wrap: nowrap;
+}
+
+@media screen and (max-width: 1020px) {
+  .content_container {
+    grid-template-columns: repeat(6, minmax(100px, 1fr));
+  }
+}
+
+@media screen and (max-width: 660px) {
+  .content_container {
+    grid-template-columns: repeat(5, minmax(100px, 1fr));
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .content_container {
+    grid-template-columns: repeat(4, minmax(100px, 1fr));
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .content_container {
+    grid-template-columns: repeat(3, minmax(100px, 1fr));
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .content_container {
+    grid-template-columns: repeat(2, minmax(100px, 1fr));
+    gap: 0px;
+  }
+}
+
+/* Content Container */
 
 @media screen and (max-width: 1020px) {
   .wrapper {

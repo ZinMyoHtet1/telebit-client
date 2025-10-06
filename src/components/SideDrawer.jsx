@@ -78,6 +78,12 @@ function SideDrawer() {
     navigate("/uploads");
     handleClose();
   };
+
+  const handleClickTrashes = () => {
+    navigate("/trashes");
+    handleClose();
+  };
+  // con
   // const handleClickHome = () => {
   //   navigate("/", { replace: true });
   // };
@@ -176,13 +182,13 @@ function SideDrawer() {
         />
         <span>Uploads</span>
       </button>
-      <button className="drawer_item btn">
+      <button className="drawer_item btn" onClick={handleClickTrashes}>
         <DeleteIcon
           width={getIconSize(windowWidth)}
           height={getIconSize(windowWidth)}
           fillColor="#4361ee"
         />
-        <span>trash</span>
+        <span>Trashes</span>
       </button>
       <button className="drawer_item btn">
         <StatsIcon

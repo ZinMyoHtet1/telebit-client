@@ -1,0 +1,53 @@
+.trash_card {
+  display: flex;
+  position: relative;
+  background-color: #fff;
+  width: 120px;
+  height: 110px;
+  padding: 8px;
+  /* box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); */
+  border-radius: 4px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.trash_card:hover,
+.trash_card.active,
+.trash_card.list:hover {
+  border: 0.5px solid rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.trash_card .thumbnail_img {
+  height: 50px;
+}
+
+.trash_card .name {
+  font-size: 14px;
+}
+
+.trash_card .deleted_at {
+  font-size: 10px;
+}
+.trash_card .actions {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  background-color: #fff;
+  padding: 8px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  display: flex;
+  gap: 8px;
+  border-radius: 4px;
+  transform: translateX(-50%);
+  /* backdrop-filter: blur(10px); */
+}
+
+.trash_card .actions button {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  font-size: 14px;
+  text-transform: uppercase;
+}

@@ -26,6 +26,9 @@ import { AuthProvider } from "./contexts/AuthContext.jsx";
 import LandingPage from "./pages/LandingPage.jsx";
 import ForgetPasswordPage from "./pages/ForgetPasswordPage.jsx";
 import ResetPasswordPage from "./pages/ResetPasswordPage.jsx";
+import TrashPage from "./pages/TrashPage.jsx";
+import { TrashProvider } from "./contexts/TrashContext.js";
+import trashReducer from "./reducers/trashReducer.js";
 
 const router = createBrowserRouter(
   createRoutesFromElements([
@@ -55,6 +58,9 @@ const router = createBrowserRouter(
     </Route>,
     <Route path="/uploads">
       <Route index element={<Uploads />} />
+    </Route>,
+    <Route path="/trashes">
+      <Route index element={<TrashPage />} />
     </Route>,
     <Route path="/upload/:dirId">
       <Route index element={<UploadFile />} />
@@ -97,6 +103,11 @@ const fileInitialValues = {
   uploadingContents: [],
 };
 
+const trashInitialValues = {
+  isLoading: false,
+  trashes: [],
+};
+
 const uiInitialValues = {
   isLoading: false,
   isDeleting: false,
@@ -122,6 +133,10 @@ function App() {
     directoryInitialValues
   );
   const [fileState, fileDispatch] = useReducer(fileReducer, fileInitialValues);
+  const [trashState, trashDispatch] = useReducer(
+    trashReducer,
+    trashInitialValues
+  );
   const [uiState, uiDispatch] = useReducer(uiReducer, uiInitialValues);
 
   useEffect(() => {
@@ -140,13 +155,15 @@ function App() {
         value={{ state: directoryState, dispatch: directoryDispatch }}
       >
         <FileProvider value={{ state: fileState, dispatch: fileDispatch }}>
-          <UIProvider value={{ state: uiState, dispatch: uiDispatch }}>
-            <UploadProvider>
-              <MediaQueryProvider>
-                <RouterProvider router={router} />
-              </MediaQueryProvider>
-            </UploadProvider>
-          </UIProvider>
+          <TrashProvider value={{ state: trashState, dispatch: trashDispatch }}>
+            <UIProvider value={{ state: uiState, dispatch: uiDispatch }}>
+              <UploadProvider>
+                <MediaQueryProvider>
+                  <RouterProvider router={router} />
+                </MediaQueryProvider>
+              </UploadProvider>
+            </UIProvider>
+          </TrashProvider>
         </FileProvider>
       </DirectoryProvider>
     </AuthProvider>
