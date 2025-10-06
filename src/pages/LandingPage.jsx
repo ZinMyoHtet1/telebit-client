@@ -9,14 +9,21 @@ import bgImage from "./../assets/backgroundImage.png";
 import app_logo from "./../assets/app-logo.png";
 import "./../styles/landingPage.css";
 import LoadingPage from "./LoadingPage";
+import OverlayPage from "./OvelayPage";
+import Loading from "../components/Loading";
 import CustomButton from "../components/CustomButton";
+import { uiContext } from "../contexts/UIContext";
 
 function LandingPage() {
   const { dispatch: authDispatch } = useContext(authContext);
+  const { dispatch: uiDispatch } = useContext(uiContext);
   const navigate = useNavigate();
   const [bgLoaded, setBgLoaded] = useState(false);
   const [serverConnected, setServerConnected] = useState(false);
   const [showPage, setShowPage] = useState(false); // ✅ New state for delay
+
+  const openOverlayPage = () => uiDispatch({ type: "OPEN_OVERLAYPAGE" });
+  const closeOverlayPage = () => uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
 
   useEffect(() => {
     const img = new Image();
@@ -40,10 +47,17 @@ function LandingPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  const redirectToHome = () => navigate("/home", { replace: true });
-  const redirectToLogin = () => navigate("/auth/login", { replace: true });
+  const redirectToHome = () => {
+    navigate("/home", { replace: true });
+    closeOverlayPage();
+  };
+  const redirectToLogin = () => {
+    navigate("/auth/login", { replace: true });
+    closeOverlayPage();
+  };
 
   const handleGetStarted = () => {
+    openOverlayPage();
     const user =
       sessionStorage.getItem("user") !== "undefined"
         ? JSON.parse(sessionStorage.getItem("user"))
@@ -99,6 +113,9 @@ function LandingPage() {
       ) : (
         <LoadingPage />
       )}
+      <OverlayPage>
+        <Loading />
+      </OverlayPage>
     </>
   );
 }

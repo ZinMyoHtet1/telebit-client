@@ -1,3 +1,10 @@
 #trash_page .wrapper {
   background-color: #fff;
 }
+
+#trash_page .message_text {
+  justify-self: flex-end;
+  padding: 0 4px;
+  font-size: 18px;
+  color: gray;
+}
