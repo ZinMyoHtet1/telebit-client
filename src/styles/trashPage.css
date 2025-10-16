@@ -4,7 +4,23 @@
 
 #trash_page .message_text {
   justify-self: flex-end;
-  padding: 0 4px;
+  padding: 4px 0;
   font-size: 18px;
   color: gray;
+}
+
+#trash_page .trashes_container {
+  padding-top: 8px;
+}
+
+@media screen and (max-width: 660px) {
+  #trash_page .message_text {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  #trash_page .message_text {
+    font-size: 12px;
+  }
 }

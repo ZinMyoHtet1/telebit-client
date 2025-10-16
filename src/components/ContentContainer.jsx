@@ -11,8 +11,8 @@ function ContentContainer({ contents }) {
       id="content_container"
       className={`${uiState?.viewMode === "list" ? "list" : ""}`}
     >
-      {contents.map((content) => (
-        <ContentCard key={content.id || content.uploadId} content={content} />
+      {contents.map((content,i) => (
+        <ContentCard key={content?.id+i || content?.uploadId+i} content={content} />
       ))}
     </div>
   );

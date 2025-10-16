@@ -67,7 +67,7 @@ function Home() {
     }
   };
 
-  // console.log(contents, "contents");
+  console.log(contents, "contents");
   useEffect(() => {
     let user = null;
     if (sessionStorage.getItem("user") !== "undefined")
@@ -92,7 +92,7 @@ function Home() {
   }, [isLoading, uiDispatch]);
 
   useEffect(() => {
-    setContents([...childDirectories, ...files]);
+    setContents([...childDirectories, ...files].filter((c) => c !== null));
   }, [childDirectories, files]);
 
   useEffect(() => {
@@ -182,7 +182,7 @@ function Home() {
 
         {contents?.length ? (
           <ContentContainer
-            contents={contents.sort((a, b) => a.createdAt - b.createdAt)}
+            contents={contents.sort((a, b) => a?.createdAt - b?.createdAt)}
           />
         ) : !isLoading && showNoContent && !isError ? (
           <div className="empty_directory_message">no directories or files</div>

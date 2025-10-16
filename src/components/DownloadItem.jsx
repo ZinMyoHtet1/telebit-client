@@ -6,7 +6,6 @@ import formatFileSize from "../utils/formatFileSize";
 
 import "./../styles/downloadedItem.css";
 function DownloadItem({ content, state = "downloaded", ...rest }) {
-  console.log(content, "contnet");
   const image = content?.thumbnail
     ? content?.thumbnail
     : getFileIcon(content?.type, content?.name?.split(".").at(-1));
