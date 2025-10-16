@@ -16,7 +16,7 @@ const getTrashes = () =>
     },
   });
 const retrieveTrash = (content) =>
-  instance.post(`/retrieveTrash`, content, {
+  instance.post("/retrieveTrash", content, {
     headers: {
       userId: JSON.parse(sessionStorage.getItem("user")).userId,
     },

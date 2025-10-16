@@ -61,6 +61,7 @@ function directoryReducer(state, action) {
         parentDirectories: action.payload,
       };
 
+    case "RETRIEVE_TRASH":
     case "CREATE_DIRECTORY":
       return {
         ...state,

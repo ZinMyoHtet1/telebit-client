@@ -20,8 +20,10 @@ function trashReducer(state, action) {
         ...state,
         trashes: action.payload,
       };
+
+    case "RETRIEVE_TRASH":
     case "DELETE_TRASH":
-      // console.log("passing..", action.payload);
+      console.log("passing..", action.payload);
       return {
         ...state,
         trashes: state.trashes.filter((trash) => trash._id !== action.payload),

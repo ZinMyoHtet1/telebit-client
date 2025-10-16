@@ -4,12 +4,14 @@
   background-color: #fff;
   width: 120px;
   height: 110px;
-  padding: 8px;
-  /* box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); */
-  border-radius: 4px;
+  border-radius: 10px;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, border 0.2s;
+  font-size: 14px;
 }
 
 .trash_card:hover,
@@ -50,4 +52,22 @@
   background-color: transparent;
   font-size: 14px;
   text-transform: uppercase;
+}
+
+@media screen and (max-width: 820px) {
+  .trash_card .folder_name {
+    transform: translateY(-6px);
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .trash_card .folder_name {
+    transform: translateY(-8px);
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .trash_card .folder_name {
+    transform: translateY(-4px);
+  }
 }

@@ -91,7 +91,9 @@ function fileReducer(state, action) {
         uploadingContents: state.uploadingContents.slice(1),
         currentUploadContent: state.uploadingContents[1] || null,
       };
+
     case "UPLOAD_FILE":
+    case "RETRIEVE_TRASH":
       return {
         ...state,
         files:

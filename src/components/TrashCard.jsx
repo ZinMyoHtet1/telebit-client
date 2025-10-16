@@ -4,19 +4,29 @@ import timeAgo from "../utils/timeAgo";
 import "./../styles/trashCard.css";
 import formatName from "../utils/formatName";
 
-import { deleteTrash } from "../actions/trashActions.js";
+import { deleteTrash, retrieveTrash } from "../actions/trashActions.js";
 import { trashContext } from "../contexts/TrashContext";
 import { uiContext } from "../contexts/UIContext.js";
 import { mediaQueryContext } from "../contexts/MediaQueryContext.jsx";
 import FolderSolid from "../svgs/FolderSolid.jsx";
 import getFileIcon from "../utils/getFileIcon.js";
+import { fileContext } from "../contexts/FileContext.js";
+import { directoryContext } from "../contexts/DirectoryContext.js";
 
 function TrashCard({ content, ...rest }) {
   const [showActions, setShowActions] = useState(false);
   const cardRef = useRef(null);
   const { state: uiState } = useContext(uiContext);
+  const { dispatch: fileDispatch } = useContext(fileContext);
+  const { dispatch: directoryDispatch } = useContext(directoryContext);
   const { dispatch: trashDispatch } = useContext(trashContext);
   const { windowWidth } = useContext(mediaQueryContext);
+
+  const retrieveCallback = (content) => {
+    content.mimeType
+      ? fileDispatch({ type: "RETRIEVE_TRASH", payload: content })
+      : directoryDispatch({ type: "RETRIEVE_TRASH", payload: content });
+  };
 
   const handleClickCard = () => {
     setShowActions(true);
@@ -24,6 +34,10 @@ function TrashCard({ content, ...rest }) {
 
   const deleteTrashById = (id) => {
     deleteTrash(id)(trashDispatch);
+  };
+
+  const retrieveTrashContent = (content) => {
+    retrieveTrash(content)(trashDispatch, retrieveCallback);
   };
 
   const folderIconSize =
@@ -78,7 +92,9 @@ function TrashCard({ content, ...rest }) {
       ) : (
         <>
           <FolderSolid width={folderIconSize} height={folderIconSize} />
-          <div className="name">{formatName(content.data.name, 15)}</div>
+          <div className="name folder_name">
+            {formatName(content.data.name, 15)}
+          </div>
         </>
       )}
       <div className="deleted_at">{timeAgo(content.deletedAt)}</div>
@@ -91,7 +107,12 @@ function TrashCard({ content, ...rest }) {
           >
             Delete
           </button>
-          <button className="retrieve btn">Retrieve</button>
+          <button
+            className="retrieve btn"
+            onClick={() => retrieveTrashContent(content)}
+          >
+            Retrieve
+          </button>
         </div>
       )}
     </div>

@@ -8,11 +8,25 @@ import { trashContext } from "../contexts/TrashContext.js";
 import "./../styles/trashPage.css";
 import BackIcon from "../svgs/BackIcon.jsx";
 import TrashCard from "../components/TrashCard.jsx";
+import { mediaQueryContext } from "../contexts/MediaQueryContext.jsx";
 function TrashPage() {
   const { state: trashState, dispatch: trashDispatch } =
     useContext(trashContext);
+  const { windowWidth } = useContext(mediaQueryContext);
+
   const trashes = trashState?.trashes;
-  console.log(trashes, "trashes");
+
+  const getIconSize = (windowWidth) => {
+    switch (true) {
+      case windowWidth < 360:
+        return 14;
+      case windowWidth < 660:
+        return 18;
+      default:
+        24;
+    }
+  };
+  // console.log(trashes, "trashes");
   const handleClickBack = () => {
     // navigate("/", { replace: true });
     history.back();
@@ -25,7 +39,10 @@ function TrashPage() {
       <div className="wrapper">
         <div className="page_navbar">
           <button className="back_icon btn" onClick={handleClickBack}>
-            <BackIcon />
+            <BackIcon
+              width={getIconSize(windowWidth)}
+              height={getIconSize(windowWidth)}
+            />
           </button>
           <div className="page_name">Trashes</div>
         </div>
