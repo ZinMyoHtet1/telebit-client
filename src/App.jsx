@@ -105,6 +105,8 @@ const fileInitialValues = {
 
 const trashInitialValues = {
   isLoading: false,
+  isDeleting: false,
+  isRetrieving: false,
   trashes: [],
 };
 

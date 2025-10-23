@@ -20,26 +20,17 @@ const retrieveTrash =
   (content) =>
   async (dispatch, callback = () => {}) => {
     try {
-      dispatch({ type: "START_LOADING" });
-      // const { userId, contentId, parentId, type, _id: id } = content;
-      // const updatedContent = {
-      //   userId,
-      //   contentId,
-      //   parentId,
-      //   type,
-      //   id,
-      // };
-      // console.log(updatedContent, "up conte");
+      dispatch({ type: "START_RETRIEVING" });
       const response = await TRASH.retrieveTrash(content);
 
       dispatch({ type: "RETRIEVE_TRASH", payload: content._id });
-      console.log(response.data.data, "response");
       callback(response.data.data);
     } catch (error) {
       console.log(error);
       dispatch({ type: "ERROR", payload: error.message });
+      dispatch({ type: "STOP_RETRIEVING" });
     } finally {
-      dispatch({ type: "STOP_LOADING" });
+      dispatch({ type: "STOP_RETRIEVING" });
     }
   };
 
@@ -47,7 +38,7 @@ const deleteTrash =
   (id) =>
   async (dispatch, callback = () => {}) => {
     try {
-      dispatch({ type: "START_LOADING" });
+      dispatch({ type: "START_DELETING" });
       await TRASH.deleteTrash(id);
 
       dispatch({ type: "DELETE_TRASH", payload: id });
@@ -55,8 +46,9 @@ const deleteTrash =
     } catch (error) {
       console.log(error);
       dispatch({ type: "ERROR", payload: error.message });
+      dispatch({ type: "STOP_DELETING" });
     } finally {
-      dispatch({ type: "STOP_LOADING" });
+      dispatch({ type: "STOP_DELETING" });
     }
   };
 

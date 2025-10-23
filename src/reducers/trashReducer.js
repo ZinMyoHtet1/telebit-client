@@ -1,5 +1,7 @@
 const initialValues = {
   isLoading: false,
+  isDeleting: false,
+  isRetrieving: false,
   trashes: [],
 };
 function trashReducer(state, action) {
@@ -19,6 +21,31 @@ function trashReducer(state, action) {
       return {
         ...state,
         trashes: action.payload,
+      };
+
+    case "START_DELETING":
+      return {
+        ...state,
+        isDeleting: true,
+      };
+    case "STOP_DELETING":
+      return {
+        ...state,
+        isDeleting: false,
+      };
+
+    case "START_RETRIEVING":
+      console.log("start retrieving...");
+      return {
+        ...state,
+        isRetrieving: true,
+      };
+    case "STOP_RETRIEVING":
+      console.log("stop retrieving...");
+
+      return {
+        ...state,
+        isRetrieving: false,
       };
 
     case "RETRIEVE_TRASH":

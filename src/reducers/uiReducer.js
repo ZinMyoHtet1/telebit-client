@@ -2,6 +2,7 @@ const initialValues = {
   isLoading: false,
   isDeleting: false,
   isRenaming: false,
+  isRetrieving: false,
   creatingFolder: false,
   activeRenaming: false,
   actionBar: false,
@@ -60,6 +61,7 @@ function uiReducer(state, action) {
         ...state,
         isRenaming: false,
       };
+
     case "OPEN_ACTIONBAR":
       return {
         ...state,
