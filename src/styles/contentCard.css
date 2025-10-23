@@ -1,6 +1,6 @@
 .content_card {
   position: relative;
-  width: 120px;
+  width: 105px;
   height: 110px;
   display: flex;
   flex-direction: column;
@@ -9,7 +9,7 @@
   font-size: 14px;
   text-align: center;
   cursor: pointer;
-  gap: 4px;
+  /* gap: 4px; */
   border-radius: 10px;
   transition: background-color 0.2s, border 0.2s;
 }

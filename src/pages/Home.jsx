@@ -67,7 +67,7 @@ function Home() {
     }
   };
 
-  console.log(contents, "contents");
+  // console.log(contents, "contents");
   useEffect(() => {
     let user = null;
     if (sessionStorage.getItem("user") !== "undefined")

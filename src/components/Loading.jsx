@@ -6,21 +6,28 @@ import { uiContext } from "../contexts/UIContext";
 import "./../styles/loading.css";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
 import { authContext } from "../contexts/AuthContext";
+import { trashContext } from "../contexts/TrashContext";
 
 function Loading() {
   const { state: uiState } = useContext(uiContext);
+  const { state: trashState } = useContext(trashContext);
   const { windowWidth } = useContext(mediaQueryContext);
   const { state: authState } = useContext(authContext);
   const isDeleting = uiState?.isDeleting; //boolean
   const isRenaming = uiState?.isRenaming; //boolean
+  const isTrashRetrieving = trashState?.isRetrieving; //boolean
+  const isTrashDeleting = trashState?.isDeleting; //boolean
   const creatingFolder = uiState?.creatingFolder; //boolean
   const isLoading = authState?.isLoading; //boolean
   const isLoggingOut = authState?.logout;
   const isLogin = authState?.isLogin;
   const isRegistering = authState?.isRegistering;
+
   const object = {
     isDeleting,
     isRenaming,
+    isTrashRetrieving,
+    isTrashDeleting,
     creatingFolder,
     isLoggingOut,
     isLogin,
@@ -45,6 +52,10 @@ function Loading() {
         return "Deleting...";
       case object["isRenaming"]:
         return "Renaming...";
+      case object["isTrashRetrieving"]:
+        return "Trash Retrieving...";
+      case object["isTrashDeleting"]:
+        return "Trash Deleting...";
       case object["creatingFolder"]:
         return "Creating Folder...";
 

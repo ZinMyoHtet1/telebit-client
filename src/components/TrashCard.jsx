@@ -16,16 +16,20 @@ import { directoryContext } from "../contexts/DirectoryContext.js";
 function TrashCard({ content, ...rest }) {
   const [showActions, setShowActions] = useState(false);
   const cardRef = useRef(null);
-  const { state: uiState } = useContext(uiContext);
+  const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
   const { dispatch: fileDispatch } = useContext(fileContext);
   const { dispatch: directoryDispatch } = useContext(directoryContext);
   const { dispatch: trashDispatch } = useContext(trashContext);
   const { windowWidth } = useContext(mediaQueryContext);
 
+  const openOverlayPage = () => uiDispatch({ type: "OPEN_OVERLAYPAGE" });
+  const closeOverlayPage = () => uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
+
   const retrieveCallback = (content) => {
     content.mimeType
       ? fileDispatch({ type: "RETRIEVE_TRASH", payload: content })
       : directoryDispatch({ type: "RETRIEVE_TRASH", payload: content });
+    closeOverlayPage();
   };
 
   const handleClickCard = () => {
@@ -33,10 +37,12 @@ function TrashCard({ content, ...rest }) {
   };
 
   const deleteTrashById = (id) => {
-    deleteTrash(id)(trashDispatch);
+    openOverlayPage();
+    deleteTrash(id)(trashDispatch, closeOverlayPage);
   };
 
   const retrieveTrashContent = (content) => {
+    openOverlayPage();
     retrieveTrash(content)(trashDispatch, retrieveCallback);
   };
 

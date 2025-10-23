@@ -93,12 +93,20 @@ function fileReducer(state, action) {
       };
 
     case "UPLOAD_FILE":
-    case "RETRIEVE_TRASH":
+      console.log("retrieve trash file from file reducer", action.payload);
       return {
         ...state,
         files:
           state.parentId === action.payload.parentId
             ? [...state.files, action.payload.file]
+            : state.files,
+      };
+    case "RETRIEVE_TRASH":
+      return {
+        ...state,
+        files:
+          state.parentId === "root"
+            ? [...state.files, action.payload]
             : state.files,
       };
 
