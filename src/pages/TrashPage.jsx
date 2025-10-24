@@ -55,7 +55,7 @@ function TrashPage() {
             <div className="page_name">Trashes</div>
           </div>
           <div className="message_text">
-            automative delete content permanently after 1 day
+            automative delete permanently after 1 day
           </div>
           {trashes.length ? (
             <div className="trashes_container content_container">
