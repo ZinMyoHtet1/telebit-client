@@ -32,7 +32,7 @@ function SideDrawer() {
 
   const totalStorage = 1024 * 1024 * 1024 * 100;
 
-  const user = JSON.parse(sessionStorage.getItem("user"));
+  const user = JSON.parse(sessionStorage.getItem("user")) || null;
 
   const usedStorage = user.usedStorage || 0;
 
