@@ -102,7 +102,10 @@ const verifyGoogleToken =
     try {
       dispatch({ type: "START_LOADING" });
       console.log(token, "token");
-      await API.verifyGoogleToken(token);
+      const response = await API.verifyGoogleToken(token);
+      console.log(response.data, "response");
+      localStorage.setItem("google_token", response.data.data.token);
+      sessionStorage.setItem("user", JSON.stringify(response.data.data.user));
       dispatch({ type: "LOGIN" });
 
       callback();

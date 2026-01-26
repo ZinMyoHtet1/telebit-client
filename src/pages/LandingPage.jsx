@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { verifyToken } from "../actions/authActions";
+import { verifyGoogleToken, verifyToken } from "../actions/authActions";
 import { authContext } from "../contexts/AuthContext";
 import API from "./../api/authApi";
 
@@ -65,9 +65,15 @@ function LandingPage() {
     if (user) return redirectToHome();
 
     const token = localStorage.getItem("token");
-    if (!token || token === "null") return redirectToLogin();
+    const googleToken = localStorage.getItem("google_token");
+    if (token & (token !== "null")) {
+      verifyToken(token, redirectToHome)(authDispatch);
+    }
 
-    verifyToken(token, redirectToHome)(authDispatch);
+    if (googleToken & (googleToken !== "null"))
+      verifyGoogleToken(googleToken, redirectToHome)(authDispatch);
+
+    return redirectToLogin();
   };
 
   return (

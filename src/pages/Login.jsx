@@ -1,7 +1,18 @@
 import React, { useContext, useEffect, useState } from "react";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import {
+  GoogleOAuthProvider,
+  GoogleLogin,
+  // googleLogout,
+} from "@react-oauth/google";
+// import { } from "@react-oauth/google";
+
 import { useNavigate, useParams } from "react-router-dom";
-import { userLogin, userRegister, verifyToken } from "../actions/authActions";
+import {
+  userLogin,
+  userRegister,
+  verifyToken,
+  verifyGoogleToken,
+} from "../actions/authActions";
 import { authContext } from "../contexts/AuthContext";
 import { uiContext } from "../contexts/UIContext";
 import OverlayPage from "./OvelayPage";
@@ -30,6 +41,8 @@ function Login() {
   const mode = params?.mode;
 
   const errorMessage = authState?.errorMessage;
+  const GOOGLE_CLIENT_ID =
+    "861972951011-27g6htjd7gvefembn81c8h1l190vjd3k.apps.googleusercontent.com";
 
   const initialState = {
     email: "",
@@ -108,8 +121,15 @@ function Login() {
     const user = JSON.parse(sessionStorage.getItem("user"));
     if (!user || user === "null") {
       const token = localStorage.getItem("token");
+      const googleToken = localStorage.getItem("google_token");
+
       if (token && token !== "null") {
         verifyToken(token, () => {
+          navigate("/home", { replace: true });
+        })(authDispatch);
+      }
+      if (googleToken && googleToken !== "null") {
+        verifyGoogleToken(googleToken, () => {
           navigate("/home", { replace: true });
         })(authDispatch);
       }
@@ -142,7 +162,7 @@ function Login() {
   }, [errorMessage]);
 
   return (
-    <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
       <div className="login-container">
         <OverlayPage>
           <Loading />
@@ -243,6 +263,20 @@ function Login() {
               {isLogin ? "Sign Up" : "Login"}
             </span>
           </p>
+
+          <GoogleLogin
+            onSuccess={(credentialResponse) => {
+              // console.log(credentialResponse);
+              verifyGoogleToken(credentialResponse.credential, () => {
+                resetAll();
+                navigate("/home", { replace: true });
+              })(authDispatch);
+              // closeOverlayPage();
+            }}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+          />
         </div>
       </div>
     </GoogleOAuthProvider>

@@ -17,6 +17,9 @@ import { mediaQueryContext } from "../contexts/MediaQueryContext";
 import logo from "../assets/app-logo.png";
 import { authContext } from "../contexts/AuthContext";
 import formatFileSize from "../utils/formatFileSize";
+
+import { googleLogout } from "@react-oauth/google";
+
 function SideDrawer() {
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
   const { dispatch: authDispatch } = useContext(authContext);
@@ -58,9 +61,10 @@ function SideDrawer() {
     authDispatch({ type: "LOGOUT" });
     openOverlayPage();
     handleClose();
-
+    googleLogout();
     setTimeout(() => {
       localStorage.setItem("token", null);
+      localStorage.setItem("google_token", null);
       sessionStorage.setItem("user", null);
     }, 2000);
     setTimeout(() => {
