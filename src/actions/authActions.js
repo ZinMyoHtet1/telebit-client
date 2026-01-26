@@ -101,18 +101,14 @@ const verifyGoogleToken =
   async (dispatch) => {
     try {
       dispatch({ type: "START_LOADING" });
-      console.log(token, "token");
       const response = await API.verifyGoogleToken(token);
-      console.log(response.data, "response");
       localStorage.setItem("google_token", response.data.data.token);
       sessionStorage.setItem("user", JSON.stringify(response.data.data.user));
       dispatch({ type: "LOGIN" });
 
       callback();
     } catch (error) {
-      console.log(error, "error from server");
       dispatch({ type: "STOP_LOADING" });
-
       dispatch({ type: "ERROR", payload: error.response.data.message });
     } finally {
       dispatch({ type: "STOP_LOADING" });
