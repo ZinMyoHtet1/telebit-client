@@ -17,7 +17,10 @@
   transform: translateX(50%) translateY(0);
   opacity: 1;
   pointer-events: auto;
-  transition: transform 0.2s ease-in, opacity 0.2s ease-in, height 0.2s ease-in;
+  transition:
+    transform 0.2s ease-in,
+    opacity 0.2s ease-in,
+    height 0.2s ease-in;
 }
 
 .action_bar.hidden {
@@ -47,6 +50,16 @@
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+.action_bar button .feature_status {
+  /* position: absolute; */
+  font-size: 10px;
+  background-color: rgb(230, 23, 71);
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-weight: 400;
+  color: #fff;
+  margin-left: 16px;
+}
 .action_bar button.close_btn {
   width: fit-content;
   align-self: flex-end;
@@ -76,13 +89,11 @@
   .action_bar {
     box-shadow: 2px 2px 6px rgba(168, 86, 86, 0.2);
     width: 98%;
-    /* margin: 8px; */
-    /* padding: 4px 12px 20px; */
     transform: translateX(50%);
   }
 
-  /* .action_bar button.close_btn {
-    padding: 4px;
-    border-radius: 20px;
-  } */
+  .action_bar button .feature_status {
+    font-size: 8px;
+    margin-left: 14px;
+  }
 }

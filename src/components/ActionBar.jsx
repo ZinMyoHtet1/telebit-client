@@ -198,6 +198,7 @@ function ActionBar() {
           height={getIconSize(windowWidth)}
         />
         <span className="action_name">Copy</span>
+        <div className="feature_status">coming soon</div>
       </button>
 
       <button className="rename_btn btn" onClick={handleDelete}>

@@ -2,8 +2,8 @@ import axios from "axios";
 
 // const userId = "dusoshsuofusfjjcso";
 
-const api = "https://telebit-api.onrender.com";
-// const api = "http://localhost:4040";
+// const api = "https://telebit-api.onrender.com";
+const api = "http://localhost:4040";
 
 const instance = axios.create({
   baseURL: `${api}/directories`,
@@ -35,7 +35,7 @@ const getDirectories = (dirIds) =>
       headers: {
         userId: JSON.parse(sessionStorage.getItem("user")).userId,
       },
-    }
+    },
   );
 const createDirectory = (form) =>
   instance.post("/create", form, {

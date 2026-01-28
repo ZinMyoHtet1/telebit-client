@@ -2,8 +2,8 @@ import axios from "axios";
 
 // const userId = "dusoshsuofusfjjcso";
 
-const api = "https://telebit-api.onrender.com";
-// const api = "http://localhost:4040";
+// const api = "https://telebit-api.onrender.com";
+const api = "http://localhost:4040";
 
 const instance = axios.create({
   baseURL: `${api}/files`,
@@ -29,7 +29,7 @@ const getFiles = (uploadIds) =>
       headers: {
         userId: JSON.parse(sessionStorage.getItem("user")).userId,
       },
-    }
+    },
   );
 const uploadFile = (parentId, form, onProgress) =>
   instance.post(`/upload?directory=${parentId}`, form, {
@@ -39,7 +39,7 @@ const uploadFile = (parentId, form, onProgress) =>
     onUploadProgress: (progressEvent) => {
       if (onProgress) {
         const percent = Math.round(
-          (progressEvent.loaded * 100) / progressEvent.total
+          (progressEvent.loaded * 100) / progressEvent.total,
         );
         onProgress(percent);
       }

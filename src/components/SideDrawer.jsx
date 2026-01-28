@@ -177,6 +177,7 @@ function SideDrawer() {
           fillColor="#4361ee"
         />
         <span>Downloads</span>
+        <div className="feature_status">in progress</div>
       </button>
       <button className="drawer_item btn" onClick={handleClickUploads}>
         <UploadIcon
@@ -185,6 +186,7 @@ function SideDrawer() {
           fillColor="#4361ee"
         />
         <span>Uploads</span>
+        <div className="feature_status">in progress</div>
       </button>
       <button className="drawer_item btn" onClick={handleClickTrashes}>
         <DeleteIcon
@@ -201,6 +203,7 @@ function SideDrawer() {
           fillColor="#4361ee"
         />
         <span>Statistics</span>
+        <div className="feature_status">coming soon</div>
       </button>
       <button className="drawer_item btn">
         <SettingIcon
@@ -209,6 +212,7 @@ function SideDrawer() {
           fillColor="#4361ee"
         />
         <span>Setting</span>
+        <div className="feature_status">coming soon</div>
       </button>
       <button className="drawer_item btn" onClick={handleClickLogout}>
         <LogoutIcon
