@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { verifyGoogleToken, verifyToken } from "../actions/authActions";
+import { verifyToken } from "../actions/authActions";
 import { authContext } from "../contexts/AuthContext";
 import API from "./../api/authApi";
 
@@ -65,17 +65,20 @@ function LandingPage() {
     if (user) return redirectToHome();
 
     const token = localStorage.getItem("token");
-    const googleToken = localStorage.getItem("google_token");
+    // const googleToken = localStorage.getItem("google_token");
     if (token & (token !== "null")) {
       verifyToken(token, redirectToHome)(authDispatch);
     }
 
-    if (googleToken & (googleToken !== "null"))
-      verifyGoogleToken(googleToken, redirectToHome)(authDispatch);
+    // if (googleToken & (googleToken !== "null"))
+    //   verifyGoogleToken(googleToken, redirectToHome)(authDispatch);
 
     return redirectToLogin();
   };
 
+  // useEffect(() => {
+  //   handleGetStarted();
+  // });
   return (
     <>
       {serverConnected && showPage ? ( // ✅ Wait for both API and timer

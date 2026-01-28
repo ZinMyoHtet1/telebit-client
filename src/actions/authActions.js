@@ -48,6 +48,13 @@ const userRegister =
     }
   };
 
+// const handleLoginWithToken = (token) => {
+//   verifyToken(token, () => {
+//     resetAll();
+//     navigate("/home", { replace: true });
+//   })(authDispatch);
+// };
+
 const verifyEmail =
   (formData, callback = () => {}) =>
   async (dispatch) => {
@@ -102,7 +109,7 @@ const verifyGoogleToken =
     try {
       dispatch({ type: "START_LOADING" });
       const response = await API.verifyGoogleToken(token);
-      localStorage.setItem("google_token", response.data.data.token);
+      localStorage.setItem("token", response.data.data.token);
       sessionStorage.setItem("user", JSON.stringify(response.data.data.user));
       dispatch({ type: "LOGIN" });
 

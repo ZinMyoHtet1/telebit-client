@@ -117,25 +117,30 @@ function Login() {
     }
   };
 
+  const handleLoginWithToken = (token) => {
+    openOverlayPage();
+    authDispatch({ type: "START_LOGIN" });
+
+    verifyToken(token, () => {
+      resetAll();
+      navigate("/home", { replace: true });
+
+      // authDispatch({ type: "STOP_LOGIN" });
+    })(authDispatch);
+  };
   useEffect(() => {
     const user = JSON.parse(sessionStorage.getItem("user"));
     if (!user || user === "null") {
       const token = localStorage.getItem("token");
-      const googleToken = localStorage.getItem("google_token");
+      // const googleToken = localStorage.getItem("google_token");
 
       if (token && token !== "null") {
-        verifyToken(token, () => {
-          navigate("/home", { replace: true });
-        })(authDispatch);
-      }
-      if (googleToken && googleToken !== "null") {
-        verifyGoogleToken(googleToken, () => {
-          navigate("/home", { replace: true });
-        })(authDispatch);
+        handleLoginWithToken(token);
       }
     } else {
       navigate("/home", { replace: true });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authDispatch, navigate]);
 
   useEffect(() => {
@@ -266,7 +271,7 @@ function Login() {
 
           <GoogleLogin
             onSuccess={(credentialResponse) => {
-              // console.log(credentialResponse);
+              // console.log(credentialResponse, "google token credential");
               verifyGoogleToken(credentialResponse.credential, () => {
                 resetAll();
                 navigate("/home", { replace: true });
