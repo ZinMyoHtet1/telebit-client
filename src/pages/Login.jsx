@@ -272,6 +272,9 @@ function Login() {
           <GoogleLogin
             onSuccess={(credentialResponse) => {
               // console.log(credentialResponse, "google token credential");
+              openOverlayPage();
+              authDispatch({ type: "START_LOGIN" });
+
               verifyGoogleToken(credentialResponse.credential, () => {
                 resetAll();
                 navigate("/home", { replace: true });
