@@ -69,10 +69,17 @@ function Home() {
 
   const handlePopState = () => {
     if (uiState?.MediaViewer) {
+      //block back when media is open
+      window.history.pushState(null, "", window.location.href);
       uiDispatch({ type: "CLOSE_MEDIAVIEWER" });
       fileDispatch({ type: "SET_MEDIA_CONTENT", payload: null });
     }
   };
+
+  // const blockBack = () => {
+  //   window.history.pushState(null, "", window.location.href);
+  // };
+
   useEffect(() => {
     let user = null;
     if (sessionStorage.getItem("user") !== "undefined")
