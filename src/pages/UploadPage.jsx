@@ -101,7 +101,6 @@ export default function UploadPage() {
       }, 3000);
     }
   }, [fileDispatch, progress]);
-  console.log("fjlsj");
 
   return (
     <div className="upload_page overlay_page">
@@ -128,8 +127,8 @@ export default function UploadPage() {
                   thumbnail
                     ? thumbnail
                     : isPhoto
-                    ? URL.createObjectURL(file)
-                    : getFileIcon(file.type, file.name.split(".").at(-1))
+                      ? URL.createObjectURL(file)
+                      : getFileIcon(file.type, file.name.split(".").at(-1))
                 }
                 alt="Video thumbnail"
               />
@@ -208,7 +207,7 @@ export default function UploadPage() {
           </button>
         )}
 
-        <footer className="footer">© 2023 Telebit. All rights reserved.</footer>
+        <footer className="footer">© 2026 Telebit. All rights reserved.</footer>
       </div>
     </div>
   );

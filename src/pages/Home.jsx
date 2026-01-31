@@ -90,6 +90,7 @@ function Home() {
     }
     setUser(user);
   }, [navigate]);
+
   useEffect(() => {
     if (!isLoading && !contents?.length) {
       const timer = setTimeout(() => setShowNoContent(true), 2000);
