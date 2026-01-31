@@ -1,10 +1,10 @@
 // UploadContext.jsx
-import React, { createContext, useContext, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 import { uploadFile } from "../actions/fileActions";
 import { fileContext } from "./FileContext";
 import createFormData from "../utils/createFormData";
-// import { getFiles, saveFiles } from "../utils/fileDB";
+import { getFiles, saveFiles } from "../utils/fileDB";
 import { uiContext } from "./UIContext";
 // import { startWebSocket } from "../utils/socket";
 // import generateUploadId from "../utils/generateUploadId";
@@ -17,20 +17,25 @@ const UploadContextProvider = uploadContext.Provider;
 export function UploadProvider({ children }) {
   const { state: fileState, dispatch: fileDispatch } = useContext(fileContext);
   const { state: uiState } = useContext(uiContext);
-  // const [isRetreived, setIsRetreived] = useState(false);
+  const [isRetreived, setIsRetreived] = useState(false);
   // const [socket, setSocket] = useState(null);
 
   const isLoading = uiState?.isLoading;
-  // const uploadingFiles = fileState?.uploadingContents;
+  const isUploading = fileState?.isUploading;
+  const uploadingFiles = fileState?.uploadingContents;
   const currentFile = fileState?.currentUploadContent;
 
   function startUpload(parentId, file) {
+    // uiDispatch({ type: "START_UPLOADING" });
     async function callback() {
       // uiDispatch({ type: "CLOSE_UPLOADINGSTATUS" });
       // setTimeout(async () => {
+
       fileDispatch({
         type: "NEXT_UPLOAD",
       });
+      fileDispatch({ type: "STOP_UPLOADING" });
+
       // }, 2000);
     }
 
@@ -39,26 +44,27 @@ export function UploadProvider({ children }) {
     });
   }
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const files = await getFiles("uploadingFiles");
-  //     fileDispatch({ type: "SET_UPLOADING_CONTENTS", payload: files });
-  //     setIsRetreived(true);
-  //   })();
-  // }, [fileDispatch]);
-
-  // useEffect(() => {
-  //   if (isLoading || !isRetreived) return;
-  //   (async () => {
-  //     await saveFiles("uploadingFiles", uploadingFiles);
-  //   })();
-  // }, [uploadingFiles, isRetreived, isLoading]);
+  useEffect(() => {
+    (async () => {
+      const files = await getFiles("uploadingFiles");
+      fileDispatch({ type: "SET_UPLOADING_CONTENTS", payload: files });
+      setIsRetreived(true);
+    })();
+  }, [fileDispatch]);
 
   useEffect(() => {
-    if (isLoading || !currentFile?.parentId) return;
+    if (isLoading || !isRetreived) return;
+    (async () => {
+      await saveFiles("uploadingFiles", uploadingFiles);
+    })();
+  }, [uploadingFiles, isRetreived, isLoading]);
+
+  useEffect(() => {
+    if (isLoading || !currentFile?.parentId || isUploading) return;
     startUpload(currentFile.parentId, currentFile["file"]);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentFile?.file, isLoading]);
+  }, [currentFile?.file, isLoading, isUploading]);
 
   return <UploadContextProvider value={{}}>{children}</UploadContextProvider>;
 }

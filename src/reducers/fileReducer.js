@@ -93,7 +93,6 @@ function fileReducer(state, action) {
       };
 
     case "UPLOAD_FILE":
-      console.log("retrieve trash file from file reducer", action.payload);
       return {
         ...state,
         files:
@@ -114,7 +113,7 @@ function fileReducer(state, action) {
       return {
         ...state,
         files: state.files.map((file) =>
-          file.uploadId === action.payload.uploadId ? action.payload : file
+          file.uploadId === action.payload.uploadId ? action.payload : file,
         ),
       };
 

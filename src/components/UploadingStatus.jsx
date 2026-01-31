@@ -19,6 +19,7 @@ function UploadingStatus() {
   const { windowWidth } = useContext(mediaQueryContext);
 
   const currentUploadContent = fileState?.currentUploadContent;
+  const isUploading = fileState?.isUploading;
   const uploadPercent = fileState?.uploadPercent;
 
   const file = currentUploadContent?.file || null;
@@ -50,7 +51,7 @@ function UploadingStatus() {
       className={`${hidden ? "hidden" : ""}`}
       // onClick={handleClick}
     >
-      {uploadPercent < 100 ? (
+      {isUploading ? (
         <>
           <button className="close_btn btn" onClick={handleClose}>
             <CloseIcon

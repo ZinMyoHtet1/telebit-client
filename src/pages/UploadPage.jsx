@@ -1,3 +1,5 @@
+//not use this page
+
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./../styles/uploadPage.css";
 import { uiContext } from "../contexts/UIContext";

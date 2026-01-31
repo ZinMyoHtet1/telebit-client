@@ -1,5 +1,6 @@
 const initialValues = {
   isLoading: false,
+  isUploading: false,
   isDeleting: false,
   isRenaming: false,
   isRetrieving: false,
@@ -29,7 +30,16 @@ function uiReducer(state, action) {
         ...state,
         isLoading: false,
       };
-
+    case "START_UPLOADING":
+      return {
+        ...state,
+        isUploading: true,
+      };
+    case "STOP_UPLOADING":
+      return {
+        ...state,
+        isUploading: false,
+      };
     case "START_CREATING_FOLDER":
       return {
         ...state,
