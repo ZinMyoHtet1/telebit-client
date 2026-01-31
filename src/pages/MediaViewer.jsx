@@ -67,13 +67,13 @@ function MediaViewer() {
   const files = fileState?.files || [];
   const mediaContents = files?.filter(
     (file) =>
-      file.mimeType.startsWith("video") || file?.mimeType?.startsWith("image")
+      file.mimeType.startsWith("video") || file?.mimeType?.startsWith("image"),
   );
 
   //   console.log(mediaContents, "contents");
 
   const initialIndex = mediaContents?.findIndex(
-    (file) => file?.uploadId === fileState?.mediaContent?.uploadId
+    (file) => file?.uploadId === fileState?.mediaContent?.uploadId,
   );
 
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
@@ -89,9 +89,15 @@ function MediaViewer() {
 
   const isVideo = currentContent?.mimeType?.startsWith("video");
 
+  // const handleClose = () => {
+  //   uiDispatch({ type: "CLOSE_MEDIAVIEWER" });
+  //   fileDispatch({ type: "SET_MEDIA_CONTENT", payload: null });
+  // };
   const handleClose = () => {
-    uiDispatch({ type: "CLOSE_MEDIAVIEWER" });
-    fileDispatch({ type: "SET_MEDIA_CONTENT", payload: null });
+    if (uiState?.mediaViewer) {
+      uiDispatch({ type: "CLOSE_MEDIAVIEWER" });
+      fileDispatch({ type: "SET_MEDIA_CONTENT", payload: null });
+    }
   };
 
   const handleNext = () => {
@@ -100,7 +106,7 @@ function MediaViewer() {
 
   const handlePrev = () => {
     setCurrentIndex(
-      (prev) => (prev - 1 + mediaContents.length) % mediaContents.length
+      (prev) => (prev - 1 + mediaContents.length) % mediaContents.length,
     );
   };
 

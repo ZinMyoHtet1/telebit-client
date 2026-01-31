@@ -7,6 +7,7 @@ import CloseIcon from "../svgs/CloseIcon";
 import SettingIcon from "../svgs/SettingIcon";
 import LogoutIcon from "../svgs/LogoutIcon";
 import UploadIcon from "../svgs/UploadIcon";
+import CodeIcon from "../svgs/CodeIcon";
 import CreateFolderIcon from "../svgs/CreateFolderIcon";
 import { directoryContext } from "../contexts/DirectoryContext";
 import DownloadIcon from "../svgs/DownloadIcon";
@@ -212,6 +213,15 @@ function SideDrawer() {
           fillColor="#4361ee"
         />
         <span>Setting</span>
+        <div className="feature_status">coming soon</div>
+      </button>
+      <button className="drawer_item btn">
+        <CodeIcon
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
+          fillColor="#4361ee"
+        />
+        <span>Developer</span>
         <div className="feature_status">coming soon</div>
       </button>
       <button className="drawer_item btn" onClick={handleClickLogout}>
