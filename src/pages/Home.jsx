@@ -67,14 +67,14 @@ function Home() {
     }
   };
 
-  const handlePopState = () => {
-    if (uiState?.MediaViewer) {
-      //block back when media is open
-      window.history.pushState(null, "", window.location.href);
-      uiDispatch({ type: "CLOSE_MEDIAVIEWER" });
-      fileDispatch({ type: "SET_MEDIA_CONTENT", payload: null });
-    }
-  };
+  // const handlePopState = () => {
+  //   if (uiState?.MediaViewer) {
+  //     //block back when media is open
+  //     window.history.pushState(null, "", window.location.href);
+  //     uiDispatch({ type: "CLOSE_MEDIAVIEWER" });
+  //     fileDispatch({ type: "SET_MEDIA_CONTENT", payload: null });
+  //   }
+  // };
 
   // const blockBack = () => {
   //   window.history.pushState(null, "", window.location.href);
@@ -163,15 +163,32 @@ function Home() {
     mainDirectory,
   ]);
 
+  // useEffect(() => {
+  //   // Push a new history state when the component mounts
+  //   window.addEventListener("popstate", handlePopState);
+
+  //   return () => {
+  //     window.removeEventListener("popstate", handlePopState);
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
   useEffect(() => {
-    // Push a new history state when the component mounts
-    window.addEventListener("popstate", handlePopState);
+    if (!uiState?.mediaViewer) return;
+
+    const blockBack = () => {
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    // Push once
+    window.history.pushState(null, "", window.location.href);
+
+    window.addEventListener("popstate", blockBack);
 
     return () => {
-      window.removeEventListener("popstate", handlePopState);
+      window.removeEventListener("popstate", blockBack);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [uiState?.mediaViewer]);
 
   if (!user?.email) return;
 
