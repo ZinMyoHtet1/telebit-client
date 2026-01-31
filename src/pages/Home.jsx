@@ -67,7 +67,12 @@ function Home() {
     }
   };
 
-  // console.log(contents, "contents");
+  const handlePopState = () => {
+    if (uiState?.MediaViewer) {
+      uiDispatch({ type: "CLOSE_MEDIAVIEWER" });
+      fileDispatch({ type: "SET_MEDIA_CONTENT", payload: null });
+    }
+  };
   useEffect(() => {
     let user = null;
     if (sessionStorage.getItem("user") !== "undefined")
@@ -130,14 +135,14 @@ function Home() {
 
     if (mainDirectory?.childDirIds.length)
       fetchPromises.push(
-        fetchDirectories(mainDirectory.childDirIds)(directoryDispatch)
+        fetchDirectories(mainDirectory.childDirIds)(directoryDispatch),
       );
     if (mainDirectory?.parentDirIds?.length)
       fetchPromises.push(
         fetchDirectories(
           mainDirectory.parentDirIds,
-          "FETCH_PARENTDIRECTORIES"
-        )(directoryDispatch)
+          "FETCH_PARENTDIRECTORIES",
+        )(directoryDispatch),
       );
 
     if (mainDirectory?.files?.length)
@@ -150,6 +155,16 @@ function Home() {
     files?.length,
     mainDirectory,
   ]);
+
+  useEffect(() => {
+    // Push a new history state when the component mounts
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!user?.email) return;
 

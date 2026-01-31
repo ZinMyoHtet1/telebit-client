@@ -89,16 +89,16 @@ function MediaViewer() {
 
   const isVideo = currentContent?.mimeType?.startsWith("video");
 
-  // const handleClose = () => {
-  //   uiDispatch({ type: "CLOSE_MEDIAVIEWER" });
-  //   fileDispatch({ type: "SET_MEDIA_CONTENT", payload: null });
-  // };
   const handleClose = () => {
-    if (uiState?.mediaViewer) {
-      uiDispatch({ type: "CLOSE_MEDIAVIEWER" });
-      fileDispatch({ type: "SET_MEDIA_CONTENT", payload: null });
-    }
+    uiDispatch({ type: "CLOSE_MEDIAVIEWER" });
+    fileDispatch({ type: "SET_MEDIA_CONTENT", payload: null });
   };
+  // const handleClose = () => {
+  //   if (uiState?.MediaViewer) {
+  //     uiDispatch({ type: "CLOSE_MEDIAVIEWER" });
+  //     fileDispatch({ type: "SET_MEDIA_CONTENT", payload: null });
+  //   }
+  // };
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % mediaContents.length);
