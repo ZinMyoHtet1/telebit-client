@@ -134,8 +134,9 @@ function ForgetPasswordPage() {
                 required
               />
             )}
+            {/* temporary block login */}
 
-            <button type="submit" className="submit-btn">
+            <button type="submit" className="submit-btn" disabled>
               {step === 1 ? "Send OTP" : "Verify OTP"}
             </button>
           </form>

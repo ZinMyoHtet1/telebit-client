@@ -37,7 +37,6 @@ function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const disabled = true; //temporary block gmail login
 
   const params = useParams();
   const mode = params?.mode;
@@ -78,8 +77,6 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (disabled) return;
 
     if (isLogin) {
       openOverlayPage();
@@ -260,8 +257,8 @@ function Login() {
                 </a>
               </div>
             )}
-
-            <button type="submit" className="login-btn">
+            {/* temporary block login */}
+            <button type="submit" className={`login-btn`} disabled>
               {isLogin ? "Login" : "Sign Up"}
             </button>
           </form>

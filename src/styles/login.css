@@ -113,6 +113,10 @@
   opacity: 0.9;
 }
 
+.login-btn:disabled {
+  background: #b0aeae;
+}
+
 .signup-text {
   margin: 16px 0 12px;
   font-size: 14px;
