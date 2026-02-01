@@ -5,7 +5,8 @@
   left: 12px;
   top: 20px;
   width: 300px;
-  height: fit-content;
+  /* min-height: fit-content; */
+  max-height: 95%;
   background-color: #fff;
   opacity: 1;
   pointer-events: auto;
@@ -18,6 +19,9 @@
   padding: 12px 12px 20px;
   border: 0.0125px solid rgba(0, 0, 0, 0.05);
   border-radius: 5px;
+  flex: 1; /* let it expand to fill remaining height */
+  min-height: 0; /* important in flex to allow scroll */
+  overflow-y: auto;
 }
 
 #side_drawer.hidden {
@@ -41,7 +45,8 @@
   text-wrap: nowrap;
 }
 
-#side_drawer .drawer_item .feature_status {
+#side_drawer .drawer_item .feature_status,
+.storage_info .feature_status {
   font-size: 12px;
   background-color: rgb(230, 23, 71);
   padding: 2px 4px;
@@ -86,12 +91,12 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 4px;
 }
 
 #side_drawer .storage_bar {
   width: 100%;
-  height: 5px;
+  height: 3.5px;
   background: #e0e0e0;
   border-radius: 8px;
   overflow: hidden;
@@ -108,6 +113,20 @@
   color: #333;
   line-height: 120%;
   /* text-align: center; */
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#side_drawer .storage_info .buy_btn {
+  /* display: block; */
+  padding: 2px 12px;
+  border: 1px solid #3731edff;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #3731edff;
 }
 
 @media screen and (max-width: 1000px) {
@@ -117,7 +136,12 @@
 
   #side_drawer button,
   #side_drawer .storage_info {
-    font-size: 16px;
+    font-size: 12px;
+  }
+
+  #side_drawer .storage_info .buy_btn {
+    font-size: 10px;
+    padding: 2px 8px;
   }
 
   #side_drawer .drawer_item .feature_status {
@@ -152,7 +176,7 @@
 
   #side_drawer button,
   #side_drawer .storage_info {
-    font-size: 12px;
+    font-size: 8px;
     padding: 6px 4px;
   }
 

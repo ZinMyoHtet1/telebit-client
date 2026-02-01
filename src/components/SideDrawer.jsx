@@ -140,19 +140,12 @@ function SideDrawer() {
           ></div>
         </div>
         <div className="storage_info">
-          {formatFileSize(usedStorage)} of {formatFileSize(totalStorage)} used{" "}
-          <span
-            style={{
-              padding: "4px 12px",
-              border: "1px solid #3731edff",
-              borderRadius: "4px",
-              fontSize: "12px",
-              color: "#3731edff",
-            }}
-            className="btn"
-          >
-            buy
+          <span>
+            {formatFileSize(usedStorage)} of {formatFileSize(totalStorage)}{" "}
+            used{" "}
           </span>
+          <span className="buy_btn btn">buy</span>
+          {/* <span className="feature_status">coming soon</span> */}
         </div>
       </div>
       <button className="drawer_item btn" onClick={handleUploadFile}>
