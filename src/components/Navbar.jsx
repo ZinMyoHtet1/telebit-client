@@ -1,19 +1,25 @@
 import React, { useContext } from "react";
 
 import "./../styles/navbar.css";
+import { useNavigate } from "react-router-dom";
 import MenuIcon from "../svgs/MenuIcon";
 import { uiContext } from "../contexts/UIContext";
-import UploadCircleStatus from "./UploadCircleStatus";
+// import UploadCircleStatus from "./UploadCircleStatus";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
 
-import ProfileIcon from "../svgs/ProfileIcon";
+// import ProfileIcon from "../svgs/ProfileIcon";
 import UserStatus from "./UserStatus";
 function Navbar() {
   const { dispatch: uiDispatch } = useContext(uiContext);
   const { windowWidth } = useContext(mediaQueryContext);
+  const navigate = useNavigate();
 
   const handleOpenSideDrawer = () => {
     uiDispatch({ type: "OPEN_SIDEDRAWER" });
+  };
+
+  const handleGoBackHome = () => {
+    navigate("/home", { replace: true });
   };
 
   const getIconSize = (windowWidth) => {
@@ -39,7 +45,9 @@ function Navbar() {
             height={getIconSize(windowWidth)}
           />
         </div>
-        <span className="app_name">Telebit</span>
+        <span className="app_name" onClick={handleGoBackHome}>
+          Telebit
+        </span>
       </div>
       <div>
         <UserStatus />

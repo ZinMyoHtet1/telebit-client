@@ -16,6 +16,7 @@
 #navbar .app_name {
   font-size: 28px;
   font-weight: 600;
+  cursor: default;
   /* color: var(--primary-color); */
 }
 
