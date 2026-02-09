@@ -12,6 +12,7 @@ import { useEffect, useReducer } from "react";
 import fileReducer from "./reducers/fileReducer";
 import { FileProvider } from "./contexts/FileContext";
 import UploadPage from "./pages/UploadPage";
+import MyMediaPage from "./pages/MyMediaPage";
 import uiReducer from "./reducers/uiReducer";
 import { UIProvider } from "./contexts/UIContext";
 import ViewMode from "./components/ViewMode";
@@ -53,6 +54,9 @@ const router = createBrowserRouter(
     <Route path="/auth/:mode">
       <Route index element={<Login />} />
     </Route>,
+    <Route path="/my_media">
+      <Route index element={<MyMediaPage />} />
+    </Route>,
     <Route path="/downloads">
       <Route index element={<Downloads />} />
     </Route>,
@@ -76,7 +80,7 @@ const router = createBrowserRouter(
     //   <Route path="register" element={<Login />} />
     //   <Route path="verifyEmail" element={<OTPVerification />} />
     // </Route>,
-  ])
+  ]),
 );
 
 const directoryInitialValues = {
@@ -132,12 +136,12 @@ const uiInitialValues = {
 function App() {
   const [directoryState, directoryDispatch] = useReducer(
     directoryReducer,
-    directoryInitialValues
+    directoryInitialValues,
   );
   const [fileState, fileDispatch] = useReducer(fileReducer, fileInitialValues);
   const [trashState, trashDispatch] = useReducer(
     trashReducer,
-    trashInitialValues
+    trashInitialValues,
   );
   const [uiState, uiDispatch] = useReducer(uiReducer, uiInitialValues);
 

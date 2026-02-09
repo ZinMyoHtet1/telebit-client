@@ -8,6 +8,7 @@ import SettingIcon from "../svgs/SettingIcon";
 import LogoutIcon from "../svgs/LogoutIcon";
 import UploadIcon from "../svgs/UploadIcon";
 import CodeIcon from "../svgs/CodeIcon";
+import MyMediaIcon from "../svgs/MyMediaIcon";
 import CreateFolderIcon from "../svgs/CreateFolderIcon";
 import { directoryContext } from "../contexts/DirectoryContext";
 import DownloadIcon from "../svgs/DownloadIcon";
@@ -74,6 +75,12 @@ function SideDrawer() {
       closeOverlayPage();
     }, 3000);
   };
+
+    const handleClickMyMedia = () => {
+    navigate("/my_media");
+    handleClose();
+  };
+
   const handleClickDownloads = () => {
     navigate("/downloads");
     handleClose();
@@ -163,6 +170,15 @@ function SideDrawer() {
           fillColor="#4361ee"
         />
         <span>Create Folder</span>
+      </button>
+      <button className="drawer_item btn" onClick={handleClickMyMedia}>
+        <MyMediaIcon
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
+          fillColor="#4361ee"
+        />
+        <span>My Media</span>
+        {/* <div className="feature_status">in progress</div> */}
       </button>
       <button className="drawer_item btn" onClick={handleClickDownloads}>
         <DownloadIcon
