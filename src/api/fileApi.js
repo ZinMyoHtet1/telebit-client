@@ -9,8 +9,8 @@ const instance = axios.create({
   baseURL: `${api}/files`,
 });
 
-const getAll = () =>
-  instance.get("/find", {
+const getAll = (type) =>
+  instance.get(`/find${type ? `?type=${type}` : ""}`, {
     headers: {
       userId: JSON.parse(sessionStorage.getItem("user")).userId,
     },

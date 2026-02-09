@@ -1,5 +1,22 @@
 import * as FILE from "./../api/fileApi.js";
 
+const fetchAllFiles =
+  (type = null) =>
+  async (dispatch, callback = () => {}) => {
+    try {
+      dispatch({ type: "START_LOADING" });
+      const response = await FILE.getAll(type);
+
+      // dispatch({ type: "FETCH_ALL_FILES", payload: response.data.data });
+      callback(response.data.data);
+    } catch (error) {
+      console.log(error);
+      dispatch({ type: "ERROR", payload: error.message });
+    } finally {
+      dispatch({ type: "STOP_LOADING" });
+    }
+  };
+
 const fetchFiles =
   (uploadIds) =>
   async (dispatch, callback = () => {}) => {
@@ -73,4 +90,4 @@ const deleteFile =
     }
   };
 
-export { fetchFiles, uploadFile, renameFile, deleteFile };
+export { fetchAllFiles, fetchFiles, uploadFile, renameFile, deleteFile };
