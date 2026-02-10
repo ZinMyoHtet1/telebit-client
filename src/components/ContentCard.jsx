@@ -135,6 +135,8 @@ function ContentCard({ content, ...rest }) {
     else renameFile(content.uploadId, contentName)(fileDispatch, callback);
   };
 
+  // console.log("contentcard", content);
+
   // --- Render ---
   if (content.mimeType) {
     return (

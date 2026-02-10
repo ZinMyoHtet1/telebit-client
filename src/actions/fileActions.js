@@ -5,9 +5,13 @@ const fetchAllFiles =
   async (dispatch, callback = () => {}) => {
     try {
       dispatch({ type: "START_LOADING" });
-      const response = await FILE.getAll(type);
+      const rawResponse = await FILE.getAll(type);
 
-      // dispatch({ type: "FETCH_ALL_FILES", payload: response.data.data });
+      // dispatch({ type: "FETCH_ALL_FILES", payload: rawResponse.data.data });
+      const uploadIds = rawResponse.data.data.map((file) => file.uploadId);
+
+      const response = await FILE.getFiles(uploadIds);
+      dispatch({ type: "MEDIA_FILES", payload: response.data.data });
       callback(response.data.data);
     } catch (error) {
       console.log(error);
@@ -25,7 +29,8 @@ const fetchFiles =
       const response = await FILE.getFiles(uploadIds);
 
       dispatch({ type: "FETCH_FILES", payload: response.data.data });
-      callback();
+      dispatch({ type: "MEDIA_FILES", payload: response.data.data });
+      callback(response.data.data);
     } catch (error) {
       console.log(error);
       dispatch({ type: "ERROR", payload: error.message });

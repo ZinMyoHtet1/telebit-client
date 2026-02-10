@@ -7,6 +7,7 @@ const initialValues = {
   errorMessage: null,
   parentId: "root",
   files: [],
+  mediaFiles: [],
   mediaContent: null,
   pendingContents: [],
   uploadingContents: [],
@@ -84,6 +85,11 @@ function fileReducer(state, action) {
       return {
         ...state,
         files: action.payload,
+      };
+    case "MEDIA_FILES":
+      return {
+        ...state,
+        mediaFiles: action.payload,
       };
     case "NEXT_UPLOAD":
       return {

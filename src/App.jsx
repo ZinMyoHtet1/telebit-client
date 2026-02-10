@@ -101,6 +101,7 @@ const fileInitialValues = {
   errorMessage: null,
   mediaContent: null,
   files: [],
+  mediaFiles: [],
   parentId: "root",
   pendingContents: [],
   donwloadingContent: null,

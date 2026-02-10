@@ -63,14 +63,12 @@ function MediaViewer() {
   const [currentContent, setCurrentContent] = useState(null);
 
   const hidden = !uiState?.mediaViewer;
-  // if (hidden) return null;
-  const files = fileState?.files || [];
+  const files = fileState?.mediaFiles || [];
+  // const files = fileState?.files || [];
   const mediaContents = files?.filter(
     (file) =>
       file.mimeType.startsWith("video") || file?.mimeType?.startsWith("image"),
   );
-
-  //   console.log(mediaContents, "contents");
 
   const initialIndex = mediaContents?.findIndex(
     (file) => file?.uploadId === fileState?.mediaContent?.uploadId,
@@ -129,8 +127,6 @@ function MediaViewer() {
     if (touchEndX - touchStartX > 80) handlePrev(); // swipe right
   };
 
-  // if (!currentContent) return null;
-
   useEffect(() => {
     // Push a new history state when the component mounts
     history.pushState({ mediaOpen: true }, "");
@@ -141,6 +137,8 @@ function MediaViewer() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // if (!currentContent) return null;
 
   return (
     <div

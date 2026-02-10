@@ -93,7 +93,8 @@ function Home() {
 
   useEffect(() => {
     setContents([...childDirectories, ...files].filter((c) => c !== null));
-  }, [childDirectories, files]);
+    fileDispatch({ type: "MEDIA_FILES", payload: files });
+  }, [childDirectories, fileDispatch, files]);
 
   useEffect(() => {
     // const user = JSON.parse(sessionStorage.getItem("user"));
