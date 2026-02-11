@@ -8,7 +8,7 @@ import ContentContainer from "../components/ContentContainer";
 import MediaViewer from "./MediaViewer";
 import LoadingSpinner from "../svgs/LoadingSpinner";
 import ActionBar from "../components/ActionBar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
 import ViewMode from "../components/ViewMode";
 
@@ -16,9 +16,13 @@ function MyMediaPage() {
   const [contents, setContents] = useState([]);
   const [showNoContent, setShowNoContent] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  // const [type, setType] = useState("video");
+  const [searchParams, setSearchParams] = useSearchParams();
   const [sortMethod, setSortMethod] = useState("date_descending");
 
   const navigate = useNavigate();
+  const type = searchParams.get("type");
 
   const { state: fileState, dispatch: fileDispatch } = useContext(fileContext);
   const { windowWidth } = useContext(mediaQueryContext);
@@ -33,8 +37,15 @@ function MyMediaPage() {
   ];
 
   const getIconSize = (width) => {
-    if (width < 660) return 20;
-    if (width < 820) return 24;
+    if (width < 660) return 16;
+    if (width < 820) return 20;
+    return 28;
+  };
+
+  const getBackIconSize = (width) => {
+    if (width < 380) return 12;
+    if (width < 660) return 16;
+    if (width < 820) return 20;
     return 28;
   };
 
@@ -49,13 +60,32 @@ function MyMediaPage() {
     setSortMethod(sortMethods[nextIndex]);
   };
 
+  const handleChangeType = (type) => {
+    // navigate(`?type=${type}`, { replace: true });
+    setSearchParams(`type=${type}`);
+    // setType()
+  };
+
+  useEffect(() => {
+    let user = null;
+    if (sessionStorage.getItem("user") !== "undefined")
+      user = JSON.parse(sessionStorage.getItem("user"));
+    if (!user || user === "null") {
+      navigate("/auth/login", { replace: true });
+      setUser(null);
+    }
+    setUser(user);
+  }, [navigate]);
+
   /* -------------------- FETCH FILES -------------------- */
   useEffect(() => {
-    fetchAllFiles("video")(fileDispatch, (files) => {
+    setIsLoading(true);
+    setContents([]);
+    fetchAllFiles(type === "photo" ? "image" : type)(fileDispatch, (files) => {
       setContents(files || []);
       setIsLoading(false);
     });
-  }, [fileDispatch]);
+  }, [fileDispatch, type]);
 
   /* -------------------- EMPTY STATE TIMER -------------------- */
   useEffect(() => {
@@ -95,6 +125,7 @@ function MyMediaPage() {
     return sorted;
   }, [contents, sortMethod]);
 
+  if (!user) return;
   /* -------------------- RENDER -------------------- */
   return (
     <div id="my_media_page" className="page">
@@ -105,10 +136,13 @@ function MyMediaPage() {
 
         <div className="page_navbar">
           <button className="back_icon btn" onClick={handleClickBack}>
-            <BackIcon />
+            <BackIcon
+              width={getBackIconSize(windowWidth)}
+              height={getBackIconSize(windowWidth)}
+            />
           </button>
 
-          <div className="page_name">Videos</div>
+          <div className="page_name">Media</div>
 
           <button className="sort_btn btn" onClick={handleSort}>
             {sortMethod}
@@ -129,6 +163,26 @@ function MyMediaPage() {
         ) : !isLoading && showNoContent && !isError ? (
           <div className="empty_directory_message">no directories or files</div>
         ) : null}
+        <div className="bottom_navigator">
+          <button
+            className={`bn_item_btn btn ${type === "video" ? "active" : ""}`}
+            onClick={() => handleChangeType("video")}
+          >
+            Videos
+          </button>
+          <button
+            className={`bn_item_btn btn ${type === "photo" ? "active" : ""}`}
+            onClick={() => handleChangeType("photo")}
+          >
+            Photos
+          </button>
+          <button
+            className={`bn_item_btn btn ${type === "document" ? "active" : ""}`}
+            onClick={() => handleChangeType("document")}
+          >
+            Documents
+          </button>
+        </div>
       </div>
     </div>
   );

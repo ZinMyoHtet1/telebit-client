@@ -76,8 +76,8 @@ function SideDrawer() {
     }, 3000);
   };
 
-    const handleClickMyMedia = () => {
-    navigate("/my_media");
+  const handleClickMyMedia = () => {
+    navigate("/my_media?type=video");
     handleClose();
   };
 

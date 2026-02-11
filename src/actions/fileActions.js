@@ -1,7 +1,7 @@
 import * as FILE from "./../api/fileApi.js";
 
 const fetchAllFiles =
-  (type = null) =>
+  (type) =>
   async (dispatch, callback = () => {}) => {
     try {
       dispatch({ type: "START_LOADING" });

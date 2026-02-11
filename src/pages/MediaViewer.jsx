@@ -76,7 +76,6 @@ function MediaViewer() {
 
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
 
-  console.log(currentContent, "current content");
   // Keep sync with opening media
   useEffect(() => {
     setCurrentIndex(initialIndex);
