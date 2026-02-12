@@ -1,0 +1,26 @@
+import React from "react";
+
+function PhotoCircleIcon({ width = 20, height = 20, fillColor = "#000" }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+    >
+      <g
+        fill="none"
+        stroke={fillColor}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+      >
+        <path d="M15 8h.01M4 15l4-4c.928-.893 2.072-.893 3 0l5 5"></path>
+        <path d="m14 14l1-1c.928-.893 2.072-.893 3 0l2 2"></path>
+        <path d="M3 12a9 9 0 0 0 9 9a9 9 0 0 0 9-9a9 9 0 0 0-9-9a9 9 0 0 0-9 9"></path>
+      </g>
+    </svg>
+  );
+}
+
+export default PhotoCircleIcon;

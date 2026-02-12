@@ -86,13 +86,6 @@ function ActionBar() {
     }
   };
 
-  // const handlePaste = () => {
-  //   if (navigator.clipboard) {
-  //     const text = navigator.clipboard.readText(content);
-  //     return text;
-  //   }
-  // };
-
   const handleDownload = () => {
     if (content?.download) window.open(content?.download, "_parent");
   };

@@ -11,6 +11,9 @@ import ActionBar from "../components/ActionBar";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
 import ViewMode from "../components/ViewMode";
+import VideoCircleIcon from "../svgs/VideoCircleIcon";
+import PhotoCircleIcon from "../svgs/PhotoCircleIcon";
+import DocumentIcon from "../svgs/DocumentIcon";
 
 function MyMediaPage() {
   const [contents, setContents] = useState([]);
@@ -168,19 +171,31 @@ function MyMediaPage() {
             className={`bn_item_btn btn ${type === "video" ? "active" : ""}`}
             onClick={() => handleChangeType("video")}
           >
-            Videos
+            <VideoCircleIcon
+              width={getBackIconSize(windowWidth)}
+              height={getBackIconSize(windowWidth)}
+            />
+            <span>Videos</span>
           </button>
           <button
             className={`bn_item_btn btn ${type === "photo" ? "active" : ""}`}
             onClick={() => handleChangeType("photo")}
           >
-            Photos
+            <PhotoCircleIcon
+              width={getBackIconSize(windowWidth)}
+              height={getBackIconSize(windowWidth)}
+            />
+            <span>Photos</span>
           </button>
           <button
             className={`bn_item_btn btn ${type === "document" ? "active" : ""}`}
             onClick={() => handleChangeType("document")}
           >
-            Documents
+            <DocumentIcon
+              width={getBackIconSize(windowWidth)}
+              height={getBackIconSize(windowWidth)}
+            />
+            <span>Documents</span>
           </button>
         </div>
       </div>
