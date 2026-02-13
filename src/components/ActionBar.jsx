@@ -30,19 +30,16 @@ function ActionBar() {
 
   const [isCopied, setIsCopied] = useState(false);
 
-  const activeContentParentId =
+  const isActive =
     directoryState?.activeContent?.id ||
     directoryState?.activeContent?.uploadId;
   const content = directoryState?.activeContent;
 
-  // const parentId = directoryState?.currentDirectory?.id || null;
+  const parentId = directoryState?.activeContent?.parentId;
   const isLoading = uiState?.isLoading;
 
   const hidden =
-    !activeContentParentId ||
-    isLoading ||
-    uiState?.activeRenaming ||
-    uiState?.isDeleting;
+    !isActive || isLoading || uiState?.activeRenaming || uiState?.isDeleting;
 
   const getIconSize = (windowWidth) => {
     switch (true) {
@@ -112,10 +109,7 @@ function ActionBar() {
     openOverlayPage();
     content?.id
       ? deleteDirectory(content.id)(directoryDispatch, callback)
-      : deleteFile(content.uploadId, activeContentParentId)(
-          fileDispatch,
-          callback,
-        );
+      : deleteFile(content.uploadId, parentId)(fileDispatch, callback);
   };
 
   useEffect(() => {
