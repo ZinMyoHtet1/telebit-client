@@ -143,9 +143,10 @@ function Home() {
 
     if (mainDirectory?.files?.length)
       fetchPromises.push(
-        fetchFiles(mainDirectory.files, mainDirectory)(fileDispatch),
+        fetchFiles(mainDirectory.files, currentDirId)(fileDispatch),
       );
     Promise.all(fetchPromises);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     childDirectories,
     directoryDispatch,
