@@ -21,10 +21,10 @@ const getFile = (uploadId) =>
       userId: JSON.parse(sessionStorage.getItem("user")).userId,
     },
   });
-const getFiles = (uploadIds, parentId = null) =>
+const getFiles = (uploadIds) =>
   instance.post(
     "/find",
-    { uploadIds, parentId },
+    { uploadIds },
     {
       headers: {
         userId: JSON.parse(sessionStorage.getItem("user")).userId,

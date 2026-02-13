@@ -1,20 +1,20 @@
 import * as FILE from "./../api/fileApi.js";
 
 const fetchAllFiles =
-  (type, parentId) =>
+  (type) =>
   async (dispatch, callback = () => {}) => {
     try {
       dispatch({ type: "START_LOADING" });
       const rawResponse = await FILE.getAll(type);
 
       // dispatch({ type: "FETCH_ALL_FILES", payload: rawResponse.data.data });
-      console.log("raw file", rawResponse.data.data);
+      // console.log("raw file", rawResponse.data.data);
       const uploadIds = rawResponse.data.data.map((file) => file.uploadId);
 
-      const response = await FILE.getFiles(uploadIds, parentId);
+      const response = await FILE.getFiles(uploadIds);
       dispatch({ type: "MEDIA_FILES", payload: response.data.data });
       callback(response.data.data);
-      console.log("files", response.data.data);
+      // console.log("files", response.data.data);
     } catch (error) {
       console.log(error);
       dispatch({ type: "ERROR", payload: error.message });
@@ -24,11 +24,11 @@ const fetchAllFiles =
   };
 
 const fetchFiles =
-  (uploadIds, parentId) =>
+  (uploadIds) =>
   async (dispatch, callback = () => {}) => {
     try {
       dispatch({ type: "START_LOADING" });
-      const response = await FILE.getFiles(uploadIds, parentId);
+      const response = await FILE.getFiles(uploadIds);
 
       dispatch({ type: "FETCH_FILES", payload: response.data.data });
       dispatch({ type: "MEDIA_FILES", payload: response.data.data });

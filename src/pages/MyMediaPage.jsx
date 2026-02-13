@@ -14,6 +14,8 @@ import ViewMode from "../components/ViewMode";
 import VideoCircleIcon from "../svgs/VideoCircleIcon";
 import PhotoCircleIcon from "../svgs/PhotoCircleIcon";
 import DocumentIcon from "../svgs/DocumentIcon";
+import OverlayPage from "./OvelayPage";
+import Loading from "../components/Loading";
 
 function MyMediaPage() {
   const [contents, setContents] = useState([]);
@@ -136,7 +138,9 @@ function MyMediaPage() {
 
       <div className="wrapper">
         <ActionBar />
-
+        <OverlayPage>
+          <Loading />
+        </OverlayPage>
         <div className="page_navbar">
           <button className="back_icon btn" onClick={handleClickBack}>
             <BackIcon
