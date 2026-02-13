@@ -142,7 +142,9 @@ function Home() {
       );
 
     if (mainDirectory?.files?.length)
-      fetchPromises.push(fetchFiles(mainDirectory.files)(fileDispatch));
+      fetchPromises.push(
+        fetchFiles(mainDirectory.files, mainDirectory)(fileDispatch),
+      );
     Promise.all(fetchPromises);
   }, [
     childDirectories,

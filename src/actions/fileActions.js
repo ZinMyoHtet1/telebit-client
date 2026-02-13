@@ -1,7 +1,7 @@
 import * as FILE from "./../api/fileApi.js";
 
 const fetchAllFiles =
-  (type) =>
+  (type, parentId) =>
   async (dispatch, callback = () => {}) => {
     try {
       dispatch({ type: "START_LOADING" });
@@ -11,7 +11,7 @@ const fetchAllFiles =
       console.log("raw file", rawResponse.data.data);
       const uploadIds = rawResponse.data.data.map((file) => file.uploadId);
 
-      const response = await FILE.getFiles(uploadIds);
+      const response = await FILE.getFiles(uploadIds, parentId);
       dispatch({ type: "MEDIA_FILES", payload: response.data.data });
       callback(response.data.data);
       console.log("files", response.data.data);
@@ -24,11 +24,11 @@ const fetchAllFiles =
   };
 
 const fetchFiles =
-  (uploadIds) =>
+  (uploadIds, parentId) =>
   async (dispatch, callback = () => {}) => {
     try {
       dispatch({ type: "START_LOADING" });
-      const response = await FILE.getFiles(uploadIds);
+      const response = await FILE.getFiles(uploadIds, parentId);
 
       dispatch({ type: "FETCH_FILES", payload: response.data.data });
       dispatch({ type: "MEDIA_FILES", payload: response.data.data });
