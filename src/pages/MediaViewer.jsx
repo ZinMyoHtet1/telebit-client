@@ -137,8 +137,6 @@ function MediaViewer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // if (!currentContent) return null;
-
   return (
     <div
       id="media_viewer"

@@ -7,7 +7,7 @@ const initialValues = {
   errorMessage: null,
   parentId: "root",
   files: [],
-  // mediaFiles: [],
+  mediaFiles: [],
   mediaDeleteFileId: null,
   mediaContent: null,
   pendingContents: [],
@@ -86,6 +86,12 @@ function fileReducer(state, action) {
       return {
         ...state,
         files: action.payload,
+      };
+    case "MEDIA_FILES":
+      // console.log(action.payload, "media files");
+      return {
+        ...state,
+        mediaFiles: action.payload,
       };
     case "DELETE_MEDIA_FILE":
       return {

@@ -45,7 +45,7 @@ function Navbar() {
             height={getIconSize(windowWidth)}
           />
         </div>
-        <span className="app_name" onClick={handleGoBackHome}>
+        <span className="app_name unselectable-text" onClick={handleGoBackHome}>
           Telebit
         </span>
       </div>
