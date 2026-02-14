@@ -142,10 +142,13 @@ function Home() {
       );
 
     if (mainDirectory?.files?.length)
-      fetchPromises.push(fetchFiles(mainDirectory.files)(fileDispatch));
+      fetchPromises.push(
+        fetchFiles(mainDirectory.files, currentDirId)(fileDispatch),
+      );
     Promise.all(fetchPromises);
   }, [
     childDirectories,
+    currentDirId,
     directoryDispatch,
     fileDispatch,
     files?.length,

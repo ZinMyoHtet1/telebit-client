@@ -24,11 +24,11 @@ const fetchAllFiles =
   };
 
 const fetchFiles =
-  (uploadIds) =>
+  (uploadIds, parentId = null) =>
   async (dispatch, callback = () => {}) => {
     try {
       dispatch({ type: "START_LOADING" });
-      const response = await FILE.getFiles(uploadIds);
+      const response = await FILE.getFiles(uploadIds, parentId);
 
       dispatch({ type: "FETCH_FILES", payload: response.data.data });
       dispatch({ type: "MEDIA_FILES", payload: response.data.data });
