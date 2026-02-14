@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import getFileIcon from "../utils/getFileIcon";
 import formatName from "../utils/formatName";
 import FolderSolid from "../svgs/FolderSolid";
@@ -20,7 +20,10 @@ function ContentCard({ content, ...rest }) {
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
   const { windowWidth } = useContext(mediaQueryContext);
 
-  const [contentName, setContentName] = useState("");
+  const [contentName, setContentName] = useState();
+  const [contentReName, setContentReName] = useState(
+    content?.name || content?.filename || "",
+  );
   const [showCard, setShowCard] = useState(false);
 
   const navigate = useNavigate();
@@ -76,7 +79,7 @@ function ContentCard({ content, ...rest }) {
 
     if (content.mimeType) {
       uiDispatch({ type: "OPEN_MEDIAVIEWER" });
-      console.log(content, "content card content");
+      // console.log(content, "content card content");
       fileDispatch({ type: "SET_MEDIA_CONTENT", payload: content });
     } else {
       navigate(`/${content.id}`);
@@ -84,6 +87,8 @@ function ContentCard({ content, ...rest }) {
   };
 
   const handleChangeInput = (e) => setContentName(e.target.value.trimStart());
+  const handleChangeRenameInput = (e) =>
+    setContentReName(e.target.value.trimStart());
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -115,7 +120,10 @@ function ContentCard({ content, ...rest }) {
   };
 
   const handleRenameContent = () => {
-    if (!contentName.trim()) {
+    if (
+      !contentReName.trim() ||
+      contentReName === (content.name || content.filename)
+    ) {
       uiDispatch({ type: "REMOVE_ACTIVE_RENAMING" });
       return;
     }
@@ -125,17 +133,21 @@ function ContentCard({ content, ...rest }) {
 
     const callback = () => {
       uiDispatch({ type: "REMOVE_ACTIVE_RENAMING" });
-      setContentName("");
+      // setContentReName(content?.filename || content?.name || "");
       uiDispatch({ type: "STOP_RENAMING" });
       closeOverlayPage();
     };
 
     if (content?.id)
-      renameDirectory(content.id, contentName)(dispatch, callback);
-    else renameFile(content.uploadId, contentName)(fileDispatch, callback);
+      renameDirectory(content.id, contentReName)(dispatch, callback);
+    else renameFile(content.uploadId, contentReName)(fileDispatch, callback);
   };
 
   // console.log("contentcard", content);
+
+  useEffect(() => {
+    setContentReName(content?.filename || content?.name || "");
+  }, [content?.filename, content?.name]);
 
   // --- Render ---
   if (content.mimeType) {
@@ -176,9 +188,9 @@ function ContentCard({ content, ...rest }) {
             type="text"
             className="folder_name_input"
             autoFocus
-            value={contentName}
+            value={contentReName}
             onBlur={handleRenameContent}
-            onChange={handleChangeInput}
+            onChange={handleChangeRenameInput}
             onKeyDown={handleKeyDown}
           />
         ) : showCard ? (
@@ -206,9 +218,9 @@ function ContentCard({ content, ...rest }) {
             type="text"
             className="folder_name_input"
             autoFocus
-            value={contentName}
+            value={contentReName}
             onBlur={handleRenameContent}
-            onChange={handleChangeInput}
+            onChange={handleChangeRenameInput}
             onKeyDown={handleKeyDown}
           />
         ) : (

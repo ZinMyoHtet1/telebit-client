@@ -115,7 +115,6 @@ function MyMediaPage() {
     setContents([]);
     fetchAllFiles(type === "photo" ? "image" : type)(fileDispatch, (files) => {
       setContents(files || []);
-      console.log(files, "fetched files");
       setIsLoading(false);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
