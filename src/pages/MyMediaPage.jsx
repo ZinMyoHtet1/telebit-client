@@ -16,11 +16,13 @@ import PhotoCircleIcon from "../svgs/PhotoCircleIcon";
 import DocumentIcon from "../svgs/DocumentIcon";
 import OverlayPage from "./OvelayPage";
 import Loading from "../components/Loading";
+import SortContentIcon from "../svgs/SortContentIcon";
 
 function MyMediaPage() {
   const [contents, setContents] = useState([]);
   const [showNoContent, setShowNoContent] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [showSortMethod, setShowSortMethod] = useState(false);
   const [user, setUser] = useState(null);
   // const [type, setType] = useState("video");
   const [searchParams, setSearchParams] = useSearchParams();
@@ -31,7 +33,8 @@ function MyMediaPage() {
 
   const { state: fileState, dispatch: fileDispatch } = useContext(fileContext);
   const { windowWidth } = useContext(mediaQueryContext);
-
+  const mediaDeleteFileId = fileState?.mediaDeleteFileId;
+  //mediaDeleteFileId
   const isError = fileState?.errorMessage;
 
   const sortMethods = [
@@ -46,6 +49,15 @@ function MyMediaPage() {
     if (width < 820) return 20;
     return 28;
   };
+
+  //   const getIconSize = (windowWidth) => {
+  //   switch (true) {
+  //     case windowWidth < 820:
+  //       return 18;
+  //     default:
+  //       20;
+  //   }
+  // };
 
   const getBackIconSize = (width) => {
     if (width < 380) return 12;
@@ -63,6 +75,11 @@ function MyMediaPage() {
     const currentIndex = sortMethods.indexOf(sortMethod);
     const nextIndex = (currentIndex + 1) % sortMethods.length;
     setSortMethod(sortMethods[nextIndex]);
+    setShowSortMethod(true);
+
+    setTimeout(() => {
+      setShowSortMethod(false);
+    }, 2000);
   };
 
   const handleChangeType = (type) => {
@@ -70,6 +87,16 @@ function MyMediaPage() {
     setSearchParams(`type=${type}`);
     // setType()
   };
+
+  useEffect(() => {
+    if (!mediaDeleteFileId) return;
+    setContents((contents) =>
+      contents.filter((content) => content.uploadId !== mediaDeleteFileId),
+    );
+    fileDispatch({ type: "RESET_DELETE_MEDIA_FILE" });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mediaDeleteFileId]);
 
   useEffect(() => {
     let user = null;
@@ -88,9 +115,11 @@ function MyMediaPage() {
     setContents([]);
     fetchAllFiles(type === "photo" ? "image" : type)(fileDispatch, (files) => {
       setContents(files || []);
+      console.log(files, "fetched files");
       setIsLoading(false);
     });
-  }, [fileDispatch, type]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [type]);
 
   /* -------------------- EMPTY STATE TIMER -------------------- */
   useEffect(() => {
@@ -151,9 +180,13 @@ function MyMediaPage() {
 
           <div className="page_name">Media</div>
 
-          <button className="sort_btn btn" onClick={handleSort}>
+          {/* <button className="sort_btn btn" onClick={handleSort}>
             {sortMethod}
-          </button>
+            <SortContentIcon
+              width={getIconSize(windowWidth)}
+              height={getIconSize(windowWidth)}
+            />
+          </button> */}
         </div>
 
         <div className="view_mode_container">
@@ -202,6 +235,18 @@ function MyMediaPage() {
             <span>Documents</span>
           </button>
         </div>
+        <button className="sort_btn btn" onClick={handleSort}>
+          <div
+            className={`sort_method_toast ${showSortMethod ? "active" : ""}`}
+          >
+            {sortMethod}
+          </div>
+          <SortContentIcon
+            width={getBackIconSize(windowWidth)}
+            height={getBackIconSize(windowWidth)}
+            fillColor="#fff"
+          />
+        </button>
       </div>
     </div>
   );

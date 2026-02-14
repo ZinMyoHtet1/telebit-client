@@ -1,0 +1,19 @@
+import React from "react";
+
+function SortContentIcon({ width = 20, height = 20, fillColor = "#000" }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={height}
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill={fillColor}
+        d="m19 3l4 5h-3v12h-2V8h-3zm-5 15v2H3v-2zm0-7v2H3v-2zm-2-7v2H3V4z"
+      ></path>
+    </svg>
+  );
+}
+
+export default SortContentIcon;

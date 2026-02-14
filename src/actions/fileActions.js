@@ -86,14 +86,15 @@ const deleteFile =
   (uploadId, parentId) =>
   async (dispatch, callback = () => {}) => {
     try {
-      // dispatch({ type: "START_DELETING" });
       await FILE.deleteFile(uploadId, parentId);
       dispatch({ type: "DELETE_FILE", payload: uploadId });
+      dispatch({ type: "DELETE_MEDIA_FILE", payload: uploadId });
       // dispatch({ type: "REMOVE_ACTIVE_RENAMING" });
       callback();
     } catch (error) {
       console.log(error);
       dispatch({ type: "ERROR", payload: error.message });
+      dispatch({ type: "RESET_DELETE_MEDIA_FILE" });
     }
   };
 

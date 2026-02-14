@@ -7,8 +7,7 @@ const initialValues = {
   errorMessage: null,
   parentId: "root",
   files: [],
-  // mediaFiles: [],
-  mediaDeleteFileId: null,
+  mediaFiles: [],
   mediaContent: null,
   pendingContents: [],
   uploadingContents: [],
@@ -16,7 +15,7 @@ const initialValues = {
   downloadingContent: null,
 };
 
-function fileReducer(state, action) {
+function mediaReducer(state, action) {
   switch (action.type) {
     case "START_LOADING":
       return {
@@ -87,16 +86,10 @@ function fileReducer(state, action) {
         ...state,
         files: action.payload,
       };
-    case "DELETE_MEDIA_FILE":
+    case "MEDIA_FILES":
       return {
         ...state,
-        mediaDeleteFileId: action.payload,
-      };
-
-    case "RESET_DELETE_MEDIA_FILE":
-      return {
-        ...state,
-        mediaDeleteFileId: null,
+        mediaFiles: action.payload,
       };
     case "NEXT_UPLOAD":
       return {
@@ -157,4 +150,4 @@ function fileReducer(state, action) {
   }
 }
 
-export default fileReducer;
+export default mediaReducer;

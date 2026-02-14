@@ -12,17 +12,20 @@ import RenameIcon from "./../svgs/RenameIcon";
 import CopyIcon from "./../svgs/CopyIcon";
 import PasteIcon from "./../svgs/PasteIcon";
 import DeleteIcon from "./../svgs/DeleteIcon";
+import QuestionIcon from "./../svgs/QuestionIcon";
 import CloseIcon from "../svgs/CloseIcon";
 import DownloadIcon from "../svgs/DownloadIcon";
 import LinkIcon from "../svgs/LinkIcon";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
 import PlayIcon from "../svgs/PlayIcon";
 import OpenIcon from "../svgs/OpenIcon";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function ActionBar() {
   const { state: directoryState, dispatch: directoryDispatch } =
     useContext(directoryContext);
+
+  const params = useParams();
   const { dispatch: fileDispatch } = useContext(fileContext);
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
   const { windowWidth } = useContext(mediaQueryContext);
@@ -35,7 +38,9 @@ function ActionBar() {
     directoryState?.activeContent?.uploadId;
   const content = directoryState?.activeContent;
 
-  const parentId = directoryState?.activeContent?.parentId;
+  const currentDirId = params?.dirId || "root";
+
+  const parentId = directoryState?.activeContent?.parentId || currentDirId;
   const isLoading = uiState?.isLoading;
 
   const hidden =
@@ -98,7 +103,7 @@ function ActionBar() {
 
   const handleDelete = (e) => {
     e.stopPropagation();
-    if (isLoading) return;
+    if (isLoading && !parentId) return;
 
     function callback() {
       directoryDispatch({ type: "SET_ACTIVE_CONTENT", payload: null });
@@ -110,6 +115,11 @@ function ActionBar() {
     content?.id
       ? deleteDirectory(content.id)(directoryDispatch, callback)
       : deleteFile(content.uploadId, parentId)(fileDispatch, callback);
+  };
+
+  const handleDetails = (e) => {
+    e.stopPropagation();
+    if (isLoading) return;
   };
 
   useEffect(() => {
@@ -200,6 +210,15 @@ function ActionBar() {
           height={getIconSize(windowWidth)}
         />
         <span className="action_name">Delete</span>
+      </button>
+
+      <button className="rename_btn btn" onClick={handleDetails}>
+        <QuestionIcon
+          width={getIconSize(windowWidth)}
+          height={getIconSize(windowWidth)}
+        />
+        <span className="action_name">Details</span>
+        <div className="feature_status">coming soon</div>
       </button>
     </div>
   );
