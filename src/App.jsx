@@ -129,6 +129,7 @@ const uiInitialValues = {
   mediaViewer: false,
   uploadingStatus: false,
   overlayPage: false,
+  contentDetails: false,
   messagePage: false,
   message: null,
   isError: false,

@@ -76,6 +76,7 @@ function ContentCard({ content, ...rest }) {
     }
 
     dispatch({ type: "SET_ACTIVE_CONTENT", payload: null });
+    uiDispatch({ type: "CLOSE_CONTENTDETAILS" });
 
     if (content.mimeType) {
       uiDispatch({ type: "OPEN_MEDIAVIEWER" });

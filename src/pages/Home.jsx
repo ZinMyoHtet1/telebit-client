@@ -26,6 +26,8 @@ import UploadingStatus from "../components/UploadingStatus";
 import OverlayPage from "./OvelayPage";
 import Loading from "../components/Loading";
 import { mediaQueryContext } from "../contexts/MediaQueryContext";
+import MessagePage from "./MessagePage";
+import ContentDetails from "../components/ContentDetails";
 
 function Home() {
   const navigate = useNavigate();
@@ -178,6 +180,7 @@ function Home() {
     <div id="home_page" className="page">
       {isOpenUploadPage ? <UploadFile /> : null}
       <MediaViewer />
+      <MessagePage />
 
       <UploadingStatus />
       <div className="wrapper">
@@ -199,6 +202,7 @@ function Home() {
         </div>
 
         <ActionBar />
+        <ContentDetails />
         <ErrorMessage />
 
         {contents?.length ? (

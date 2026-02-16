@@ -1,0 +1,33 @@
+.content_details {
+  display: flex;
+  width: 400px;
+  height: fit-content;
+  flex-direction: column;
+  padding: 10px 16px 40px;
+  background-color: #fff;
+  backdrop-filter: blur(2px);
+  position: absolute;
+  bottom: 50%;
+  transform: translateY(-50%);
+  right: 50%;
+  z-index: 200;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+  transform: translateX(50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+  transition:
+    transform 0.2s ease-in,
+    opacity 0.2s ease-in,
+    height 0.2s ease-in;
+}
+
+.content_details.hidden {
+  transform: translateX(50%) translateY(100px); /* slide down */
+  height: 0px;
+  opacity: 0;
+  display: none;
+  pointer-events: none; /* prevent interaction */
+}

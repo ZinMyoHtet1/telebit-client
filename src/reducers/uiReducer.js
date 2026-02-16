@@ -10,6 +10,7 @@ const initialValues = {
   uploadPage: false,
   uploadingStatus: false,
   sideDrawer: false,
+  contentDetails: false,
   mediaViewer: false,
   overlayPage: false,
   messagePage: false,
@@ -82,6 +83,18 @@ function uiReducer(state, action) {
       return {
         ...state,
         actionBar: false,
+      };
+
+    case "OPEN_CONTENTDETAILS":
+      return {
+        ...state,
+        contentDetails: true,
+      };
+
+    case "CLOSE_CONTENTDETAILS":
+      return {
+        ...state,
+        contentDetails: false,
       };
 
     case "OPEN_OVERLAYPAGE":

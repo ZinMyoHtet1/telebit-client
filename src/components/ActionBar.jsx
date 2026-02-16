@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { directoryContext } from "./../contexts/DirectoryContext";
 
 import "./../styles/actionBar.css";
@@ -30,6 +30,7 @@ function ActionBar() {
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
   const { windowWidth } = useContext(mediaQueryContext);
   const navigate = useNavigate();
+  const actionBarRef = useRef();
 
   const [isCopied, setIsCopied] = useState(false);
 
@@ -44,7 +45,11 @@ function ActionBar() {
   const isLoading = uiState?.isLoading;
 
   const hidden =
-    !isActive || isLoading || uiState?.activeRenaming || uiState?.isDeleting;
+    !isActive ||
+    uiState?.contentDetails ||
+    isLoading ||
+    uiState?.activeRenaming ||
+    uiState?.isDeleting;
 
   const getIconSize = (windowWidth) => {
     switch (true) {
@@ -120,6 +125,8 @@ function ActionBar() {
   const handleDetails = (e) => {
     e.stopPropagation();
     if (isLoading) return;
+
+    uiDispatch({ type: "OPEN_CONTENTDETAILS" });
   };
 
   useEffect(() => {
@@ -129,10 +136,26 @@ function ActionBar() {
       }, 5000);
   }, [isCopied]);
 
+  useEffect(() => {
+    function handleClickOutside(e) {
+      // if (isLoading) return;
+      if (actionBarRef.current && !actionBarRef.current.contains(e.target)) {
+        //   dispatch({ type: "SET_ACTIVE_CONTENT", payload: null });
+        // uiDispatch({ type: "CLOSE_CONTENTDETAILS" });
+        handleClose();
+        // directoryDispatch({ type: "SET_ACTIVE_CONTENT", payload: null });
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uiDispatch]);
+
   return (
     <div
       className={`action_bar ${hidden ? "hidden" : ""}`}
       onMouseDown={(e) => e.stopPropagation()}
+      ref={actionBarRef}
     >
       <button className="close_btn btn" onClick={handleClose}>
         <CloseIcon
