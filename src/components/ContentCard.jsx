@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import getFileIcon from "../utils/getFileIcon";
 import formatName from "../utils/formatName";
+import getNameWithoutExt from "../utils/getNameWithoutExt";
 import FolderSolid from "../svgs/FolderSolid";
 import Skeleton from "./Skeleton";
 
@@ -101,17 +102,6 @@ function ContentCard({ content, ...rest }) {
 
   const openOverlayPage = () => uiDispatch({ type: "OPEN_OVERLAYPAGE" });
   const closeOverlayPage = () => uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
-
-  function getNameWithoutExt(filename) {
-    if (!filename) return "";
-
-    const lastDotIndex = filename.lastIndexOf(".");
-
-    // If no dot found or dot is first character (hidden files like .env)
-    if (lastDotIndex <= 0) return filename;
-
-    return filename.substring(0, lastDotIndex);
-  }
 
   const handleCreateFolder = () => {
     if (!currentDirId || !contentName.trim()) {

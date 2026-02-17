@@ -4,6 +4,7 @@ import { directoryContext } from "./../contexts/DirectoryContext";
 import "./../styles/contentDetails.css";
 import { uiContext } from "../contexts/UIContext";
 import formatFileSize from "../utils/formatFileSize";
+import formatNormalDate from "../utils/formatNormalDate";
 
 function ContentDetails() {
   const { state: directoryState } = useContext(directoryContext);
@@ -54,10 +55,34 @@ function ContentDetails() {
               <span>&#58;</span>
               <span className="content_details_value">{content.name}</span>
             </div>
+            {!content.files.length && !content.childDirIds.length ? (
+              <div className="content_details_item">Empty folder</div>
+            ) : (
+              <>
+                <div className="content_details_item">
+                  <span className="content_details_key">files</span>
+                  <span>&#58;</span>
+                  <span className="content_details_value">
+                    {content.files.length}
+                  </span>
+                </div>
+                <div className="content_details_item">
+                  <span className="content_details_key">folder</span>
+                  <span>&#58;</span>
+                  <span className="content_details_value">
+                    {content.childDirIds.length}
+                  </span>
+                </div>
+              </>
+            )}
+
             <div className="content_details_item">
               <span className="content_details_key">date</span>
               <span>&#58;</span>
-              <span className="content_details_value">{content.createdAt}</span>
+              <span className="content_details_value">
+                {" "}
+                {formatNormalDate(content?.createdAt)}
+              </span>
             </div>
           </>
         ) : (
@@ -83,7 +108,7 @@ function ContentDetails() {
               <span className="content_details_key">date</span>
               <span>&#58;</span>
               <span className="content_details_value">
-                {content?.createdAt}
+                {formatNormalDate(content?.createdAt)}
               </span>
             </div>
           </>

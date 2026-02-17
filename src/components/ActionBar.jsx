@@ -242,7 +242,6 @@ function ActionBar() {
           height={getIconSize(windowWidth)}
         />
         <span className="action_name">Details</span>
-        <div className="feature_status">coming soon</div>
       </button>
     </div>
   );
