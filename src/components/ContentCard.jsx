@@ -22,7 +22,7 @@ function ContentCard({ content, ...rest }) {
 
   const [contentName, setContentName] = useState();
   const [contentReName, setContentReName] = useState(
-    content?.name || content?.filename || "",
+    content?.name || getNameWithoutExt(content?.filename) || "",
   );
   const [showCard, setShowCard] = useState(false);
 
@@ -102,6 +102,17 @@ function ContentCard({ content, ...rest }) {
   const openOverlayPage = () => uiDispatch({ type: "OPEN_OVERLAYPAGE" });
   const closeOverlayPage = () => uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
 
+  function getNameWithoutExt(filename) {
+    if (!filename) return "";
+
+    const lastDotIndex = filename.lastIndexOf(".");
+
+    // If no dot found or dot is first character (hidden files like .env)
+    if (lastDotIndex <= 0) return filename;
+
+    return filename.substring(0, lastDotIndex);
+  }
+
   const handleCreateFolder = () => {
     if (!currentDirId || !contentName.trim()) {
       dispatch({ type: "REMOVE_TEMP_DIRECTORY" });
@@ -145,9 +156,12 @@ function ContentCard({ content, ...rest }) {
   };
 
   // console.log("contentcard", content);
+  // const basename = path.basename(file.filename, ext);
 
   useEffect(() => {
-    setContentReName(content?.filename || content?.name || "");
+    setContentReName(
+      getNameWithoutExt(content?.filename) || content?.name || "",
+    );
   }, [content?.filename, content?.name]);
 
   // --- Render ---

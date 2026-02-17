@@ -62,6 +62,7 @@ function ActionBar() {
 
   const handleClose = () => {
     directoryDispatch({ type: "SET_ACTIVE_CONTENT", payload: null });
+    uiDispatch({ type: "REMOVE_ACTIVE_RENAMING" });
   };
 
   const closeOverlayPage = () => {

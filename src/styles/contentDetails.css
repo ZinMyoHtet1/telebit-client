@@ -1,20 +1,20 @@
 .content_details {
   display: flex;
-  width: 400px;
+  width: 300px;
   height: fit-content;
   flex-direction: column;
-  padding: 10px 16px 40px;
+  padding: 16px;
   background-color: #fff;
   backdrop-filter: blur(2px);
   position: absolute;
-  bottom: 50%;
+  bottom: 40%;
   transform: translateY(-50%);
   right: 50%;
   z-index: 200;
   justify-content: flex-start;
   align-items: flex-start;
-  border-radius: 5px 5px 0 0;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+  border-radius: 5px 5px;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
   transform: translateX(50%) translateY(0);
   opacity: 1;
   pointer-events: auto;
@@ -30,4 +30,67 @@
   opacity: 0;
   display: none;
   pointer-events: none; /* prevent interaction */
+}
+
+.content_details .content_details_container {
+  /* background-color: red; */
+  width: 100%;
+  /* overflow-wrap: break-word; */
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.content_details .content_details_container .content_details_item {
+  font-size: 14px;
+  /* overflow-wrap: break-word; */
+  /* text-wrap-mode: wrap; */
+  text-wrap-style: auto;
+  color: var(--secondary-text-color);
+}
+
+.content_details
+  .content_details_container
+  .content_details_item
+  .content_details_key {
+  display: inline-block;
+  width: 34px;
+}
+
+.content_details
+  .content_details_container
+  .content_details_item
+  .content_details_value {
+  padding-left: 6px;
+}
+
+@media screen and (max-width: 350px) {
+  .content_details {
+    box-shadow: 2px 2px 6px rgba(168, 86, 86, 0.2);
+    width: 85%;
+    transform: translateX(50%);
+  }
+
+  .content_details .content_details_container .content_details_item {
+    font-size: 12px;
+  }
+
+  .content_details
+    .content_details_container
+    .content_details_item
+    .content_details_key {
+    width: 30px;
+  }
+  .content_details
+    .content_details_container
+    .content_details_item
+    .content_details_value {
+    padding-left: 4px;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .content_details {
+    width: 98%;
+  }
 }

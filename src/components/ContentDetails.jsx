@@ -3,34 +3,13 @@ import { directoryContext } from "./../contexts/DirectoryContext";
 
 import "./../styles/contentDetails.css";
 import { uiContext } from "../contexts/UIContext";
-// import { fileContext } from "../contexts/FileContext";
-
-import EyeIcon from "./../svgs/EyeIcon";
-import RenameIcon from "./../svgs/RenameIcon";
-import CopyIcon from "./../svgs/CopyIcon";
-import PasteIcon from "./../svgs/PasteIcon";
-import DeleteIcon from "./../svgs/DeleteIcon";
-import QuestionIcon from "./../svgs/QuestionIcon";
-import CloseIcon from "../svgs/CloseIcon";
-import DownloadIcon from "../svgs/DownloadIcon";
-import LinkIcon from "../svgs/LinkIcon";
-// import { mediaQueryContext } from "../contexts/MediaQueryContext";
-import PlayIcon from "../svgs/PlayIcon";
-import OpenIcon from "../svgs/OpenIcon";
+import formatFileSize from "../utils/formatFileSize";
 
 function ContentDetails() {
   const { state: directoryState } = useContext(directoryContext);
 
-  //   const params = useParams();
-  // const { dispatch: fileDispatch } = useContext(fileContext);
   const { state: uiState, dispatch: uiDispatch } = useContext(uiContext);
-  // const { windowWidth } = useContext(mediaQueryContext);
   const contentDetailsRef = useRef();
-  //   const navigate = useNavigate();
-
-  // const isActive =
-  //   directoryState?.activeContent?.id ||
-  //   directoryState?.activeContent?.uploadId;
 
   const isActive =
     uiState?.contentDetails &&
@@ -38,35 +17,10 @@ function ContentDetails() {
       directoryState?.activeContent?.uploadId);
 
   const content = directoryState?.activeContent;
-
-  //   const currentDirId = params?.dirId || "root";
-
-  //   const parentId = directoryState?.activeContent?.parentId || currentDirId;
   const isLoading = uiState?.isLoading;
 
   const hidden =
     !isActive || isLoading || uiState?.activeRenaming || uiState?.isDeleting;
-
-  // const getIconSize = (windowWidth) => {
-  //   switch (true) {
-  //     case windowWidth < 820:
-  //       return 18;
-  //     default:
-  //       20;
-  //   }
-  // };
-
-  // const handleClose = () => {
-  //   // directoryDispatch({ type: "SET_ACTIVE_CONTENT", payload: null });
-  //   uiDispatch({ type: "CLOSE_CONTENTDETAILS" });
-  // };
-
-  //   const closeOverlayPage = () => {
-  //     uiDispatch({ type: "CLOSE_OVERLAYPAGE" });
-  //   };
-  //   const openOverlayPage = () => {
-  //     uiDispatch({ type: "OPEN_OVERLAYPAGE" });
-  //   };
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -88,12 +42,6 @@ function ContentDetails() {
       onMouseDown={(e) => e.stopPropagation()}
       ref={contentDetailsRef}
     >
-      {/* <button className="close_btn btn" onClick={handleClose}>
-        <CloseIcon
-          width={getIconSize(windowWidth)}
-          height={getIconSize(windowWidth)}
-        />
-      </button> */}
       <div className="content_details_container">
         {/* <div className="content_details_item">
           Name : {content?.filename || content?.name}
@@ -101,20 +49,42 @@ function ContentDetails() {
         {/* {JSON.stringify(content)} */}
         {content?.id ? (
           <>
-            <div className="content_details_item">name : {content.name}</div>
             <div className="content_details_item">
-              data : {content.createdAt}
+              <span className="content_details_key">name</span>
+              <span>&#58;</span>
+              <span className="content_details_value">{content.name}</span>
+            </div>
+            <div className="content_details_item">
+              <span className="content_details_key">date</span>
+              <span>&#58;</span>
+              <span className="content_details_value">{content.createdAt}</span>
             </div>
           </>
         ) : (
           <>
             <div className="content_details_item">
-              name : {content?.filename}
+              <span className="content_details_key">name</span>
+              <span>&#58;</span>
+              <span className="content_details_value">{content?.filename}</span>
             </div>
-            <div className="content_details_item">type : {content?.type}</div>
-            <div className="content_details_item">size : {content?.size}</div>
             <div className="content_details_item">
-              date : {content?.createdAt}
+              <span className="content_details_key">type</span>
+              <span>&#58;</span>
+              <span className="content_details_value">{content?.mimeType}</span>
+            </div>
+            <div className="content_details_item">
+              <span className="content_details_key">size</span>
+              <span>&#58;</span>
+              <span className="content_details_value">
+                {formatFileSize(content?.size)}
+              </span>
+            </div>
+            <div className="content_details_item">
+              <span className="content_details_key">date</span>
+              <span>&#58;</span>
+              <span className="content_details_value">
+                {content?.createdAt}
+              </span>
             </div>
           </>
         )}
