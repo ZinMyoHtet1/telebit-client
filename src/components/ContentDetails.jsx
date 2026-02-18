@@ -44,9 +44,6 @@ function ContentDetails() {
       ref={contentDetailsRef}
     >
       <div className="content_details_container">
-        {/* <div className="content_details_item">
-          Name : {content?.filename || content?.name}
-        </div> */}
         {/* {JSON.stringify(content)} */}
         {content?.id ? (
           <>
