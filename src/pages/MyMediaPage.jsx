@@ -17,9 +17,11 @@ import DocumentIcon from "../svgs/DocumentIcon";
 import OverlayPage from "./OvelayPage";
 import Loading from "../components/Loading";
 import SortContentIcon from "../svgs/SortContentIcon";
+import ContentDetails from "../components/ContentDetails";
 
 function MyMediaPage() {
   const [contents, setContents] = useState([]);
+  const [currentContents, setCurrentContents] = useState([]);
   const [showNoContent, setShowNoContent] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showSortMethod, setShowSortMethod] = useState(false);
@@ -113,17 +115,42 @@ function MyMediaPage() {
   useEffect(() => {
     setIsLoading(true);
     setContents([]);
-    fetchAllFiles(type === "photo" ? "image" : type)(fileDispatch, (files) => {
+    fetchAllFiles()(fileDispatch, (files) => {
       setContents(files || []);
-      fileDispatch({ type: "MEDIA_FILES", payload: files });
+      // fileDispatch({ type: "MEDIA_FILES", payload: files });
       setIsLoading(false);
     });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [type]);
+  }, []);
+
+  useEffect(() => {
+    // fileDispatch({ type: "MEDIA_FILES", payload: files });
+    setCurrentContents(
+      contents.filter((file) => {
+        if (type === "photo") {
+          return file.mimeType.startsWith("image/");
+        } else if (type === "video") {
+          return file.mimeType.startsWith("video/");
+        } else {
+          return (
+            !file.mimeType.startsWith("video/") &&
+            !file.mimeType.startsWith("image/")
+          );
+        }
+      }),
+    );
+  }, [contents, type]);
+
+  useEffect(() => {
+    // if(!currentContents.length) return;
+    fileDispatch({ type: "MEDIA_FILES", payload: currentContents });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentContents]);
 
   /* -------------------- EMPTY STATE TIMER -------------------- */
   useEffect(() => {
-    if (!isLoading && !contents.length) {
+    if (!isLoading && !currentContents.length) {
       const timer = setTimeout(() => {
         setShowNoContent(true);
       }, 2000);
@@ -132,13 +159,13 @@ function MyMediaPage() {
     } else {
       setShowNoContent(false);
     }
-  }, [isLoading, contents]);
+  }, [isLoading, currentContents]);
 
   /* -------------------- SORTED CONTENTS (DERIVED STATE) -------------------- */
   const sortedContents = useMemo(() => {
-    if (!contents.length) return [];
+    if (!currentContents.length) return [];
 
-    const sorted = contents
+    const sorted = currentContents
       .filter((c) => c !== null)
       .slice()
       .sort((a, b) => {
@@ -157,7 +184,7 @@ function MyMediaPage() {
       });
 
     return sorted;
-  }, [contents, sortMethod]);
+  }, [currentContents, sortMethod]);
 
   if (!user) return;
   /* -------------------- RENDER -------------------- */
@@ -167,6 +194,7 @@ function MyMediaPage() {
 
       <div className="wrapper">
         <ActionBar />
+        <ContentDetails />
         <OverlayPage>
           <Loading />
         </OverlayPage>
